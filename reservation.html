@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackly — Reserve a Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./common.css">
+<style>
+img{max-width:100%;display:block;}
+
+header{position:fixed;top:0;left:0;right:0;z-index:990;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;transition:all .35s;}
+header.sc{background:rgba(8,8,8,.95);backdrop-filter:blur(14px);padding:14px 60px;border-bottom:1px solid var(--border2);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-stack{color:var(--white);}
+.logo-ly{color:var(--red);}
+nav{display:flex;gap:32px;}
+nav a{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:1px;text-transform:uppercase;transition:color .25s;position:relative;}
+nav a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:2px;background:var(--red);transition:width .3s;}
+nav a:hover,nav a.active{color:var(--white);}
+nav a:hover::after,nav a.active::after{width:100%;}
+.nav-btns{display:flex;gap:10px;align-items:center;}
+
+/* PAGE HERO */
+.page-hero{position:relative;min-height:55vh;display:flex;align-items:flex-end;padding:0 60px 80px;overflow:hidden;background:linear-gradient(135deg,var(--black) 0%,#1a0808 50%,#0a0a0a 100%);}
+.ph-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,77,77,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,77,77,.04) 1px,transparent 1px);background-size:60px 60px;}
+.ph-circle{position:absolute;width:600px;height:600px;border-radius:50%;border:1px solid rgba(255,77,77,.07);top:-150px;right:-100px;animation:rot 35s linear infinite;}
+.ph-circle2{position:absolute;width:350px;height:350px;border-radius:50%;border:1px solid rgba(255,77,77,.05);bottom:-60px;left:5%;animation:rot 22s linear infinite reverse;}
+@keyframes rot{to{transform:rotate(360deg);}}
+.ph-content{position:relative;z-index:1;padding-top:100px;}
+.ph-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,77,77,.12);border:1px solid rgba(255,77,77,.3);color:var(--red);font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:6px 16px;margin-bottom:20px;}
+.ph-h1{font-family:var(--serif);font-size:clamp(60px,9vw,120px);line-height:.9;letter-spacing:2px;color:var(--white);}
+.ph-h1 span{color:var(--red);display:block;}
+.ph-breadcrumb{margin-top:18px;font-size:12px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
+.ph-breadcrumb a{color:var(--red);}
+
+/* SHARED */
+.lbl{display:inline-flex;align-items:center;gap:10px;font-size:10px;font-weight:700;color:var(--red);letter-spacing:4px;text-transform:uppercase;margin-bottom:14px;}
+.lbl::before{content:'';width:28px;height:2px;background:var(--red);}
+.sh2{font-family:var(--serif);font-size:clamp(40px,5vw,68px);color:var(--white);line-height:1;margin-bottom:16px;letter-spacing:1px;}
+.sp{font-size:15px;color:var(--muted);line-height:1.8;font-weight:300;}
+.fade-in.vis{opacity:1;}
+
+/* PERKS STRIP */
+.perks{background:var(--dark);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);padding:0 60px;}
+.perks-inner{display:grid;grid-template-columns:repeat(4,1fr);}
+.perk{display:flex;align-items:center;gap:14px;padding:28px 20px;border-right:1px solid var(--border2);position:relative;}
+.perk:last-child{border-right:none;}
+.perk::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--red);transition:width .3s;}
+.perk:hover::after{width:100%;}
+.perk-icon{width:46px;height:46px;border-radius:12px;flex-shrink:0;background:rgba(255,77,77,.08);border:1px solid rgba(255,77,77,.2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:all .25s;}
+.perk:hover .perk-icon{background:var(--red);border-color:var(--red);}
+.perk-label{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.perk-val{font-size:.88rem;color:var(--white);font-weight:600;}
+
+/* MAIN */
+.res-main{background:var(--black);padding:90px 60px;}
+.res-main-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 420px;gap:56px;align-items:start;}
+.res-intro{font-size:15px;color:var(--muted);line-height:1.85;margin:20px 0 36px;font-weight:300;}
+.res-feats{display:flex;flex-direction:column;gap:12px;margin-bottom:40px;}
+.res-feat{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--card);border:1px solid var(--border2);transition:border-color .25s;}
+.res-feat:hover{border-color:rgba(255,77,77,.3);}
+.res-feat::before{content:'';width:7px;height:7px;background:var(--red);border-radius:50%;flex-shrink:0;}
+.res-feat-text{font-size:14px;color:var(--muted);font-weight:300;}
+.res-hours{background:var(--card);border:1px solid var(--border2);padding:26px 22px;margin-bottom:24px;}
+.res-hours h3{font-family:var(--serif);font-size:1.5rem;color:var(--white);margin-bottom:4px;letter-spacing:.5px;}
+.res-hours p{font-size:.8rem;color:var(--muted);margin-bottom:16px;}
+.hr-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:.85rem;}
+.hr-row:last-child{border-bottom:none;}
+.hr-day{color:var(--muted);}
+.hr-time{color:var(--white);font-weight:500;}
+.hr-row.today .hr-day{color:var(--red);font-weight:700;}
+.hr-row.today .hr-time{color:var(--red);}
+.res-policy{font-size:12px;color:var(--muted);line-height:1.7;padding:16px 18px;border:1px dashed rgba(255,77,77,.2);background:rgba(255,77,77,.04);}
+.res-policy strong{color:var(--red);}
+
+/* BOOKING CARD */
+.res-card{background:var(--card);border:1px solid var(--border2);border-top:3px solid var(--red);padding:36px;position:sticky;top:80px;}
+.res-t{font-family:var(--serif);font-size:28px;letter-spacing:1px;color:var(--white);margin-bottom:4px;}
+.res-s{font-size:12px;color:var(--muted);margin-bottom:28px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:10px;font-weight:700;color:rgba(250,250,250,.35);letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;}
+.fg input,.fg select{width:100%;background:var(--card2);border:1px solid var(--border2);border-radius:2px;padding:11px 14px;font-size:13px;font-family:var(--sans);color:var(--white);transition:border-color .2s;}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--red);}
+.fg select option{background:var(--card);}
+.fg input::placeholder{color:rgba(250,250,250,.25);}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:7px;}
+.pill{padding:7px 16px;border:1.5px solid var(--border2);border-radius:2px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;}
+.pill.on,.pill:hover{background:var(--red);border-color:var(--red);color:var(--white);}
+.sub-btn{width:100%;padding:14px;background:var(--red);font-size:12px;font-weight:700;color:var(--white);letter-spacing:2px;text-transform:uppercase;transition:all .2s;margin-top:8px;border-radius:2px;cursor:pointer;border:none;font-family:var(--sans);}
+.sub-btn:hover{background:var(--red-lt);transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,77,77,.4);}
+.form-note{font-size:11px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.6;}
+
+/* GALLERY */
+.gal-strip{background:var(--dark);padding:80px 60px;}
+.gal-head{text-align:center;margin-bottom:48px;}
+.gal-head .sp{margin:0 auto;}
+.gal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.gal-img{width:100%;height:220px;object-fit:cover;transition:transform .4s,opacity .3s;}
+.gal-item{overflow:hidden;}
+.gal-item:hover .gal-img{transform:scale(1.06);opacity:.88;}
+
+/* FAQ */
+.faq{background:var(--black);padding:80px 60px;}
+.faq-head{text-align:center;margin-bottom:52px;}
+.faq-head .sp{max-width:500px;margin:0 auto;}
+.faq-list{max-width:760px;margin:0 auto;}
+.faq-item{border-bottom:1px solid var(--border2);}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:20px 0;cursor:pointer;font-size:15px;font-weight:600;color:var(--white);gap:16px;}
+.faq-q span{flex:1;}
+.faq-arrow{width:24px;height:24px;border:1.5px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted);transition:all .25s;flex-shrink:0;border-radius:2px;}
+.faq-item.open .faq-arrow{background:var(--red);border-color:var(--red);color:var(--white);transform:rotate(45deg);}
+.faq-a{display:none;padding:0 0 20px;font-size:14px;color:var(--muted);line-height:1.8;font-weight:300;max-width:600px;}
+.faq-item.open .faq-a{display:block;}
+
+/* CTA BANNER */
+.res-cta{background:var(--red);padding:72px 60px;display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap;}
+.res-cta-text h3{font-family:var(--serif);font-size:clamp(28px,3.5vw,48px);color:var(--white);letter-spacing:1px;line-height:1.1;}
+.res-cta-text p{font-size:14px;color:rgba(255,255,255,.7);margin-top:8px;font-weight:300;}
+.res-cta-btns{display:flex;gap:12px;flex-shrink:0;}
+
+/* ============================================================
+   RESPONSIVE — RESERVATION PAGE (ALL BREAKPOINTS)
+   ============================================================ */
+
+/* 1536px — Large desktops / 4K scaled */
+@media (max-width: 1536px) {
+  header { padding: 20px 50px; }
+  header.sc { padding: 13px 50px; }
+  .page-hero { padding: 0 50px 76px; }
+  .perks { padding: 0 50px; }
+  .res-main { padding: 80px 50px; }
+  .gal-strip { padding: 72px 50px; }
+  .faq { padding: 72px 50px; }
+  .res-cta { padding: 66px 50px; }
+  
+}
+
+/* 1280px — Standard desktop */
+@media (max-width: 1280px) {
+  header { padding: 18px 44px; }
+  header.sc { padding: 12px 44px; }
+  nav { gap: 24px; }
+  .page-hero { padding: 0 44px 72px; }
+  .perks { padding: 0 44px; }
+  .res-main { padding: 76px 44px; }
+  .res-main-inner { gap: 48px; grid-template-columns: 1fr 400px; }
+  .gal-strip { padding: 68px 44px; }
+  .faq { padding: 68px 44px; }
+  .res-cta { padding: 64px 44px; }
+  
+  
+}
+
+/* 1024px — Small desktop / large tablet landscape */
+@media (max-width: 1024px) {
+  header { padding: 18px 40px; }
+  header.sc { padding: 12px 40px; }
+  .page-hero { padding: 0 40px 70px; }
+  .perks { padding: 0 40px; }
+  .res-main { padding: 72px 40px; }
+  .res-main-inner { gap: 40px; grid-template-columns: 1fr 380px; }
+  .gal-strip { padding: 64px 40px; }
+  .faq { padding: 64px 40px; }
+  .res-cta { padding: 60px 40px; }
+  
+  
+}
+
+/* 900px — Tablet portrait wide (nav collapses) */
+@media (max-width: 900px) {
+  header { padding: 18px 32px; }
+  header.sc { padding: 12px 32px; }
+  nav, .nav-btns { display: none !important; }
+  .ham { display: flex !important; }
+  .page-hero { padding: 0 32px 64px; min-height: 48vh; }
+  .perks { padding: 0 32px; }
+  .perks-inner { grid-template-columns: 1fr 1fr; }
+  .perk { border-right: none; border-bottom: 1px solid var(--border2); padding: 22px 16px; }
+  .perk:nth-child(3), .perk:nth-child(4) { border-bottom: none; }
+  .res-main { padding: 64px 32px; }
+  .res-main-inner { grid-template-columns: 1fr; gap: 44px; }
+  .res-card { position: static; padding: 30px 28px; }
+  .gal-strip { padding: 56px 32px; }
+  .gal-grid { grid-template-columns: repeat(2, 1fr); }
+  .faq { padding: 56px 32px; }
+  .res-cta { flex-direction: column; text-align: center; padding: 48px 32px; }
+  .res-cta-btns { justify-content: center; }
+  
+  
+}
+
+/* 768px — Tablet portrait / large phone landscape */
+@media (max-width: 768px) {
+  header { padding: 14px 20px; background: rgba(8,8,8,.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  header.sc { padding: 14px 20px; }
+  .page-hero { padding: 0 20px 56px; min-height: 44vh; }
+  .ph-h1 { font-size: clamp(48px, 10vw, 80px); }
+  .perks { padding: 0 20px; }
+  .perks-inner { grid-template-columns: 1fr 1fr; }
+  .perk { padding: 18px 14px; gap: 12px; }
+  .res-main { padding: 56px 20px; }
+  .res-card { padding: 28px 22px; }
+  .gal-strip { padding: 52px 20px; }
+  .gal-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .gal-img { height: 180px; }
+  .faq { padding: 52px 20px; }
+  .res-cta { padding: 44px 20px; }
+  
+  
+  
+  
+}
+
+/* 640px — Large phone portrait */
+@media (max-width: 640px) {
+  .page-hero { padding: 0 20px 52px; min-height: 42vh; }
+  .res-main { padding: 52px 20px; }
+  .res-card { padding: 26px 20px; }
+  .gal-img { height: 165px; }
+  .gal-grid { gap: 9px; }
+  .faq { padding: 48px 20px; }
+  .res-cta { padding: 42px 20px; }
+  
+  
+}
+
+/* 480px — Standard phone portrait */
+@media (max-width: 480px) {
+  .page-hero { padding: 0 20px 48px; min-height: 40vh; }
+  .ph-h1 { font-size: clamp(40px, 11vw, 60px); }
+  .ph-tag { font-size: 9px; padding: 5px 12px; letter-spacing: 2px; }
+  .perks-inner { grid-template-columns: 1fr; }
+  .perk { padding: 16px; border-bottom: 1px solid var(--border2) !important; border-right: none !important; }
+  .perk:last-child { border-bottom: none !important; }
+  .res-main { padding: 48px 20px; }
+  .res-card { padding: 24px 18px; }
+  .res-t { font-size: 24px; }
+  .frow { grid-template-columns: 1fr; }
+  .pills { gap: 6px; }
+  .pill { padding: 7px 12px; font-size: 10px; }
+  .gal-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .gal-img { height: 150px; }
+  .faq { padding: 44px 20px; }
+  .faq-q { font-size: 14px; }
+  .res-cta { padding: 40px 20px; }
+  
+  
+}
+
+/* 425px — Large phone portrait */
+@media (max-width: 425px) {
+  .res-main { padding: 44px 18px; }
+  .res-card { padding: 22px 16px; }
+  .gal-img { height: 140px; }
+  .faq { padding: 42px 18px; }
+  .res-cta { padding: 38px 18px; }
+}
+
+/* 375px — iPhone SE / small phones */
+@media (max-width: 375px) {
+  .page-hero { padding: 0 16px 44px; }
+  .ph-h1 { font-size: clamp(36px, 11vw, 50px); line-height: .88; }
+  .ph-breadcrumb { font-size: 10px; }
+  .perks { padding: 0 16px; }
+  .res-main { padding: 40px 16px; }
+  .res-card { padding: 20px 16px; }
+  .res-t { font-size: 22px; }
+  .fg input, .fg select { padding: 10px 12px; font-size: 12px; }
+  .sub-btn { padding: 13px; font-size: 11px; letter-spacing: 1px; }
+  .gal-strip { padding: 40px 16px; }
+  .gal-img { height: 130px; }
+  .faq { padding: 40px 16px; }
+  .faq-q { font-size: 13px; padding: 16px 0; }
+  .faq-a { font-size: 13px; }
+  .res-cta { padding: 36px 16px; }
+  .res-cta-text h3 { font-size: 26px; }
+  
+  
+  
+  
+}
+
+/* 320px — Very small phones */
+@media (max-width: 320px) {
+  .page-hero { padding: 0 14px 40px; }
+  .ph-h1 { font-size: 34px; letter-spacing: 0; }
+  .ph-tag { display: none; }
+  .res-main { padding: 36px 14px; }
+  .res-card { padding: 18px 14px; }
+  .res-t { font-size: 20px; }
+  .fg label { font-size: 9px; }
+  .fg input, .fg select { padding: 9px 10px; font-size: 11px; }
+  .pill { padding: 6px 10px; font-size: 9px; }
+  .sub-btn { padding: 12px; font-size: 10px; letter-spacing: 1px; }
+  .gal-grid { grid-template-columns: 1fr; }
+  .gal-img { height: 160px; }
+  .faq { padding: 32px 14px; }
+  .faq-q { font-size: 12px; }
+  .res-cta { padding: 32px 14px; }
+  .btn-white, .btn-red-out { width: 100%; text-align: center; padding: 12px 16px; }
+  
+}
+
+/* Accessibility — respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div id="sb"></div>
+
+<header id="hdr">
+  <a href="./index.html" class="logo">
+    <img src="./assets/stackly logo.webp" alt="Stackly Logo" class="logo-img">
+    <span class="logo-text"><span class="logo-stack">STACK</span><span class="logo-ly">LY</span></span>
+  </a>
+  <nav>
+    <a href="./index.html">Home</a>
+    <a href="./about.html">About</a>
+    <a href="./menu.html">Menu</a>
+    <a href="./reservation.html" class="active">Reservation</a>
+    <a href="./blog.html">Blog</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+  <div class="nav-btns">
+    <a href="./login.html" class="btn-ghost">Login</a>
+    <a href="#" class="btn-red">Book Table</a>
+  </div>
+  <button class="ham" id="ham"><span></span><span></span><span></span></button>
+</header>
+
+<div class="mob" id="mm">
+  <button class="mob-close" id="mm-close" aria-label="Close menu">✕</button>
+  <a href="./index.html" onclick="cm()">HOME</a>
+  <a href="./about.html" onclick="cm()">ABOUT</a>
+  <a href="./menu.html" onclick="cm()">MENU</a>
+  <a href="./reservation.html" onclick="cm()">RESERVATION</a>
+  <a href="./blog.html" onclick="cm()">BLOG</a>
+  <a href="./contact.html" onclick="cm()">CONTACT</a>
+  <div class="mob-btns">
+    <a href="./login.html" class="btn-ghost" onclick="cm()">Login</a>
+    <a href="./404page.html" class="btn-red" onclick="cm()">Book Table</a>
+  </div>
+</div>
+
+<section class="page-hero">
+  <div class="ph-grid"></div>
+  <div class="ph-circle"></div>
+  <div class="ph-circle2"></div>
+  <div class="ph-content">
+    <div class="ph-tag">Reserve a Table</div>
+    <h1 class="ph-h1">BOOK YOUR<span>SPOT NOW</span></h1>
+    <div class="ph-breadcrumb"><a href="./index.html">Home</a> &nbsp;/&nbsp; Reservation</div>
+  </div>
+</section>
+
+<div class="perks">
+  <div class="perks-inner">
+    <div class="perk fade-up">
+      <div class="perk-icon">⚡</div>
+      <div><div class="perk-label">Confirmation</div><div class="perk-val">Within 30 Minutes</div></div>
+    </div>
+    <div class="perk fade-up" style="transition-delay:.08s">
+      <div class="perk-icon">🎂</div>
+      <div><div class="perk-label">Special Occasions</div><div class="perk-val">Surprise Included</div></div>
+    </div>
+    <div class="perk fade-up" style="transition-delay:.16s">
+      <div class="perk-icon">🎵</div>
+      <div><div class="perk-label">Live Music</div><div class="perk-val">Fri &amp; Sat Nights</div></div>
+    </div>
+    <div class="perk fade-up" style="transition-delay:.24s">
+      <div class="perk-icon">👑</div>
+      <div><div class="perk-label">VIP Tables</div><div class="perk-val">Loyalty Members</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="res-main" id="booking">
+  <div class="res-main-inner">
+    <div class="res-left fade-up">
+      <div class="lbl">Why Book Ahead</div>
+      <h2 class="sh2">Grab Your Table Before It's Gone!</h2>
+      <p class="res-intro">Peak hours fill up FAST. Reserve your spot now and skip the queue. Smart people book ahead — and they always get the best seats in the house!</p>
+      <div class="res-feats">
+        <div class="res-feat"><span class="res-feat-text">Special occasion surprises included with every booking</span></div>
+        <div class="res-feat"><span class="res-feat-text">Live music every Friday &amp; Saturday evening</span></div>
+        <div class="res-feat"><span class="res-feat-text">Customise your menu and dietary needs in advance</span></div>
+        <div class="res-feat"><span class="res-feat-text">VIP table with premium service for loyalty members</span></div>
+        <div class="res-feat"><span class="res-feat-text">Free welcome drinks for groups of 8 or more</span></div>
+      </div>
+      <div class="res-hours">
+        <h3>Opening Hours</h3>
+        <p>We're open almost every day. Walk-ins welcome during off-peak times.</p>
+        <div class="hr-row"><span class="hr-day">Monday – Thursday</span><span class="hr-time">11 AM – 10 PM</span></div>
+        <div class="hr-row today"><span class="hr-day">Friday – Saturday ★</span><span class="hr-time">11 AM – 11 PM</span></div>
+        <div class="hr-row"><span class="hr-day">Sunday</span><span class="hr-time">12 PM – 9 PM</span></div>
+      </div>
+      <div class="res-policy">
+        <strong>Cancellation Policy:</strong> Please cancel at least 2 hours before your booking. We hold your table for 15 minutes after the reservation time.
+      </div>
+    </div>
+
+    <div class="fade-up" style="transition-delay:.15s">
+      <div class="res-card">
+        <div class="res-t">Book My Table</div>
+        <div class="res-s">Fill in &amp; we'll confirm in 30 min!</div>
+        <div class="frow">
+          <div class="fg">
+            <label>Your Name *</label>
+            <input type="text" id="bmtName" placeholder="Enter your name"
+              oninput="this.value=this.value.replace(/[^A-Za-z\s'\-]/g,'')"
+              onkeypress="return /[A-Za-z\s'\-]/.test(event.key)">
+            <span id="bmtNameErr" class="fv-error">Name must contain letters only.</span>
+          </div>
+          <div class="fg">
+            <label>Phone *</label>
+            <input type="tel" id="bmtPhone" placeholder="+91 98765 43210"
+              oninput="this.value=this.value.replace(/[^0-9+\-\s]/g,'')"
+              onkeypress="return /[0-9+\-\s]/.test(event.key)">
+            <span id="bmtPhoneErr" class="fv-error">Phone must be digits only.</span>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Email Address</label>
+          <input type="email" placeholder="your@email.com">
+        </div>
+        <div class="frow">
+          <div class="fg"><label>Date *</label><input type="date" id="bmtDate"><span id="bmtDateErr" class="fv-error">Please select a date.</span></div>
+          <div class="fg"><label>Time *</label><input type="time" id="bmtTime"><span id="bmtTimeErr" class="fv-error">Please select a time.</span></div>
+        </div>
+        <div class="frow">
+          <div class="fg">
+            <label>Guests *</label>
+            <select id="bmtGuests">
+              <option value="">Select</option>
+              <option>1</option><option>2</option><option>3</option><option>4</option>
+              <option>5-8</option><option>9+</option>
+            </select>
+            <span id="bmtGuestsErr" class="fv-error">Please select number of guests.</span>
+          </div>
+          <div class="fg">
+            <label>Occasion</label>
+            <select>
+              <option value="">Select</option>
+              <option>Birthday</option><option>Anniversary</option><option>Wedding</option>
+              <option>Business</option><option>Casual Dining</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Seating Preference</label>
+          <select>
+            <option value="">No Preference</option>
+            <option>Indoor — AC Dining Hall</option>
+            <option>Outdoor — Garden Patio</option>
+            <option>Private Booth</option>
+            <option>Bar Seating</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Preferred Cuisine</label>
+          <div class="pills">
+            <span class="pill on" onclick="sp(this)">Indian</span>
+            <span class="pill" onclick="sp(this)">Continental</span>
+            <span class="pill" onclick="sp(this)">Mexican</span>
+            <span class="pill" onclick="sp(this)">BBQ</span>
+            <span class="pill" onclick="sp(this)">Surprise Me!</span>
+          </div>
+        </div>
+        <button class="sub-btn" onclick="confirmBooking()">Confirm Booking</button>
+        <p class="form-note">By booking you agree to our cancellation policy. We'll call you to confirm.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="gal-strip">
+  <div class="gal-head fade-up">
+    <div class="lbl">Our Ambience</div>
+    <h2 class="sh2">See What Awaits You</h2>
+    <p class="sp">From cosy booths to open-air dining — every corner of Stackly is picture-perfect.</p>
+  </div>
+  <div class="gal-grid">
+    <div class="gal-item fade-up"><img class="gal-img" src="./assets/interior.webp" alt="Interior"></div>
+    <div class="gal-item fade-up" style="transition-delay:.08s"><img class="gal-img" src="./assets/ingredients.webp" alt="Fresh Ingredients"></div>
+    <div class="gal-item fade-up" style="transition-delay:.16s"><img class="gal-img" src="./assets/behind the scene.webp" alt="Behind the Scenes"></div>
+    <div class="gal-item fade-up" style="transition-delay:.24s"><img class="gal-img" src="./assets/best.webp" alt="Stackly Best"></div>
+  </div>
+</div>
+
+<div class="faq">
+  <div class="faq-head fade-up">
+    <div class="lbl">FAQs</div>
+    <h2 class="sh2">Things People Ask</h2>
+    <p class="sp">Got questions? We've got answers. If yours isn't here, just call us!</p>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item open">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>Can I walk in without a reservation?</span><div class="faq-arrow">+</div></div>
+      <div class="faq-a">Yes! Walk-ins are always welcome during off-peak hours (weekday lunches and early evenings). However, on weekends and special evenings, tables go fast — booking guarantees your spot and the best seating experience.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>How far in advance should I book?</span><div class="faq-arrow">+</div></div>
+      <div class="faq-a">For weekday dinners, a day in advance is plenty. For weekends, special occasions, or parties of 6+, we recommend booking 3–5 days ahead. Peak holiday seasons can fill up weeks in advance!</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>What if I need to cancel or reschedule?</span><div class="faq-arrow">+</div></div>
+      <div class="faq-a">No problem at all — life happens! Just call us or WhatsApp at least 2 hours before your reservation. We hold tables for 15 minutes, so if you're running late, give us a quick ring.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>Do you cater for dietary requirements?</span><div class="faq-arrow">+</div></div>
+      <div class="faq-a">Absolutely! Vegan, gluten-free, Jain, and other dietary needs are fully accommodated. Just mention it in your booking or let our staff know when you arrive. Our chefs love the challenge!</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)"><span>Can I bring my own cake for a birthday?</span><div class="faq-arrow">+</div></div>
+      <div class="faq-a">Yes! Outside cakes are welcome with a small plating fee. Better yet — let our pastry chef bake you something magical. Just let us know when booking and we'll sort out the surprise.</div>
+    </div>
+  </div>
+</div>
+
+<div class="res-cta fade-up">
+  <div class="res-cta-text">
+    <h3>Still Have Questions?</h3>
+    <p>Call us, WhatsApp us, or just walk in and say hello. We don't bite!</p>
+  </div>
+  <div class="res-cta-btns">
+    <a href="./contact.html" class="btn-white">Contact Us</a>
+    <a href="./menu.html" class="btn-red-out">View Menu</a>
+  </div>
+</div>
+
+<footer id="footer">
+  <div class="fg-grid">
+    <div>
+      <div class="fl-logo">
+  <img src="./assets/stackly logo.webp" alt="Stackly" class="fl-logo-img">
+  <span style="display:flex;"><span class="fl-stack">STACK</span><span class="fl-ly">LY</span></span>
+</div>
+      <p class="fl-desc">Salem's most fun restaurant since 2012. We don't just serve food — we serve memories, laughter, and seriously good vibes.</p>
+      <div class="fl-socs">
+        <a href="./404page.html" class="fl-soc">f</a><a href="./404page.html" class="fl-soc">in</a>
+        <a href="./404page.html" class="fl-soc">𝕏</a><a href="./404page.html" class="fl-soc">▶</a><a href="./404page.html" class="fl-soc">💬</a>
+      </div>
+    </div>
+    <div class="fc">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="./index.html">→ Home</a></li><li><a href="./about.html">→ About Us</a></li>
+        <li><a href="./menu.html">→ Our Menu</a></li><li><a href="./reservation.html">→ Reservations</a></li>
+        <li><a href="./blog.html">→ Blog</a></li><li><a href="./contact.html">→ Contact</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>New Menu</h4>
+      <ul>
+        <li><a href="./404page.html">→ Stackly BBQ Platter</a></li><li><a href="./404page.html">→ Spicy Chaos Burger</a></li>
+        <li><a href="./404page.html">→ Mango Lassi Supreme</a></li><li><a href="./404page.html">→ Triple Choco Lava</a></li>
+        <li><a href="./404page.html">→ Power Grain Bowl</a></li><li><a href="./404page.html">→ Chef's Secret Biriyani</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>Find Us</h4>
+      <div class="fc-inf"><strong>Address</strong>MMR Complex, Chinna Thirupathi, near Chinna Muniyappan Kovil, Salem, Tamil Nadu 636008</div>
+      <div class="fc-inf"><strong>Call Us</strong>+91 98765 43210</div>
+      <div class="fc-inf"><strong>Email</strong>hello@stackly.in</div>
+      <div class="fc-hrs">
+        <div class="fc-hr"><span>Mon – Thu</span><span>11AM – 10PM</span></div>
+        <div class="fc-hr"><span>Fri – Sat</span><span>11AM – 11PM</span></div>
+        <div class="fc-hr"><span>Sunday</span><span>12PM – 9PM</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr-btm">
+    <div class="ftr-copy">© 2026 Stackly Restaurant. Made with ♥ in Salem, Tamil Nadu.</div>
+    <div class="ftr-links"><a href="./404page.html">Privacy Policy</a><a href="./404page.html">Terms</a><a href="./404page.html">Sitemap</a></div>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('scroll',function(){
+  var t=document.documentElement.scrollHeight-window.innerHeight;
+  var sb=document.getElementById('sb');
+  if(sb)sb.style.width=(window.scrollY/t*100)+'%';
+  var hdr=document.getElementById('hdr');
+  if(hdr)hdr.classList.toggle('sc',window.scrollY>60);
+});
+var obs=new IntersectionObserver(function(e){
+  e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('vis');obs.unobserve(x.target);}});
+},{threshold:.1,rootMargin:'0px 0px -36px 0px'});
+document.querySelectorAll('.fade-up,.fade-in').forEach(function(el){obs.observe(el);});
+var hamBtn=document.getElementById('ham');
+var mobMenu=document.getElementById('mm');
+var mobClose=document.getElementById('mm-close');
+if(hamBtn&&mobMenu){hamBtn.addEventListener('click',function(){mobMenu.classList.toggle('open');hamBtn.classList.toggle('open');});}
+if(mobClose&&mobMenu){mobClose.addEventListener('click',function(){mobMenu.classList.remove('open');if(hamBtn)hamBtn.classList.remove('open');});}
+function cm(){if(mobMenu)mobMenu.classList.remove('open');if(hamBtn)hamBtn.classList.remove('open');}
+function sp(el){var parent=el.closest('.pills')||el.parentElement;if(parent)parent.querySelectorAll('.pill').forEach(function(p){p.classList.remove('on');});el.classList.add('on');}
+function confirmBooking(){
+  var valid=true;
+  function setErr(id,errId,msg){
+    var el=document.getElementById(id);
+    var err=document.getElementById(errId);
+    if(!el)return;
+    var val=(el.value||'').trim();
+    if(!val){
+      el.classList.add('fv-invalid');el.classList.remove('fv-ok');
+      if(err){err.textContent=msg;err.classList.add('show');}
+      valid=false;
+    } else {
+      el.classList.remove('fv-invalid');el.classList.add('fv-ok');
+      if(err)err.classList.remove('show');
+    }
+  }
+  setErr('bmtName','bmtNameErr','Please enter your name.');
+  setErr('bmtPhone','bmtPhoneErr','Please enter your phone number.');
+  setErr('bmtDate','bmtDateErr','Please select a date.');
+  setErr('bmtTime','bmtTimeErr','Please select a time.');
+  setErr('bmtGuests','bmtGuestsErr','Please select number of guests.');
+  if(valid){window.location.href='./404page.html';}
+}
+function toggleFaq(btn){var item=btn.closest('.faq-item');if(item)item.classList.toggle('open');}
+(function(){var path=window.location.pathname.split('/').pop()||'index.html';document.querySelectorAll('nav a').forEach(function(a){a.classList.remove('active');var href=(a.getAttribute('href')||'').split('/').pop();if(href===path)a.classList.add('active');});})();
+</script>
+</body>
+</html>

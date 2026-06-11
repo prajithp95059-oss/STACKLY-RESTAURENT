@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Contact — Stackly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="./common.css"/>
+<style>
+/* ══════════════════════════════════════
+   CONTACT PAGE — complete restyle
+   ══════════════════════════════════════ */
+
+   header{position:fixed;top:0;left:0;right:0;z-index:990;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;transition:all .35s;}
+header.sc{background:rgba(8,8,8,.95);backdrop-filter:blur(14px);padding:14px 60px;border-bottom:1px solid var(--border2);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-stack{color:var(--white);}
+.logo-ly{color:var(--red);}
+
+nav{display:flex;gap:32px;}
+nav a{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:1px;text-transform:uppercase;transition:color .25s;}
+nav a:hover,nav a.act{color:var(--white);}
+.nav-btns{display:flex;gap:10px;align-items:center;}
+.btn-ghost:hover{border-color:var(--red);color:var(--red);}
+.btn-red:hover{background:var(--red-lt);transform:translateY(-1px);}
+
+/* ── HERO ── */
+.ct-hero{
+  min-height:48vh;
+  background:var(--black);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  padding:130px 60px 72px;
+  text-align:center;
+}
+.ct-hero::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 50%,rgba(255,77,77,.09) 0%,transparent 55%),
+    radial-gradient(ellipse 50% 40% at 70% 60%,rgba(255,77,77,.05) 0%,transparent 50%);
+}
+/* diagonal grid overlay */
+.ct-hero::after{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,77,77,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,77,77,.03) 1px,transparent 1px);
+  background-size:60px 60px;
+}
+.ct-hero-inner{position:relative;z-index:2;}
+.ct-eyebrow{
+  display:inline-flex;align-items:center;gap:12px;
+  font-size:.72rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--red);margin-bottom:20px;
+}
+.ct-eyebrow::before,.ct-eyebrow::after{content:'';width:36px;height:1px;background:var(--red);}
+.ct-hero h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.8rem,8vw,7rem);
+  line-height:.88;color:#fff;margin-bottom:22px;
+  letter-spacing:2px;
+}
+.ct-hero h1 em{color:var(--red);font-style:normal;display:block;}
+.ct-hero-sub{
+  font-size:clamp(.85rem,2vw,1rem);color:var(--muted);max-width:500px;
+  margin:0 auto;line-height:1.75;
+}
+
+/* floating food images */
+.hf-img{
+  position:absolute;border-radius:16px;object-fit:cover;
+  pointer-events:none;overflow:hidden;
+}
+
+/* ── CHANNEL STRIP ── */
+.ct-strip{
+  background:var(--dark);
+  border-top:1px solid var(--border2);
+  border-bottom:1px solid var(--border2);
+  padding:0 60px;
+}
+.ct-strip-inner{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+.ct-channel{
+  display:flex;align-items:center;gap:16px;
+  padding:28px 0;
+  border-right:1px solid var(--border2);
+  padding-right:28px;padding-left:28px;
+  text-decoration:none;
+  transition:background .25s;
+  position:relative;
+}
+.ct-channel:first-child{padding-left:0;}
+.ct-channel:last-child{border-right:none;}
+.ct-channel::after{
+  content:'';position:absolute;bottom:0;left:0;width:0;height:2px;
+  background:var(--red);transition:width .3s;
+}
+.ct-channel:hover::after{width:100%;}
+.ct-channel:hover .cc-icon{background:var(--red);border-color:var(--red);}
+.cc-icon{
+  width:48px;height:48px;border-radius:12px;
+  background:rgba(255,77,77,.08);border:1px solid rgba(255,77,77,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;flex-shrink:0;transition:all .25s;
+}
+
+.cc-label{font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+.cc-value{font-size:.88rem;color:#fff;font-weight:600;}
+
+/* ── MAIN LAYOUT ── */
+.ct-main{
+  background:var(--black);
+  padding:80px 60px 100px;
+}
+.ct-main-inner{
+  max-width:1100px;margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 360px;
+  gap:40px;
+  align-items:start;
+}
+/* allow grid columns to shrink below their content width (prevents
+   horizontal overflow / clipping on mobile) */
+.ct-main-inner>*{min-width:0;}
+.ct-strip-inner>*{min-width:0;}
+.ct-left,.ct-right{min-width:0;max-width:100%;}
+.ct-form{max-width:100%;}
+.cc-value{word-break:break-word;}
+
+/* ══ LEFT COLUMN ══ */
+.ct-left{display:flex;flex-direction:column;gap:0;}
+
+/* ── FORM CARD ── */
+.ct-form{
+  background:var(--card);
+  border:1px solid var(--border2);
+  border-radius:20px;
+  overflow:hidden;
+}
+.ct-form-head{
+  padding:36px 40px 28px;
+  border-bottom:1px solid var(--border2);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:20px;
+}
+.ct-form-head-text h2{
+  font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:#fff;
+  letter-spacing:1px;margin-bottom:6px;
+}
+.ct-form-head-text p{font-size:.88rem;color:var(--muted);line-height:1.6;}
+.ct-form-badge{
+  background:rgba(255,77,77,.1);border:1px solid rgba(255,77,77,.25);
+  border-radius:50px;padding:6px 16px;
+  font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--red);white-space:nowrap;flex-shrink:0;margin-top:4px;
+}
+
+/* topic bar */
+.ct-topics{
+  display:flex;gap:0;
+  border-bottom:1px solid var(--border2);
+  overflow-x:auto;scrollbar-width:none;
+}
+.ct-topics::-webkit-scrollbar{display:none;}
+.ct-topic{
+  padding:14px 22px;
+  font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);border-bottom:2px solid transparent;
+  white-space:nowrap;cursor:pointer;transition:all .2s;flex-shrink:0;
+  background:none;border-top:none;border-left:none;border-right:none;
+}
+.ct-topic.active,.ct-topic:hover{color:#fff;border-bottom-color:var(--red);}
+
+/* form body */
+.ct-form-body{padding:32px 40px 36px;}
+.f2{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.fg{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.fg:last-child{margin-bottom:0;}
+.fg label{
+  font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(250,250,250,.45);
+}
+.fg input,
+.fg select,
+.fg textarea{
+  background:var(--dark);
+  border:1px solid var(--border2);
+  border-radius:10px;
+  padding:13px 16px;
+  color:#fff;
+  font-family:'Outfit',sans-serif;font-size:.92rem;
+  outline:none;
+  transition:border-color .2s,background .2s;
+  width:100%;box-sizing:border-box;
+}
+.fg input::placeholder,.fg textarea::placeholder{color:rgba(250,250,250,.22);}
+.fg input:focus,.fg select:focus,.fg textarea:focus{
+  border-color:var(--red);
+  background:rgba(255,77,77,.04);
+}
+.fg select option{background:var(--card);}
+.fg textarea{resize:vertical;min-height:200px;line-height:1.6;}
+
+/* star rating inline */
+.rating-inline{
+  display:flex;align-items:center;gap:20px;
+  background:var(--dark);border:1px solid var(--border2);border-radius:10px;
+  padding:14px 20px;margin-bottom:24px;
+}
+.rating-inline span{font-size:.78rem;color:var(--muted);font-weight:500;}
+.stars{display:flex;gap:4px;}
+.star{font-size:1.4rem;cursor:pointer;opacity:.28;transition:all .15s;}
+.star.lit{opacity:1;}
+.star:hover{transform:scale(1.15);}
+
+/* submit row */
+.submit-row{
+  display:flex;align-items:center;gap:16px;margin-top:4px;
+}
+.ct-submit{
+  flex:1;padding:16px 24px;
+  background:var(--red);border:none;border-radius:12px;
+  color:#fff;font-family:'Bebas Neue',sans-serif;
+  font-size:1.3rem;letter-spacing:.1em;
+  cursor:pointer;transition:all .3s;
+}
+.ct-submit:hover{background:#ff3333;transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,77,77,.4);}
+.ct-privacy{font-size:.73rem;color:var(--muted);line-height:1.6;max-width:180px;}
+
+/* sent state */
+.sent-overlay{
+  display:none;flex-direction:column;align-items:center;
+  justify-content:center;text-align:center;
+  padding:72px 40px;
+  background:var(--card);border-radius:20px;
+  border:1px solid var(--border2);
+}
+.sent-overlay.show{display:flex;}
+.sent-icon{font-size:3.5rem;margin-bottom:20px;}
+.sent-overlay h3{font-family:'Bebas Neue',sans-serif;font-size:2.6rem;color:#fff;margin-bottom:10px;}
+.sent-overlay p{font-size:.9rem;color:var(--muted);max-width:320px;line-height:1.7;}
+
+/* ── INFO STRIP below form ── */
+.ct-info-strip{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:12px;margin-top:16px;
+  align-items:stretch;
+}
+.ct-info-tile{
+  background:var(--card);border:1px solid var(--border2);border-radius:14px;
+  padding:20px;display:flex;gap:14px;align-items:flex-start;
+  transition:border-color .2s;height:100%;
+}
+.ct-info-tile:hover{border-color:rgba(255,77,77,.3);}
+.cit-icon{
+  width:38px;height:38px;border-radius:10px;
+  background:rgba(255,77,77,.08);border:1px solid rgba(255,77,77,.15);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.95rem;flex-shrink:0;
+}
+.cit-label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+.cit-value{font-size:.82rem;color:#fff;line-height:1.55;}
+.cit-value a{color:#fff;text-decoration:none;transition:color .2s;}
+.cit-value a:hover{color:var(--red);}
+
+/* ══ RIGHT COLUMN ══ */
+.ct-right{display:flex;flex-direction:column;gap:16px;}
+
+/* Hours */
+.ct-hours{
+  background:var(--card);border:1px solid var(--border2);border-radius:18px;
+  padding:26px 24px;
+}
+.ct-hours h3{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#fff;margin-bottom:16px;letter-spacing:.5px;}
+.open-now{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(46,221,122,.08);border:1px solid rgba(46,221,122,.25);
+  border-radius:50px;padding:4px 14px;
+  font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:#2edd7a;margin-bottom:16px;
+}
+.open-now::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:#2edd7a;animation:blink 1.4s infinite;
+}
+.hr{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);
+  font-size:.82rem;
+}
+.hr:last-child{border-bottom:none;}
+.hr .dy{color:var(--muted);}
+.hr .tm{color:#fff;font-weight:500;}
+.hr.tod .dy{color:var(--red);font-weight:700;}
+.hr.tod .tm{color:var(--red);}
+
+/* Map */
+.ct-map{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:18px;overflow:hidden;
+}
+.ct-map-visual{
+  height:160px;background:var(--dark);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:8px;position:relative;
+}
+.ct-map-visual::before{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(rgba(255,77,77,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,77,77,.05) 1px,transparent 1px);
+  background-size:36px 36px;
+}
+/* animated pulse ring */
+.ct-map-visual::after{
+  content:'';position:absolute;
+  width:60px;height:60px;border-radius:50%;
+  border:1px solid rgba(255,77,77,.2);
+  animation:pulseRing 2.5s ease infinite;
+}
+@keyframes pulseRing{
+  0%{transform:scale(.6);opacity:.8;}
+  100%{transform:scale(2.2);opacity:0;}
+}
+.map-marker{
+  position:relative;z-index:2;
+  width:40px;height:40px;border-radius:50% 50% 50% 0;
+  background:var(--red);transform:rotate(-45deg);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(255,77,77,.4);
+}
+.map-marker::after{
+  content:'📍';font-size:1rem;transform:rotate(45deg);
+}
+.map-addr{
+  position:relative;z-index:2;
+  font-size:.75rem;color:var(--muted);letter-spacing:.03em;
+}
+.ct-map-info{padding:16px 20px;}
+.ct-map-info strong{display:block;font-size:.88rem;color:#fff;margin-bottom:2px;}
+.ct-map-info span{font-size:.76rem;color:var(--muted);}
+.ct-map-btns{display:flex;gap:8px;margin-top:12px;}
+.ct-map-btn{
+  flex:1;padding:9px;border-radius:9px;
+  text-align:center;font-size:.73rem;font-weight:700;
+  letter-spacing:.08em;text-transform:uppercase;
+  text-decoration:none;transition:all .2s;
+}
+.ct-map-btn.rd{background:var(--red);color:#fff;}
+.ct-map-btn.rd:hover{background:#ff3333;}
+.ct-map-btn.bdr{border:1px solid var(--border2);color:var(--muted);}
+.ct-map-btn.bdr:hover{border-color:var(--red);color:#fff;}
+
+/* Social */
+.ct-social{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:18px;padding:26px 24px;
+}
+.ct-social h3{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:#fff;margin-bottom:16px;letter-spacing:.5px;}
+.soc-link{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 14px;border-radius:11px;
+  background:var(--dark);border:1px solid var(--border2);
+  text-decoration:none;transition:all .2s;margin-bottom:8px;
+}
+.soc-link:last-child{margin-bottom:0;}
+.soc-link:hover{border-color:var(--red);transform:translateX(4px);}
+.soc-link:hover .soc-arrow{color:var(--red);}
+.soc-ico{
+  width:32px;height:32px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;flex-shrink:0;
+}
+.soc-ico.ig{background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);}
+.soc-ico.fb{background:#1877f2;}
+.soc-ico.wa{background:#25d366;}
+.soc-ico.yt{background:#ff0000;}
+.soc-name{font-size:.83rem;color:#fff;font-weight:600;}
+.soc-handle{font-size:.72rem;color:var(--muted);}
+.soc-arrow{margin-left:auto;color:var(--muted);font-size:.85rem;transition:color .2s;}
+
+/* ============================================================
+   RESPONSIVE — CONTACT PAGE (ALL BREAKPOINTS)
+   ============================================================ */
+
+/* 1536px — Large desktops / 4K scaled */
+@media (max-width: 1536px) {
+  header { padding: 20px 50px; }
+  header.sc { padding: 13px 50px; }
+  .ct-hero { padding: 126px 50px 68px; }
+  .ct-main { padding: 68px 50px 84px; }
+  .ct-strip { padding: 0 50px; }
+}
+
+/* 1280px — Standard desktop */
+@media (max-width: 1280px) {
+  header { padding: 18px 44px; }
+  header.sc { padding: 12px 44px; }
+  nav { gap: 24px; }
+  .ct-hero { padding: 122px 44px 66px; }
+  .ct-main { padding: 66px 44px 82px; }
+  .ct-strip { padding: 0 44px; }
+  .ct-main-inner { grid-template-columns: 1fr 320px; gap: 30px; }
+}
+
+/* 1024px — Small desktop / large tablet landscape */
+@media (max-width: 1024px) {
+  header { padding: 18px 40px; }
+  header.sc { padding: 12px 40px; }
+  .ct-main { padding: 64px 40px 80px; }
+  .ct-strip { padding: 0 40px; }
+  .ct-main-inner { grid-template-columns: 1fr 300px; gap: 28px; }
+  .ct-hero { padding: 120px 40px 64px; }
+  .ct-form-head, .ct-form-body { padding-left: 28px; padding-right: 28px; }
+  .ct-topics .ct-topic { padding: 12px 16px; }
+}
+
+/* 900px — Tablet portrait wide (nav collapses) */
+@media (max-width: 900px) {
+  header { padding: 14px 32px; }
+  header.sc { padding: 12px 32px; }
+  nav, .nav-btns { display: none !important; }
+  .ham { display: flex !important; }
+  .ct-hero { padding: 100px 32px 52px; }
+  .ct-main { padding: 48px 32px 64px; }
+  .ct-strip { padding: 0 32px; }
+  .ct-strip-inner { grid-template-columns: 1fr 1fr; }
+  .ct-channel { border-right: none; border-bottom: 1px solid var(--border2); padding: 16px 12px; }
+  .ct-channel:first-child { padding-left: 12px; }
+  .ct-channel:nth-child(2n) { border-right: none; }
+  .ct-main-inner { grid-template-columns: 1fr; gap: 28px; }
+  .ct-info-strip { grid-template-columns: 1fr 1fr; }
+}
+
+/* 768px — Tablet portrait / large phone landscape */
+@media (max-width: 768px) {
+  header { padding: 12px 20px; background: rgba(8,8,8,.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  header.sc { padding: 12px 20px; }
+  .ct-hero { padding: 90px 20px 48px; text-align: center; }
+  .ct-hero h1 { font-size: clamp(2rem, 7vw, 3.5rem); }
+  .ct-main { padding: 40px 20px 56px; }
+  .ct-strip { padding: 0 20px; }
+  .ct-form-head, .ct-form-body { padding-left: 20px; padding-right: 20px; }
+  .ct-form-head { flex-direction: column; gap: 10px; align-items: flex-start; }
+  .ct-form-badge { align-self: flex-start; }
+  .ct-info-strip { grid-template-columns: 1fr 1fr; }
+  .ct-hours, .ct-social { padding: 18px 16px; }
+}
+
+/* 640px — Large phone portrait */
+@media (max-width: 640px) {
+  .ct-hero { padding: 82px 16px 40px; }
+  .ct-hero h1 { font-size: clamp(1.8rem, 7vw, 2.8rem); }
+  .ct-hero-sub { font-size: .85rem; padding: 0 4px; }
+  .ct-main { padding: 32px 16px 48px; }
+  .ct-strip { padding: 0 16px; }
+  .ct-form-head, .ct-form-body { padding: 16px; }
+  .ct-topics { flex-wrap: wrap; overflow-x: visible; }
+  .ct-topics .ct-topic { flex: 1 1 auto; text-align: center; padding: 10px 11px; font-size: .65rem; }
+  .f2 { grid-template-columns: 1fr; }
+  .ct-info-strip { grid-template-columns: 1fr; }
+  .submit-row { flex-direction: column; align-items: stretch; }
+  .ct-privacy { max-width: 100%; text-align: center; }
+  .rating-inline { flex-wrap: wrap; }
+  .ct-map-btns { flex-direction: column; }
+  .ct-map-btn { text-align: center; }
+}
+
+/* 480px — Standard phone portrait */
+@media (max-width: 480px) {
+  .ct-hero { padding: 78px 15px 38px; }
+  .ct-main { padding: 30px 15px 46px; }
+  .ct-strip { padding: 0 15px; }
+  .ct-form-head, .ct-form-body { padding: 14px; }
+  .ct-hours, .ct-social { padding: 16px 14px; }
+}
+
+/* 425px — Large phone portrait */
+@media (max-width: 425px) {
+  .ct-hero { padding: 76px 14px 36px; }
+  .ct-hero h1 { font-size: clamp(1.6rem, 7vw, 2.4rem); letter-spacing: 1px; }
+  .ct-main { padding: 28px 14px 44px; }
+  .ct-strip { padding: 0 14px; }
+  .ct-strip-inner { grid-template-columns: 1fr 1fr; }
+  .ct-channel { padding: 14px 10px; gap: 10px; }
+  .ct-channel:first-child { padding-left: 10px; }
+  .cc-icon { width: 36px; height: 36px; border-radius: 8px; font-size: 1rem; }
+  .cc-label { font-size: .62rem; }
+  .cc-value { font-size: .78rem; }
+  .ct-form-head, .ct-form-body { padding: 13px; }
+  .ct-form-head-text h2 { font-size: 1.5rem; }
+  .ct-submit { font-size: 1rem; padding: 12px 14px; }
+  .ct-hours, .ct-social { padding: 14px 12px; }
+  .ct-hours h3, .ct-social h3 { font-size: 1.15rem; }
+}
+
+/* 375px — iPhone SE / small phones */
+@media (max-width: 375px) {
+  .ct-hero { padding: 72px 12px 32px; }
+  .ct-hero h1 { font-size: clamp(1.4rem, 7vw, 2rem); }
+  .ct-main { padding: 24px 12px 40px; }
+  .ct-strip { padding: 0 12px; }
+  .ct-form-head, .ct-form-body { padding: 11px; }
+  .cc-value { font-size: .72rem; }
+  .fg input, .fg select, .fg textarea { padding: 9px 10px; font-size: .82rem; }
+  .soc-link { padding: 8px 10px; }
+}
+
+/* 320px — Very small phones */
+@media (max-width: 320px) {
+  .ct-hero { padding: 68px 10px 28px; }
+  .ct-hero h1 { font-size: 1.3rem; letter-spacing: .5px; }
+  .ct-strip-inner { grid-template-columns: 1fr; }
+  .ct-channel { border-right: none; border-bottom: 1px solid var(--border2); padding-left: 10px; }
+  .ct-main { padding: 20px 10px 36px; }
+  .ct-form-head, .ct-form-body { padding: 10px; }
+  .ct-form-head-text h2 { font-size: 1.3rem; }
+  .ct-topics .ct-topic { padding: 8px 8px; font-size: .6rem; }
+  .ct-info-tile { padding: 11px; }
+  .ct-hours, .ct-social { padding: 12px 10px; }
+  .rating-inline { padding: 9px 10px; gap: 8px; }
+}
+
+/* Accessibility — respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+
+<!-- HEADER -->
+<header id="hdr">
+  <a href="./index.html" class="logo"><img src="./assets/stackly logo.webp" alt="Stackly Logo" class="logo-img"><span class="logo-text"><span class="logo-stack">STACK</span><span class="logo-ly">LY</span></span></a>
+  <nav>
+    <a href="./index.html">Home</a>
+    <a href="./about.html">About</a>
+    <a href="./menu.html">Menu</a>
+    <a href="./reservation.html">Reservation</a>
+    <a href="./blog.html">Blog</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+  <div class="nav-btns">
+    <a href="./login.html" class="btn-ghost">Login</a>
+    <a href="./404page.html" class="btn-red">Book Table</a>
+  </div>
+  <button class="ham" id="ham"><span></span><span></span><span></span></button>
+</header>
+
+
+<!-- MOBILE MENU -->
+<div class="mob" id="mm">
+  <button class="mob-close" id="mm-close" aria-label="Close menu">✕</button>
+  <a href="./index.html" onclick="cm()">HOME</a>
+  <a href="./about.html" onclick="cm()">ABOUT</a>
+  <a href="./menu.html" onclick="cm()">MENU</a>
+  <a href="./reservation.html" onclick="cm()">RESERVATION</a>
+  <a href="./blog.html" onclick="cm()">BLOG</a>
+  <a href="./contact.html" onclick="cm()">CONTACT</a>
+  <div class="mob-btns">
+    <a href="./login.html" class="btn-ghost" onclick="cm()">Login</a>
+    <a href="./404page.html" class="btn-red" onclick="cm()">Book a Table</a>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<section class="ct-hero">
+  <img class="hero-float-img hfi1" src="./assets/spicy stack.webp" alt="">
+  <img class="hero-float-img hfi2" src="./assets/BBQ.webp" alt="">
+  <img class="hero-float-img hfi3" src="./assets/pancakes.webp" alt="">
+  <img class="hero-float-img hfi4" src="./assets/bowl.webp" alt="">
+
+  <div class="ct-hero-inner">
+    <div class="ct-eyebrow">We're Always Here</div>
+    <h1>Get In<em>Touch</em></h1>
+    <p class="ct-hero-sub">Questions, feedback, event enquiries or just want to say hello — we'd love to hear from you.</p>
+  </div>
+</section>
+
+<!-- ── CHANNEL STRIP ── -->
+<div class="ct-strip">
+  <div class="ct-strip-inner">
+    <a href="./404page.html" class="ct-channel fade-up">
+      <div class="cc-icon">📞</div>
+      <div class="cc-body">
+        <div class="cc-label">Call Us</div>
+        <div class="cc-value">+91 427 224 5678</div>
+      </div>
+    </a>
+<a href="./404page.html"  rel="noopener noreferrer" class="ct-channel fade-up">
+  <div class="cc-icon">💬</div>
+  <div class="cc-body">
+    <div class="cc-label">WhatsApp</div>
+    <div class="cc-value">+91 98765 43210</div>
+  </div>
+</a>
+    <a href="./404page.html" class="ct-channel fade-up">
+      <div class="cc-icon">✉️</div>
+      <div class="cc-body">
+        <div class="cc-label">Email</div>
+        <div class="cc-value">hello@stackly.in</div>
+      </div>
+    </a>
+    <a href="./404page.html" class="ct-channel fade-up">
+      <div class="cc-icon">🍽️</div>
+      <div class="cc-body">
+        <div class="cc-label">Reserve Online</div>
+        <div class="cc-value">Book a Table →</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="ct-main">
+  <div class="ct-main-inner">
+
+    <!-- LEFT: Form + Info tiles -->
+    <div class="ct-left">
+
+      <!-- FORM (visible) -->
+      <div class="ct-form fade-up" id="ctFormCard">
+        <!-- head -->
+        <div class="ct-form-head">
+          <div class="ct-form-head-text">
+            <h2>Send Us a Message</h2>
+            <p>We read every message personally — reply within 24 hrs.</p>
+          </div>
+          <span class="ct-form-badge">● Replies in 24h</span>
+        </div>
+
+        <!-- topic tabs -->
+        <div class="ct-topics">
+          <button class="ct-topic active" onclick="pickTopic(this)">General</button>
+          <button class="ct-topic" onclick="pickTopic(this)">Reservation</button>
+          <button class="ct-topic" onclick="pickTopic(this)">Private Event</button>
+          <button class="ct-topic" onclick="pickTopic(this)">Feedback</button>
+          <button class="ct-topic" onclick="pickTopic(this)">Media</button>
+          <button class="ct-topic" onclick="pickTopic(this)">Career</button>
+        </div>
+
+        <!-- fields -->
+        <div class="ct-form-body">
+          <div class="f2">
+            <div class="fg">
+              <label>Your Name *</label>
+          <input type="text" id="ctName" placeholder="Enter your name"
+            oninput="this.value=this.value.replace(/[^A-Za-z\s'\-]/g,'')"
+            onkeypress="return /[A-Za-z\s'\-]/.test(event.key)"
+            onpaste="var e=event;setTimeout(function(){e.target.value=e.target.value.replace(/[^A-Za-z\s'\-]/g,'');},0)">
+          <span id="bmtNameErr" class="fv-error">Name must contain letters only — no numbers allowed.</span>
+            </div>
+            <div class="fg">
+              <label>Email Address *</label>
+              <input type="email" id="ctEmail" placeholder="you@example.com" oninput="ctValidateEmail(this,'ctEmailErr')"/>
+              <span class="fv-error" id="ctEmailErr">Please enter a valid email address.</span>
+            </div>
+          </div>
+          <div class="f2">
+            <div class="fg">
+              <label>Phone (optional)</label>
+              <input type="tel" id="ctPhone" placeholder="+91 98765 43210" oninput="this.value=this.value.replace(/[^0-9+\-\s]/g,''); ctValidatePhone(this,'ctPhoneErr')" onkeypress="return /[0-9+\-\s]/.test(event.key)"/>
+              <span class="fv-error" id="ctPhoneErr">Please enter a valid phone number (digits only).</span>
+            </div>
+            <div class="fg">
+              <label>Subject</label>
+              <input type="text" id="ctSubject" placeholder="Brief subject line"/>
+            </div>
+          </div>
+          <div class="fg">
+            <label>Your Message *</label>
+            <textarea id="ctMsg" placeholder="Tell us what's on your mind — we're all ears…" oninput="ctValidateMsg(this,'ctMsgErr')" required></textarea>
+            <span class="fv-error" id="ctMsgErr">Please enter your message.</span>
+          </div>
+
+          <!-- star rating inline -->
+          <div class="rating-inline">
+            <span>Rate your last visit:</span>
+            <div class="stars" id="starRow">
+              <span class="star" onclick="rate(1)">⭐</span>
+              <span class="star" onclick="rate(2)">⭐</span>
+              <span class="star" onclick="rate(3)">⭐</span>
+              <span class="star" onclick="rate(4)">⭐</span>
+              <span class="star" onclick="rate(5)">⭐</span>
+            </div>
+          </div>
+
+          <div class="submit-row">
+            <button class="ct-submit" onclick="sendMsg()">SEND MESSAGE →</button>
+            <p class="ct-privacy">We never share your details with third parties.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- INFO TILES -->
+      <div class="ct-info-strip">
+        <div class="ct-info-tile fade-up">
+          <div class="cit-icon">📍</div>
+          <div>
+            <div class="cit-label">Address</div>
+            <div class="cit-value">12, Junction Main Road<br>Salem – 636 004, Tamil Nadu</div>
+          </div>
+        </div>
+        <div class="ct-info-tile fade-up">
+          <div class="cit-icon">📞</div>
+          <div>
+            <div class="cit-label">Phone &amp; WhatsApp</div>
+            <div class="cit-value">
+              <a href="./404page.html">+91 427 224 5678</a><br>
+              <a href="./404page.html">+91 98765 43210</a>
+            </div>
+          </div>
+        </div>
+        <div class="ct-info-tile fade-up">
+          <div class="cit-icon">🅿️</div>
+          <div>
+            <div class="cit-label">Parking</div>
+            <div class="cit-value">Free valet at entrance<br>80-space underground lot</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /ct-left -->
+
+    <!-- RIGHT: Hours + Map + Social -->
+    <aside class="ct-right">
+
+      <!-- Opening Hours -->
+      <div class="ct-hours fade-up">
+        <h3>Opening Hours</h3>
+        <div class="open-now">Open Now</div>
+        <div class="hr"><span class="dy">Monday</span><span class="tm">11AM – 10PM</span></div>
+        <div class="hr"><span class="dy">Tuesday</span><span class="tm">11AM – 10PM</span></div>
+        <div class="hr"><span class="dy">Wednesday</span><span class="tm">11AM – 10PM</span></div>
+        <div class="hr"><span class="dy">Thursday</span><span class="tm">11AM – 10PM</span></div>
+        <div class="hr"><span class="dy">Friday</span><span class="tm">11AM – 11PM</span></div>
+        <div class="hr"><span class="dy">Saturday</span><span class="tm">11AM – 11PM</span></div>
+        <div class="hr"><span class="dy">Sunday</span><span class="tm">11AM – 11PM</span></div>
+      </div>
+
+      <!-- Map -->
+      <div class="ct-map fade-up">
+        <div class="ct-map-visual">
+          <div class="map-marker"></div>
+          <div class="map-addr">12, Junction Main Road, Salem</div>
+        </div>
+        <div class="ct-map-info">
+          <strong>Stackly Restaurant, Salem</strong>
+          <span>Near Salem Central Bus Stand · 5 min walk</span>
+          <div class="ct-map-btns">
+            <a href="./404page.html"  class="ct-map-btn rd">Directions</a>
+            <a href="./404page.html"  class="ct-map-btn bdr">Street View</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social -->
+      <div class="ct-social fade-up">
+        <h3>Follow Along</h3>
+        <a href="./404page.html" class="soc-link">
+          <div class="soc-ico ig">📸</div>
+          <div><div class="soc-name">Instagram</div><div class="soc-handle">@stacklysalem</div></div>
+          <span class="soc-arrow">→</span>
+        </a>
+        <a href="./404page.html" class="soc-link">
+          <div class="soc-ico fb">📘</div>
+          <div><div class="soc-name">Facebook</div><div class="soc-handle">Stackly Restaurant Salem</div></div>
+          <span class="soc-arrow">→</span>
+        </a>
+        <a href="./404page.html" class="soc-link">
+          <div class="soc-ico wa">💬</div>
+          <div><div class="soc-name">WhatsApp Channel</div><div class="soc-handle">Latest offers &amp; updates</div></div>
+          <span class="soc-arrow">→</span>
+        </a>
+        <a href="./404page.html" class="soc-link">
+          <div class="soc-ico yt">▶️</div>
+          <div><div class="soc-name">YouTube</div><div class="soc-handle">Kitchen diaries &amp; recipes</div></div>
+          <span class="soc-arrow">→</span>
+        </a>
+      </div>
+
+    </aside>
+  </div><!-- /ct-main-inner -->
+</div><!-- /ct-main -->
+
+<!-- CTA -->
+<div class="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-inner">
+    <h2 class="fade-up">READY TO VISIT?<span>COME FIND US!</span></h2>
+    <p class="fade-up">Reserve a table online and skip the wait. We'll have everything ready.</p>
+    <div class="cta-btns fade-up">
+      <a href="./404page.html" class="btn-primary">Book a Table</a>
+      <a href="./404page.html" class="btn-outline">See the Menu</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="fg-grid">
+    <div>
+<div class="fl-logo">
+  <img src="./assets/stackly logo.webp" alt="Stackly" class="fl-logo-img">
+  <span style="display:flex;"><span class="fl-stack">STACK</span><span class="fl-ly">LY</span></span>
+</div>
+      <p class="fl-desc">Salem's most fun restaurant since 2012. We don't just serve food — we serve memories, laughter, and seriously good vibes.</p>
+      <div class="fl-socs">
+        <a href="./404page.html" class="fl-soc">f</a><a href="./404page.html" class="fl-soc">in</a>
+        <a href="./404page.html" class="fl-soc">𝕏</a><a href="./404page.html" class="fl-soc">▶</a><a href="./404page.html" class="fl-soc">💬</a>
+      </div>
+    </div>
+    <div class="fc">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="./index.html">→ Home</a></li><li><a href="./about.html">→ About Us</a></li>
+        <li><a href="./menu.html">→ Our Menu</a></li><li><a href="./reservation.html">→ Reservations</a></li>
+        <li><a href="./blog.html">→ Blog</a></li><li><a href="./contact.html">→ Contact</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>New Menu</h4>
+      <ul>
+        <li><a href="./404page.html">→ Stackly BBQ Platter</a></li><li><a href="./404page.html">→ Spicy Chaos Burger</a></li>
+        <li><a href="./404page.html">→ Mango Lassi Supreme</a></li><li><a href="./404page.html">→ Triple Choco Lava</a></li>
+        <li><a href="./404page.html">→ Power Grain Bowl</a></li><li><a href="./404page.html">→ Chef's Secret Biriyani</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>Find Us</h4>
+      <div class="fc-inf"><strong>Address</strong>MMR Complex, Chinna Thirupathi, near Chinna Muniyappan Kovil, Salem, Tamil Nadu 636008</div>
+      <div class="fc-inf"><strong>Call Us</strong>+91 98765 43210</div>
+      <div class="fc-inf"><strong>Email</strong>hello@stackly.in</div>
+      <div class="fc-hrs">
+        <div class="fc-hr"><span>Mon – Thu</span><span>11AM – 10PM</span></div>
+        <div class="fc-hr"><span>Fri – Sat</span><span>11AM – 11PM</span></div>
+        <div class="fc-hr"><span>Sunday</span><span>12PM – 9PM</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr-btm">
+    <div class="ftr-copy">© 2026 Stackly Restaurant. Made with ♥ in Salem, Tamil Nadu.</div>
+    <div class="ftr-links"><a href="./404page.html">Privacy Policy</a><a href="./404page.html">Terms</a><a href="./404page.html">Sitemap</a></div>
+  </div>
+</footer>
+
+<script src="./common.js"></script>
+<script>
+// topic tabs
+function pickTopic(el){
+  document.querySelectorAll('.ct-topic').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// star rating
+function rate(n){
+  document.querySelectorAll('.star').forEach((s,i) => s.classList.toggle('lit', i < n));
+}
+
+// dynamic "today" highlight
+(function(){
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const today = days[new Date().getDay()];
+  document.querySelectorAll('.hr').forEach(r => {
+    const d = r.querySelector('.dy');
+    if(d && d.textContent.trim() === today){
+      d.textContent = today + ' ← Today';
+      r.classList.add('tod');
+    }
+  });
+})();
+
+// send message
+/* ── CONTACT FORM VALIDATION ── */
+function ctFvMark(el, errId, ok) {
+  el.classList.toggle('fv-invalid', !ok);
+  el.classList.toggle('fv-ok', ok);
+  var err = document.getElementById(errId);
+  if (err) err.classList.toggle('show', !ok);
+}
+function ctValidateName(el, errId) {
+  var ok = el.value.trim().length > 0 && /^[A-Za-z\u0080-\uFFFF\s'\-]+$/.test(el.value.trim());
+  ctFvMark(el, errId, ok);
+  return ok;
+}
+function ctValidateEmail(el, errId) {
+  var ok = el.value.trim().length > 0 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(el.value.trim());
+  ctFvMark(el, errId, ok);
+  return ok;
+}
+function ctValidatePhone(el, errId) {
+  var v = el.value.trim();
+  if (!v) { ctFvMark(el, errId, true); return true; }
+  var ok = /^[+0-9][0-9\s\-]{5,15}$/.test(v);
+  ctFvMark(el, errId, ok);
+  return ok;
+}
+function ctValidateMsg(el, errId) {
+  var ok = el.value.trim().length >= 5;
+  ctFvMark(el, errId, ok);
+  return ok;
+}
+
+function sendMsg() {
+  var nEl = document.getElementById('ctName');
+  var eEl = document.getElementById('ctEmail');
+  var pEl = document.getElementById('ctPhone');
+  var mEl = document.getElementById('ctMsg');
+
+  var v1 = ctValidateName(nEl, 'ctNameErr');
+  var v2 = ctValidateEmail(eEl, 'ctEmailErr');
+  var v3 = pEl ? ctValidatePhone(pEl, 'ctPhoneErr') : true;
+  var v4 = mEl ? ctValidateMsg(mEl, 'ctMsgErr') : true;
+
+  if (!v1 || !v2 || !v3 || !v4) {
+    var first = document.querySelector('.fv-invalid');
+    if (first) first.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+  window.location.href = './404page.html';
+}
+</script>
+</body>
+</html>

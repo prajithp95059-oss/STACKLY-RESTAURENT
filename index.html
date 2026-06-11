@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackly — Where Every Bite Slaps | Salem's #1 Restaurant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./common.css">
+<!-- page-specific overrides below -->
+
+
+<style>
+img{max-width:100%;display:block;}
+
+/* FLOATING BG IMAGES */
+.float-bg-img{position:absolute;border-radius:18px;object-fit:cover;pointer-events:none;z-index:0;opacity:.07;}
+.fbi1{width:180px;height:240px;top:15%;left:-20px;animation:floatDiag1 10s ease-in-out infinite;}
+.fbi2{width:150px;height:200px;top:40%;right:-10px;animation:floatDiag2 12s ease-in-out infinite;}
+.fbi3{width:120px;height:160px;bottom:20%;left:2%;animation:floatDiag3 9s ease-in-out infinite;}
+.fbi4{width:130px;height:170px;bottom:35%;right:1%;animation:floatDiag4 11s ease-in-out infinite;}
+
+/* PRELOADER */
+#pre{position:fixed;inset:0;z-index:9998;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity .7s,visibility .7s;}
+#pre.gone{opacity:0;visibility:hidden;}
+.pre-logo{font-family:var(--serif);font-size:72px;letter-spacing:6px;color:var(--white);animation:pS .8s ease both;}
+.pre-logo span{color:var(--red);}
+.pre-txt{font-size:11px;color:var(--muted);letter-spacing:4px;text-transform:uppercase;animation:pF .8s .3s both;}
+.pre-bar{width:200px;height:2px;background:rgba(255,77,77,.15);animation:pF .8s .3s both;}
+.pre-fill{height:100%;background:var(--red);width:0%;animation:pL 2s .5s forwards;}
+@keyframes pS{from{opacity:0;transform:scale(.8) skewX(-5deg);}to{opacity:1;transform:scale(1) skewX(0);}}
+@keyframes pF{from{opacity:0;}to{opacity:1;}}
+@keyframes pL{from{width:0%;}to{width:100%;}}
+
+/* HERO */
+.hero{position:relative;height:100vh;min-height:560px;display:flex;align-items:center;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;z-index:0;background:url('./assets/hero.bg.webp') center/cover no-repeat;}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(100deg,rgba(8,8,8,.94) 0%,rgba(8,8,8,.7) 55%,rgba(8,8,8,.35) 100%);}
+.hero-inner{position:relative;z-index:1;padding:90px 60px 0;max-width:820px;width:100%;}
+.hero-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,77,77,.15);border:1px solid rgba(255,77,77,.35);padding:6px 16px;border-radius:2px;margin-bottom:24px;font-size:11px;font-weight:600;color:var(--red);letter-spacing:2.5px;text-transform:uppercase;animation:fadeUp .7s ease both;}
+.hero-pill::before{content:'●';font-size:8px;animation:blink 1.5s ease infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero-h1{font-family:var(--serif);font-size:clamp(40px,8vw,120px);line-height:.92;color:var(--white);margin-bottom:20px;letter-spacing:2px;animation:fadeUp .7s .12s ease both;}
+.hero-h1 span{color:var(--red);display:block;}
+.hero-p{font-size:clamp(13px,2vw,15px);line-height:1.75;color:rgba(250,250,250,.65);max-width:460px;margin-bottom:36px;animation:fadeUp .7s .24s ease both;font-weight:300;}
+.hero-btns{display:flex;align-items:center;gap:12px;flex-wrap:wrap;animation:fadeUp .7s .36s ease both;}
+.hero-scroll{position:absolute;bottom:32px;right:60px;z-index:1;display:flex;align-items:center;gap:10px;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);animation:fadeUp .7s .5s ease both;}
+.hero-scroll::after{content:'';width:50px;height:1px;background:linear-gradient(to right,var(--muted),transparent);}
+
+/* TICKER */
+.ticker{background:var(--red);overflow:hidden;padding:14px 0;}
+.ticker-track{display:flex;width:max-content;animation:tick 28s linear infinite;}
+.ticker-track:hover{animation-play-state:paused;}
+.ticker-item{display:flex;align-items:center;gap:20px;padding:0 20px;white-space:nowrap;font-size:12px;font-weight:700;color:var(--white);letter-spacing:2px;text-transform:uppercase;}
+.ticker-item::after{content:'★';opacity:.4;}
+@keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* SECTIONS */
+.lbl{display:inline-flex;align-items:center;gap:10px;font-size:10px;font-weight:700;color:var(--red);letter-spacing:4px;text-transform:uppercase;margin-bottom:14px;}
+.lbl::before{content:'';width:28px;height:2px;background:var(--red);}
+.sh2{font-family:var(--serif);font-size:clamp(28px,5vw,68px);color:var(--white);line-height:1;margin-bottom:16px;letter-spacing:1px;}
+.sp{font-size:clamp(13px,2vw,15px);color:var(--muted);line-height:1.8;max-width:520px;font-weight:300;}
+.fade-in.vis{opacity:1;}
+
+/* ABOUT */
+.about{background:var(--black);display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center;}
+.about-imgs{position:relative;}
+.about-main{width:100%;height:500px;object-fit:cover;}
+.about-float{position:absolute;bottom:-28px;right:-28px;width:220px;height:220px;object-fit:cover;border:4px solid var(--dark);}
+.about-badge{position:absolute;top:0;left:0;background:var(--red);color:var(--white);padding:16px 20px;font-family:var(--serif);font-size:20px;letter-spacing:1px;line-height:1.2;text-align:center;}
+.about-body{font-size:15px;color:var(--muted);line-height:1.85;margin-bottom:36px;font-weight:300;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:36px;}
+.ab{border-left:3px solid var(--red);padding:12px 16px;background:var(--card);}
+.ab-t{font-size:13px;font-weight:700;color:var(--white);margin-bottom:3px;}
+.ab-s{font-size:11px;color:var(--muted);}
+
+/* SPECIALS */
+.specials{background:var(--dark);}
+.spec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:52px;flex-wrap:wrap;gap:20px;}
+.spec-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
+.dish{background:var(--card);border:1px solid var(--border2);overflow:hidden;transition:transform .3s,box-shadow .3s;position:relative;}
+.dish:hover{transform:translateY(-10px);box-shadow:0 30px 60px rgba(0,0,0,.7);}
+.dish-badge{position:absolute;top:0;left:0;z-index:2;background:var(--red);color:var(--white);padding:5px 12px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+.dish-badge.fave{background:var(--white);color:var(--red);}
+.dish-img{width:100%;height:180px;object-fit:cover;transition:transform .4s;}
+.dish:hover .dish-img{transform:scale(1.08);}
+.dish-body{padding:16px;}
+.dish-cat{font-size:9px;font-weight:700;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.dish-name{font-family:var(--serif);font-size:18px;letter-spacing:.5px;color:var(--white);margin-bottom:8px;}
+.dish-desc{font-size:11px;color:var(--muted);line-height:1.65;margin-bottom:14px;font-weight:300;}
+.dish-foot{display:flex;align-items:center;justify-content:space-between;}
+.dish-price{font-family:var(--serif);font-size:20px;color:var(--red);}
+.dish-btn{padding:6px 14px;background:var(--red);font-size:10px;font-weight:700;color:var(--white);letter-spacing:1px;text-transform:uppercase;transition:all .2s;}
+.dish-btn:hover{background:var(--red-lt);}
+
+/* STATS */
+.stats{background:var(--black);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 60px;display:grid;grid-template-columns:repeat(4,1fr);text-align:center;}
+.stat{padding:20px;border-right:1px solid var(--border2);}
+.stat:last-child{border-right:none;}
+.stat-n{font-family:var(--serif);font-size:clamp(52px,6vw,80px);color:var(--red);line-height:1;margin-bottom:10px;display:block;letter-spacing:1px;}
+.stat-l{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+
+/* MENU */
+.menu-sec{background:var(--card);}
+.menu-head{text-align:center;margin-bottom:48px;}
+.menu-head .sp{margin:0 auto;}
+.tabs{display:flex;justify-content:center;gap:0;margin-bottom:52px;}
+.tab{padding:12px 32px;border:1.5px solid var(--border2);border-right:none;font-size:11px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;transition:all .25s;}
+.tab:last-child{border-right:1.5px solid var(--border2);}
+.tab.on,.tab:hover{background:var(--red);color:var(--white);border-color:var(--red);}
+.tab-pane{display:none;}
+.tab-pane.on{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.mc{background:var(--card2);border:1px solid var(--border2);overflow:hidden;transition:transform .3s,box-shadow .3s;}
+.mc:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.5);}
+.mc-img{width:100%;height:160px;object-fit:cover;transition:transform .4s;}
+.mc:hover .mc-img{transform:scale(1.06);}
+.mc-body{padding:16px;}
+.mc-name{font-family:var(--serif);font-size:18px;letter-spacing:.5px;color:var(--white);margin-bottom:6px;}
+.mc-desc{font-size:11px;color:var(--muted);line-height:1.65;margin-bottom:10px;font-weight:300;}
+.mc-price{font-family:var(--serif);font-size:17px;color:var(--red);}
+.mc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;}
+.mc-btn{padding:6px 14px;background:var(--red);font-size:10px;font-weight:700;color:var(--white);letter-spacing:1px;text-transform:uppercase;transition:all .2s;border-radius:2px;border:none;cursor:pointer;font-family:var(--sans);}
+.mc-btn:hover{background:var(--red-lt);}
+.menu-ft{text-align:center;margin-top:44px;}
+
+/* CHEFS */
+.chefs{background:var(--dark);}
+.chefs-head{text-align:center;margin-bottom:56px;}
+.chefs-head .sp{margin:0 auto;}
+.chefs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.chef{background:var(--card);border:1px solid var(--border2);overflow:hidden;transition:transform .3s,box-shadow .3s;}
+.chef:hover{transform:translateY(-8px);box-shadow:0 28px 60px rgba(255,77,77,.15);}
+.chef-wrap{position:relative;overflow:hidden;}
+.chef-img{width:100%;height:320px;object-fit:cover;object-position:center top;transition:transform .4s;image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges;}
+.chef:hover .chef-img{transform:scale(1.04);}
+.chef-socials{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(8,8,8,.95));padding:50px 18px 18px;display:flex;gap:10px;transform:translateY(100%);transition:transform .32s;}
+.chef:hover .chef-socials{transform:translateY(0);}
+.soc{width:36px;height:36px;border:1.5px solid rgba(250,250,250,.2);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--white);transition:all .2s;}
+.soc:hover{background:var(--red);border-color:var(--red);}
+.chef-body{padding:22px;}
+.chef-name{font-family:var(--serif);font-size:22px;letter-spacing:1px;color:var(--white);margin-bottom:4px;}
+.chef-role{font-size:10px;font-weight:700;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+.chef-bio{font-size:12px;color:var(--muted);line-height:1.75;font-weight:300;}
+
+/* RESERVATION */
+.res{background:var(--black);display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:start;}
+.res-feats{margin-top:36px;display:flex;flex-direction:column;gap:16px;}
+.res-feat{display:flex;align-items:center;gap:14px;font-size:14px;color:var(--muted);font-weight:300;}
+.res-feat::before{content:'';width:6px;height:6px;background:var(--red);border-radius:50%;flex-shrink:0;}
+.res-card{background:var(--card);border:1px solid var(--border2);padding:36px;border-top:3px solid var(--red);}
+.res-t{font-family:var(--serif);font-size:26px;letter-spacing:1px;color:var(--white);margin-bottom:4px;}
+.res-s{font-size:12px;color:var(--muted);margin-bottom:28px;}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.fg{margin-bottom:14px;}
+.fg label{display:block;font-size:10px;font-weight:700;color:rgba(250,250,250,.35);letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;}
+.fg input,.fg select{width:100%;background:var(--card2);border:1px solid var(--border2);border-radius:2px;padding:11px 14px;font-size:13px;font-family:var(--sans);color:var(--white);transition:border-color .2s;}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--red);}
+.fg select option{background:var(--card);}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:7px;}
+.pill{padding:7px 16px;border:1.5px solid var(--border2);border-radius:2px;font-size:11px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s;}
+.pill.on,.pill:hover{background:var(--red);border-color:var(--red);color:var(--white);}
+.sub-btn{width:100%;padding:14px;background:var(--red);font-size:12px;font-weight:700;color:var(--white);letter-spacing:2px;text-transform:uppercase;transition:all .2s;margin-top:8px;border-radius:2px;}
+.sub-btn:hover{background:var(--red-lt);transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,77,77,.4);}
+
+/* BLOG */
+.blog{background:var(--card);}
+.blog-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:52px;flex-wrap:wrap;gap:20px;}
+.blog-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.bc{background:var(--dark);border:1px solid var(--border2);overflow:hidden;transition:transform .3s,box-shadow .3s;}
+.bc:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(255,77,77,.12);}
+.bc-img{width:100%;height:200px;object-fit:cover;transition:transform .4s;}
+.bc:hover .bc-img{transform:scale(1.06);}
+.bc-body{padding:20px;}
+.bc-cat{font-size:9px;font-weight:700;color:var(--red);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:8px;}
+.bc-meta{font-size:10px;color:var(--muted);margin-bottom:10px;}
+.bc-title{font-family:var(--serif);font-size:17px;letter-spacing:.3px;color:var(--white);line-height:1.35;margin-bottom:16px;}
+.bc-read{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--red);letter-spacing:1px;text-transform:uppercase;transition:gap .2s;}
+.bc:hover .bc-read{gap:12px;}
+
+/* CTA */
+.cta{position:relative;overflow:hidden;padding:120px 60px;text-align:center;}
+.cta-bg{position:absolute;inset:0;background:url('./assets/bg%20image.jpg') center/cover no-repeat;}
+.cta-bg::after{content:'';position:absolute;inset:0;background:rgba(8,8,8,.88);}
+.cta-inner{position:relative;z-index:1;}
+.cta h2{font-family:var(--serif);font-size:clamp(44px,6vw,88px);color:var(--white);margin-bottom:18px;line-height:.95;letter-spacing:2px;}
+.cta h2 span{color:var(--red);display:block;}
+.cta p{font-size:15px;color:var(--muted);margin-bottom:44px;max-width:460px;margin-left:auto;margin-right:auto;font-weight:300;}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+
+/* NEWSLETTER */
+.nl{background:var(--black);padding:80px 60px;text-align:center;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.nl h3{font-family:var(--serif);font-size:36px;letter-spacing:1px;color:var(--white);margin-bottom:8px;}
+.nl p{font-size:13px;color:var(--muted);margin-bottom:28px;font-weight:300;}
+.nl-form{display:flex;max-width:440px;margin:0 auto;border:1.5px solid var(--border2);}
+.nl-in{flex:1;background:transparent;padding:14px 20px;font-size:13px;font-family:var(--sans);color:var(--white);border:none;outline:none;}
+.nl-in::placeholder{color:var(--muted);}
+.nl-btn{padding:14px 28px;background:var(--red);font-size:11px;font-weight:700;color:var(--white);letter-spacing:2px;text-transform:uppercase;transition:background .2s;}
+.nl-btn:hover{background:var(--red-lt);}
+
+/* ============================================================
+   RESPONSIVE — HOME PAGE (ALL BREAKPOINTS)
+   ============================================================ */
+
+/* 1536px — Large desktops / 4K scaled */
+@media (max-width: 1536px) {
+  section { padding: 100px 50px; }
+  .hero-inner { padding: 86px 50px 0; }
+  .hero-scroll { right: 50px; }
+}
+
+/* 1280px — Standard desktop */
+@media (max-width: 1280px) {
+  section { padding: 96px 44px; }
+  .hero-inner { padding: 84px 44px 0; }
+  .hero-scroll { right: 44px; }
+  .spec-grid { grid-template-columns: repeat(4, 1fr); }
+  
+}
+
+/* 1024px — Small desktop / large tablet landscape */
+@media (max-width: 1024px) {
+  section { padding: 90px 40px; }
+  .hero-inner { padding: 80px 40px 0; }
+  .hero-scroll { right: 40px; }
+  .spec-grid { grid-template-columns: repeat(3, 1fr); }
+  .tab-pane.on { grid-template-columns: repeat(3, 1fr); }
+  .blog-grid { grid-template-columns: repeat(2, 1fr); }
+  
+}
+
+/* 900px — Tablet portrait wide */
+@media (max-width: 900px) {
+  section { padding: 80px 32px; }
+  .hero-inner { padding: 80px 32px 0; }
+  .hero-scroll { right: 32px; }
+  .about { grid-template-columns: 1fr; gap: 40px; }
+  .about-float { display: none; }
+  .res { grid-template-columns: 1fr; gap: 40px; }
+  .chefs-grid { grid-template-columns: repeat(2, 1fr); }
+  .spec-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* 768px — Tablet portrait / large phone landscape */
+@media (max-width: 768px) {
+  section { padding: 64px 20px; }
+
+  /* Header */
+  header { padding: 12px 20px; background: rgba(8,8,8,.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  header.sc { padding: 12px 20px; }
+  nav, .nav-btns { display: none !important; }
+  .ham { display: flex !important; }
+
+  /* Hero */
+  
+  .hero-h1 { font-size: clamp(36px, 9vw, 64px); line-height: .94; }
+  .hero-p { font-size: 14px; margin-bottom: 28px; max-width: 100%; }
+  .hero-pill { font-size: 10px; letter-spacing: 2px; }
+  .hero-btns { gap: 10px; }
+  .hero-scroll { display: none; }
+    .hero {
+    min-height: 72svh;            /* was 100svh (full screen) */
+  }
+  .hero-inner {
+    padding: 90px 20px 44px;      /* keeps content clear of the fixed header */
+  }
+
+  /* About */
+  .about { grid-template-columns: 1fr; gap: 36px; }
+  .about-float { display: none; }
+  .about-main { height: 340px; }
+
+  /* Specials */
+  .spec-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .spec-head { flex-direction: column; align-items: flex-start; gap: 14px; }
+
+  /* Stats */
+  .stats { grid-template-columns: repeat(2, 1fr); padding: 56px 20px; }
+  .stat:nth-child(2) { border-right: none; }
+  .stat:nth-child(3) { border-right: 1px solid var(--border2); border-top: 1px solid var(--border2); }
+  .stat:nth-child(4) { border-right: none; border-top: 1px solid var(--border2); }
+
+  /* Menu */
+  .tab-pane.on { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .tabs { flex-wrap: wrap; }
+  .tab { border-right: none !important; border-bottom: 1.5px solid var(--border2); flex: 1 1 45%; }
+  .tab:last-child { border-right: none !important; }
+
+  /* Chefs */
+  .chefs-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+
+  /* Reservation */
+  .res { grid-template-columns: 1fr; gap: 36px; }
+
+  /* Blog */
+  .blog-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .blog-head { flex-direction: column; align-items: flex-start; gap: 14px; }
+
+  /* CTA */
+  .cta { padding: 80px 20px; }
+
+  /* Newsletter */
+  .nl { padding: 64px 20px; }
+
+  /* Footer */
+  
+  
+
+  /* Floating bg */
+  .float-bg-img { display: none; }
+}
+
+/* 640px — Large phone portrait */
+@media (max-width: 640px) {
+  section { padding: 56px 16px; }
+
+  /* Hero */
+  .hero-inner { padding: 76px 16px 36px; }
+  .hero-h1 { font-size: clamp(32px, 9vw, 52px); line-height: .94; }
+  .hero-p { font-size: 13px; margin-bottom: 24px; }
+  .hero-btns { flex-direction: column; align-items: stretch; gap: 10px; }
+  .hero-btns .btn-primary,
+  .hero-btns .btn-outline { width: 100%; text-align: center; padding: 14px 16px; }
+
+  /* About */
+  .about-main { height: 280px; }
+  .about-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  /* Specials */
+  .spec-grid { grid-template-columns: 1fr; }
+  .dish-img { height: 190px; }
+
+  /* Stats */
+  .stats { grid-template-columns: repeat(2, 1fr); padding: 48px 16px; }
+
+  /* Menu */
+  .tab-pane.on { grid-template-columns: 1fr; }
+  .tab { flex: 1 1 100%; min-width: 100%; }
+
+  /* Chefs */
+  .chefs-grid { grid-template-columns: 1fr; }
+  .chef-img { height: 280px; }
+
+  /* Reservation */
+  .frow { grid-template-columns: 1fr; gap: 0; }
+  .res-card { padding: 22px 16px; }
+  .pills { gap: 6px; }
+  .pill { padding: 7px 12px; font-size: 10px; }
+
+  /* Blog */
+  .blog-grid { grid-template-columns: 1fr; }
+  .bc-img { height: 180px; }
+
+  /* CTA */
+  .cta { padding: 64px 16px; }
+  .cta-btns { flex-direction: column; align-items: stretch; gap: 10px; }
+  .cta-btns .btn-primary,
+  .cta-btns .btn-outline { width: 100%; text-align: center; }
+
+  /* Newsletter */
+  .nl { padding: 52px 16px; }
+  .nl-form { flex-direction: column; border: none; gap: 0; }
+  .nl-in { border: 1.5px solid var(--border2); padding: 13px 16px; }
+  .nl-btn { border: 1.5px solid var(--red); padding: 13px 16px; }
+
+  /* Footer */
+  
+  
+  
+  
+  
+}
+
+/* 480px — Standard phone portrait */
+@media (max-width: 480px) {
+  section { padding: 48px 16px; }
+
+  /* Hero */
+  .hero-h1 { font-size: clamp(30px, 9vw, 46px); }
+  .hero-pill { font-size: 9px; letter-spacing: 2px; padding: 5px 10px; }
+  .hero-p { font-size: 13px; }
+   .hero { min-height: 66svh; }
+  .hero-inner { padding: 86px 16px 40px; }
+
+  /* About */
+  .about-main { height: 260px; }
+  .about-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+
+  /* Specials */
+  .dish-img { height: 180px; }
+  .dish-name { font-size: 16px; }
+
+  /* Stats */
+  .stats { padding: 44px 16px; }
+  .stat-n { font-size: clamp(40px, 11vw, 56px); }
+
+  /* Menu */
+  .mc-img { height: 140px; }
+  .mc-name { font-size: 16px; }
+
+  /* Chefs */
+  .chef-img { height: 260px; }
+  .chef-name { font-size: 18px; }
+
+  /* Reservation */
+  .res-card { padding: 20px 14px; }
+  .fg input, .fg select { padding: 10px 12px; font-size: 12px; }
+  .sub-btn { padding: 13px; font-size: 11px; }
+
+  /* Blog */
+  .bc-img { height: 160px; }
+  .bc-title { font-size: 15px; }
+
+  /* CTA */
+  .cta { padding: 56px 16px; }
+
+  /* Newsletter */
+  .nl { padding: 48px 16px; }
+  .nl h3 { font-size: clamp(24px, 6vw, 32px); }
+
+  /* Footer */
+  
+  
+  
+  
+  
+}
+
+/* 425px — Large phone portrait */
+@media (max-width: 425px) {
+  .hero-inner { padding: 70px 15px 30px; }
+  .hero-h1 { font-size: clamp(29px, 9vw, 44px); }
+  .dish-img { height: 175px; }
+  .mc-img { height: 135px; }
+  .bc-img { height: 155px; }
+  .chef-img { height: 255px; }
+}
+
+/* 375px — iPhone SE / small phones */
+@media (max-width: 375px) {
+  section { padding: 44px 14px; }
+
+  /* Hero */
+    .hero { min-height: 62svh; }
+  .hero-inner { padding: 82px 14px 36px; }
+  .hero-h1 { font-size: clamp(28px, 9vw, 40px); line-height: .94; }
+  .hero-p { font-size: 12px; margin-bottom: 20px; }
+  .hero-pill { font-size: 9px; padding: 4px 10px; letter-spacing: 1.5px; }
+
+  /* About */
+  .about-grid { grid-template-columns: 1fr; gap: 8px; }
+  .about-main { height: 240px; }
+  .about-body { font-size: 14px; }
+
+  /* Specials */
+  .dish-img { height: 170px; }
+  .dish-price { font-size: 18px; }
+
+  /* Stats */
+  .stats { padding: 40px 14px; }
+  .stat-n { font-size: clamp(36px, 11vw, 52px); }
+
+  /* Menu */
+  .mc-img { height: 130px; }
+
+  /* Chefs */
+  .chef-img { height: 250px; }
+
+  /* Reservation */
+  .res-card { padding: 18px 12px; }
+  .fg input, .fg select { padding: 9px 10px; font-size: 11px; }
+
+  /* Blog */
+  .bc-img { height: 150px; }
+  .bc-title { font-size: 14px; }
+  .bc-body { padding: 14px; }
+
+  /* CTA */
+  .cta { padding: 48px 14px; }
+
+  /* Newsletter */
+  .nl { padding: 44px 14px; }
+  .nl h3 { font-size: 24px; }
+  .nl p { font-size: 12px; }
+
+  /* Footer */
+  
+  
+  
+  
+  
+  
+}
+
+/* 320px — Very small phones */
+@media (max-width: 320px) {
+  section { padding: 36px 12px; }
+
+  /* Hero */
+  .hero-inner { padding: 66px 12px 24px; }
+  .hero-h1 { font-size: 28px; letter-spacing: 0; line-height: .94; }
+  .hero-p { font-size: 12px; margin-bottom: 18px; }
+.hero-pill { font-size: 9px; padding: 4px 10px; letter-spacing: 1.5px; }
+
+  .hero-btns .btn-primary,
+  .hero-btns .btn-outline { padding: 12px 14px; font-size: 11px; }
+
+  /* About */
+  .about-main { height: 200px; }
+  .ab-t { font-size: 12px; }
+  .ab-s { font-size: 10px; }
+
+  /* Specials */
+  .dish-img { height: 150px; }
+  .dish-body { padding: 10px; }
+  .dish-name { font-size: 14px; }
+  .dish-desc { font-size: 10px; }
+  .dish-price { font-size: 16px; }
+
+  /* Stats */
+  .stats { grid-template-columns: 1fr; padding: 32px 12px; }
+  .stat { border-right: none !important; border-bottom: 1px solid var(--border2); padding: 14px; }
+  .stat:last-child { border-bottom: none; }
+  .stat:nth-child(2) { border-right: none; }
+  .stat:nth-child(3) { border-right: none; border-top: none; }
+  .stat:nth-child(4) { border-right: none; border-top: none; }
+  .stat-n { font-size: 48px; }
+
+  /* Menu */
+  .tabs { gap: 0; }
+  .tab { padding: 9px 6px; font-size: 9px; letter-spacing: .5px; }
+  .mc-img { height: 120px; }
+
+  /* Chefs */
+  .chef-img { height: 230px; }
+  .chef-name { font-size: 16px; }
+  .chef-bio { font-size: 11px; }
+
+  /* Reservation */
+  .res-card { padding: 16px 12px; }
+  .res-t { font-size: 20px; }
+  .fg label { font-size: 9px; }
+  .fg input, .fg select { padding: 8px 9px; font-size: 10px; }
+  .pills { gap: 4px; }
+  .pill { padding: 6px 8px; font-size: 9px; }
+  .sub-btn { padding: 11px; font-size: 10px; letter-spacing: .5px; }
+
+  /* Blog */
+  .bc-img { height: 130px; }
+  .bc-title { font-size: 13px; }
+  .bc-body { padding: 12px; }
+
+  /* CTA */
+  .cta { padding: 44px 12px; }
+  .cta-btns .btn-primary,
+  .cta-btns .btn-outline { padding: 11px 14px; font-size: 10px; }
+
+  /* Newsletter */
+  .nl { padding: 36px 12px; }
+  .nl h3 { font-size: 22px; }
+  .nl p { font-size: 11px; }
+
+  /* Footer */
+  
+  
+  
+  
+  
+  
+  
+}
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;}
+}
+</style>
+</head>
+<body>
+
+<div id="sb"></div>
+
+<!-- PRELOADER -->
+<div id="pre">
+  <div class="pre-logo">STACK<span>LY</span></div>
+  <div class="pre-txt">Heating up the kitchen...</div>
+  <div class="pre-bar"><div class="pre-fill"></div></div>
+</div>
+
+<!-- HEADER -->
+<header id="hdr">
+  <a href="./index.html" class="logo"><img src="./assets/stackly logo.webp" alt="Stackly Logo" class="logo-img"><span class="logo-text"><span class="logo-stack">STACK</span><span class="logo-ly">LY</span></span></a>
+  <nav>
+    <a href="./index.html">Home</a>
+    <a href="./about.html">About</a>
+    <a href="./menu.html">Menu</a>
+    <a href="./reservation.html">Reservation</a>
+    <a href="./blog.html">Blog</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+  <div class="nav-btns">
+    <a href="./login.html" class="btn-ghost">Login</a>
+    <a href="./404page.html" class="btn-red">Book Table</a>
+  </div>
+  <button class="ham" id="ham"><span></span><span></span><span></span></button>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mob" id="mm">
+  <button class="mob-close" id="mm-close" aria-label="Close menu">✕</button>
+  <a href="./index.html" onclick="cm()">HOME</a>
+  <a href="./about.html" onclick="cm()">ABOUT</a>
+  <a href="./menu.html" onclick="cm()">MENU</a>
+  <a href="./reservation.html" onclick="cm()">RESERVATION</a>
+  <a href="./blog.html" onclick="cm()">BLOG</a>
+  <a href="./contact.html" onclick="cm()">CONTACT</a>
+  <div class="mob-btns">
+    <a href="./login.html" class="btn-ghost" onclick="cm()">Login</a>
+    <a href="./404page.html" class="btn-red" onclick="cm()">Book Table</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="float-bg-img fbi1" src="./assets/spicy stack.webp" alt="">
+  <img class="float-bg-img fbi2" src="./assets/BBQ.webp" alt="">
+  <img class="float-bg-img fbi3" src="./assets/pancakes.webp" alt="">
+  <img class="float-bg-img fbi4" src="./assets/pizza.webp" alt="">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-pill">Salem's #1 Fun Dining Spot</div>
+    <h1 class="hero-h1">SERVING<span>HAPPINESS</span>TO FAMILY</h1>
+    <p class="hero-p">Life's too short for boring food. At Stackly, every plate is a party, every bite is a celebration. Stack up the flavours, stack up the laughs!</p>
+    <div class="hero-btns">
+      <a href="./404page.html" class="btn-primary">Book A Table</a>
+      <a href="./404page.html" class="btn-outline">See Our Menu</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll Down</div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="ticker-item">Freshly Made Daily</div><div class="ticker-item">Zero Compromise</div>
+    <div class="ticker-item">Family Vibes</div><div class="ticker-item">Wild Flavours</div>
+    <div class="ticker-item">Open Daily</div><div class="ticker-item">Happy Hours</div>
+    <div class="ticker-item">Salem's Favourite</div><div class="ticker-item">Book Now</div>
+    <div class="ticker-item">Freshly Made Daily</div><div class="ticker-item">Zero Compromise</div>
+    <div class="ticker-item">Family Vibes</div><div class="ticker-item">Wild Flavours</div>
+    <div class="ticker-item">Open Daily</div><div class="ticker-item">Happy Hours</div>
+    <div class="ticker-item">Salem's Favourite</div><div class="ticker-item">Book Now</div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-imgs fade-in">
+    <img class="about-main" src="./assets/interior.webp" alt="Interior">
+    <img class="about-float" src="./assets/ingredients.webp" alt="Ingredients">
+    <div class="about-badge">BEST<br>FOOD</div>
+  </div>
+  <div class="fade-up">
+    <div class="lbl">Our Story</div>
+    <h2 class="sh2">It All Started With A Crazy Hunger!</h2>
+    <p class="about-body">Back in 2012, our founder was wandering Salem's streets after midnight, desperately hungry, and thought: "Why can't great food be FUN?" That one grumbling stomach changed everything.<br><br>Today, Stackly is Salem's happiest restaurant — where bold flavours meet even bolder laughs. From crispy starters to decadent desserts, we stack greatness on every single plate!</p>
+    <div class="about-grid">
+      <div class="ab"><div class="ab-t">Farm Fresh</div><div class="ab-s">Daily sourced</div></div>
+      <div class="ab"><div class="ab-t">Expert Chefs</div><div class="ab-s">12+ years exp.</div></div>
+      <div class="ab"><div class="ab-t">Fun Ambience</div><div class="ab-s">Party-ready</div></div>
+      <div class="ab"><div class="ab-t">Quick Service</div><div class="ab-s">No long waits!</div></div>
+    </div>
+    <a href="./404page.html" class="btn-primary" style="display:inline-block;">Learn More</a>
+  </div>
+</section>
+
+<!-- SPECIALS -->
+<section class="specials" id="specials">
+  <div class="spec-head">
+    <div>
+      <div class="lbl">Fresh Today</div>
+      <h2 class="sh2">Today's Specials</h2>
+      <p class="sp">Our chef's handpicked masterpieces — hot, fresh, ready to wreck your diet goals!</p>
+    </div>
+    <a href="./404page.html" class="btn-outline">View Full Menu</a>
+  </div>
+  <div class="spec-grid">
+    <div class="dish fade-up" style="transition-delay:0s"><span class="dish-badge">HOT</span><img class="dish-img" src="./assets/spicy stack.webp" alt="Spicy Stack"><div class="dish-body"><div class="dish-cat">Signature</div><div class="dish-name">SPICY STACK</div><div class="dish-desc">Double-layered crispy chicken with our secret 7-spice sauce!</div><div class="dish-foot"><span class="dish-price">₹349</span><a href="./404page.html" class="dish-btn">Order</a></div></div></div>
+    <div class="dish fade-up" style="transition-delay:.07s"><img class="dish-img" src="./assets/BBQ Royale Platter.webp" alt="BBQ"><div class="dish-body"><div class="dish-cat">BBQ Special</div><div class="dish-name">BBQ ROYALE</div><div class="dish-desc">Smoky grilled platter with 4 meats and legendary BBQ sauce!</div><div class="dish-foot"><span class="dish-price">₹529</span><a href="./404page.html" class="dish-btn">Order</a></div></div></div>
+    <div class="dish fade-up" style="transition-delay:.14s"><span class="dish-badge fave">FAVE</span><img class="dish-img" src="./assets/pizza.webp" alt="Pizza"><div class="dish-body"><div class="dish-cat">Chef's Pick</div><div class="dish-name">PIZZA CHAOS</div><div class="dish-desc">Wood-fired 12-inch base with 6 toppings and insane cheese pull!</div><div class="dish-foot"><span class="dish-price">₹449</span><a href="./404page.html" class="dish-btn">Order</a></div></div></div>
+    <div class="dish fade-up" style="transition-delay:.21s"><img class="dish-img" src="./assets/pancakes.webp" alt="Pancakes"><div class="dish-body"><div class="dish-cat">Sweet Break</div><div class="dish-name">STACK CAKES</div><div class="dish-desc">Fluffy pancakes stacked sky-high with maple syrup and choco drizzle!</div><div class="dish-foot"><span class="dish-price">₹249</span><a href="./404page.html" class="dish-btn">Order</a></div></div></div>
+    <div class="dish fade-up" style="transition-delay:.28s"><img class="dish-img" src="./assets/bowl.webp" alt="Bowl"><div class="dish-body"><div class="dish-cat">Healthy</div><div class="dish-name">POWER BOWL</div><div class="dish-desc">20+ fresh ingredients packed with nutrition and incredible taste!</div><div class="dish-foot"><span class="dish-price">₹299</span><a href="./404page.html" class="dish-btn">Order</a></div></div></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat fade-up"><span class="stat-n" data-t="12400">0</span><div class="stat-l">Smiling Customers</div></div>
+  <div class="stat fade-up" style="transition-delay:.1s"><span class="stat-n" data-t="86">0</span><div class="stat-l">Menu Dishes</div></div>
+  <div class="stat fade-up" style="transition-delay:.2s"><span class="stat-n" data-t="18">0</span><div class="stat-l">Pro Chefs</div></div>
+  <div class="stat fade-up" style="transition-delay:.3s"><span class="stat-n" data-t="24">0</span><div class="stat-l">Awards Won</div></div>
+</div>
+
+<!-- MENU -->
+<section class="menu-sec" id="menu">
+  <div class="menu-head fade-up">
+    <div class="lbl">Our Menu</div>
+    <h2 class="sh2">Pick Your Flavour Mood</h2>
+    <p class="sp">From crispy starters to soul-warming mains — every craving covered. No boring food allowed!</p>
+  </div>
+  <div class="tabs">
+    <button class="tab on" onclick="st('starters',this)">Starters</button>
+    <button class="tab" onclick="st('mains',this)">Mains</button>
+    <button class="tab" onclick="st('desserts',this)">Desserts</button>
+    <button class="tab" onclick="st('drinks',this)">Drinks</button>
+  </div>
+  <div class="tab-pane on" id="tp-starters">
+    <div class="mc"><img class="mc-img" src="./assets/Crispy Wings.webp" alt="Wings"><div class="mc-body"><div class="mc-name">Crispy Wings</div><div class="mc-desc">Tossed in legendary hot sauce with blue cheese dip.</div><div class="mc-foot"><span class="mc-price">₹199</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+    <div class="mc"><img class="mc-img" src="assets/Onion Rings.webp" alt="Rings"><div class="mc-body"><div class="mc-name">Onion Rings</div><div class="mc-desc">Golden beer-battered rings with chipotle mayo.</div><div class="mc-foot"><span class="mc-price">₹149</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+    <div class="mc"><img class="mc-img" src="./assets/Bruschetta.webp" alt="Bruschetta"><div class="mc-body"><div class="mc-name">Bruschetta</div><div class="mc-desc">Toasted sourdough with tomatoes, basil and balsamic.</div><div class="mc-foot"><span class="mc-price">₹179</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+    <div class="mc"><img class="mc-img" src="./assets/Loaded Nachos.webp" alt="Nachos"><div class="mc-body"><div class="mc-name">Loaded Nachos</div><div class="mc-desc">Chips with cheese, jalapeños and guacamole.</div><div class="mc-foot"><span class="mc-price">₹229</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+  </div>
+  <div class="tab-pane" id="tp-mains">
+    <div class="mc"><img class="mc-img" src="assets/Spicy Stack Burger.webp" alt="Burger"><div class="mc-body"><div class="mc-name">Spicy Stack Burger</div><div class="mc-desc">Double crispy chicken, 7-spice sauce, brioche bun.</div><div class="mc-foot"><span class="mc-price">₹349</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+    <div class="mc"><img class="mc-img" src="./assets/BBQ Royale Platter.webp" alt="BBQ"><div class="mc-body"><div class="mc-name">BBQ Royale Platter</div><div class="mc-desc">Smoky 4-meat platter with legendary BBQ sauce.</div><div class="mc-foot"><span class="mc-price">₹529</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+    <div class="mc"><img class="mc-img" src="./assets/Power Grain Bowl.webp" alt="Bowl"><div class="mc-body"><div class="mc-name">Power Grain Bowl</div><div class="mc-desc">20+ fresh ingredients, roasted veg, tahini.</div><div class="mc-foot"><span class="mc-price">₹299</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+    <div class="mc"><img class="mc-img" src="./assets/Pizza Chaos.webp" alt="Pizza"><div class="mc-body"><div class="mc-name">Pizza Chaos</div><div class="mc-desc">Wood-fired 12-inch with 6 toppings, insane cheese pull.</div><div class="mc-foot"><span class="mc-price">₹449</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+  </div>
+  <div class="tab-pane" id="tp-desserts">
+    <div class="mc"><img class="mc-img" src="./assets/Stack Cakes.webp" alt="Pancakes"><div class="mc-body"><div class="mc-name">Stack Cakes</div><div class="mc-desc">Fluffy pancakes with maple syrup, berries and choco.</div><div class="mc-foot"><span class="mc-price">₹249</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+    <div class="mc"><img class="mc-img" src="./assets/Triple Choco Lava.webp" alt="Lava"><div class="mc-body"><div class="mc-name">Triple Choco Lava</div><div class="mc-desc">Warm lava cake with vanilla bean ice cream.</div><div class="mc-foot"><span class="mc-price">₹199</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+    <div class="mc"><img class="mc-img" src="./assets/Mega Sundae.webp" alt="Sundae"><div class="mc-body"><div class="mc-name">Mega Sundae</div><div class="mc-desc">Four scoops, caramel, fudge, nuts and cherry.</div><div class="mc-foot"><span class="mc-price">₹179</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+    <div class="mc"><img class="mc-img" src="./assets/NY Cheesecake.webp" alt="Cheesecake"><div class="mc-body"><div class="mc-name">NY Cheesecake</div><div class="mc-desc">Classic NY style with fresh strawberry coulis.</div><div class="mc-foot"><span class="mc-price">₹219</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+  </div>
+  <div class="tab-pane" id="tp-drinks">
+    <div class="mc"><img class="mc-img" src="./assets/Mango Lassi Supreme.webp" alt="Lassi"><div class="mc-body"><div class="mc-name">Mango Lassi Supreme</div><div class="mc-desc">Thick Alphonso mango with cardamom and rose.</div><div class="mc-foot"><span class="mc-price">₹129</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+    <div class="mc"><img class="mc-img" src="./assets/Cold Brew Coffee.webp" alt="Coffee"><div class="mc-body"><div class="mc-name">Cold Brew Coffee</div><div class="mc-desc">18-hour cold brew over ice with oat milk and vanilla.</div><div class="mc-foot"><span class="mc-price">₹149</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+    <div class="mc"><img class="mc-img" src="./assets/Tropical Blast.webp" alt="Mocktail"><div class="mc-body"><div class="mc-name">Tropical Blast</div><div class="mc-desc">Pineapple, coconut, lime mocktail with fresh mint.</div><div class="mc-foot"><span class="mc-price">₹139</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+    <div class="mc"><img class="mc-img" src="./assets/Monster Shake.webp" alt="Shake"><div class="mc-body"><div class="mc-name">Monster Shake</div><div class="mc-desc">Oreo peanut butter milkshake topped with brownie.</div><div class="mc-foot"><span class="mc-price">₹189</span><a href="./404page.html"><button class="mc-btn">Order Now</button></a></div></div></div>
+  </div>
+  <div class="menu-ft"><a href="./404page.html" class="btn-primary">Full Menu</a></div>
+</section>
+
+<!-- CHEFS -->
+<section class="chefs" id="chefs">
+  <div class="chefs-head fade-up">
+    <div class="lbl">Our Crew</div>
+    <h2 class="sh2">The Dream Team</h2>
+    <p class="sp">The legends behind every legendary plate. They cook with love, a dash of madness, and zero chill!</p>
+  </div>
+  <div class="chefs-grid">
+    <div class="chef fade-up" style="transition-delay:0s"><div class="chef-wrap"><img class="chef-img" src="./assets/arjun.webp" alt="Arjun"><div class="chef-socials"><a href="./404page.html" class="soc">f</a><a href="./404page.html" class="soc">in</a><a href="./404page.html" class="soc">𝕏</a></div></div><div class="chef-body"><div class="chef-name">CHEF ARJUN</div><div class="chef-role">Head Chef & Flavour Wizard</div><p class="chef-bio">15 years of turning ordinary ingredients into extraordinary masterpieces. His BBQ sauce recipe is literally a state secret.</p></div></div>
+    <div class="chef fade-up" style="transition-delay:.12s"><div class="chef-wrap"><img class="chef-img" src="./assets/priya.webp" alt="Priya"><div class="chef-socials"><a href="./404page.html" class="soc">f</a><a href="./404page.html" class="soc">in</a><a href="./404page.html" class="soc">𝕏</a></div></div><div class="chef-body"><div class="chef-name">CHEF PRIYA</div><div class="chef-role">Pastry Artist & Dessert Queen</div><p class="chef-bio">She speaks fluent "chocolate" and her desserts have literally made grown men cry. The good kind of crying!</p></div></div>
+    <div class="chef fade-up" style="transition-delay:.24s"><div class="chef-wrap"><img class="chef-img" src="./assets/ravi.webp" alt="Ravi"><div class="chef-socials"><a href="./404page.html" class="soc">f</a><a href="./404page.html" class="soc">in</a><a href="./404page.html" class="soc">𝕏</a></div></div><div class="chef-body"><div class="chef-name">CHEF RAVI</div><div class="chef-role">Grill Master & Spice Sorcerer</div><p class="chef-bio">Born with a spatula in hand! Ravi's marinades are so good that customers have tried to bribe him for the recipes.</p></div></div>
+  </div>
+</section>
+
+<!-- RESERVATION -->
+<section class="res" id="reservation">
+  <div class="fade-up">
+    <div class="lbl">Reserve</div>
+    <h2 class="sh2">Grab Your Table Before It's Gone!</h2>
+    <p class="sp">Peak hours fill up FAST. Reserve your spot now and skip the queue. Smart people book ahead!</p>
+    <div class="res-feats">
+      <div class="res-feat">Special occasion surprises included</div>
+      <div class="res-feat">Live music every Friday & Saturday</div>
+      <div class="res-feat">Customise your menu in advance</div>
+      <div class="res-feat">VIP table for loyalty members</div>
+    </div>
+  </div>
+  <div class="fade-up" style="transition-delay:.15s">
+    <div class="res-card">
+      <div class="res-t">Book My Table</div>
+      <div class="res-s">Fill in & we'll confirm in 30 min!</div>
+      <div class="frow">
+        <div class="fg">
+          <label>Your Name *</label>
+          <input type="text" id="bmtName" placeholder="Enter your name"
+            oninput="this.value=this.value.replace(/[^A-Za-z\s'\-]/g,'')"
+            onkeypress="return /[A-Za-z\s'\-]/.test(event.key)"
+            onpaste="var e=event;setTimeout(function(){e.target.value=e.target.value.replace(/[^A-Za-z\s'\-]/g,'');},0)">
+          <span id="bmtNameErr" class="fv-error">Name must contain letters only — no numbers allowed.</span>
+        </div>
+        <div class="fg">
+          <label>Phone *</label>
+          <input type="tel" id="bmtPhone" placeholder="+91 98765 43210"
+            oninput="this.value=this.value.replace(/[^0-9+\-\s]/g,'')"
+            onkeypress="return /[0-9+\-\s]/.test(event.key)"
+            onpaste="var e=event;setTimeout(function(){e.target.value=e.target.value.replace(/[^0-9+\-\s]/g,'');},0)">
+          <span id="bmtPhoneErr" class="fv-error">Phone must be digits only — no letters allowed.</span>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Date *</label><input type="date"></div>
+        <div class="fg"><label>Time *</label><input type="time"></div>
+      </div>
+      <div class="frow">
+        <div class="fg"><label>Guests *</label><select><option value="">Select</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5-8</option><option>9+</option></select></div>
+        <div class="fg"><label>Occasion</label><select><option value="">Select</option><option>Birthday</option><option>Anniversary</option><option>Wedding</option><option>Business</option><option>Casual Dining</option></select></div>
+      </div>
+      <div class="fg">
+        <label>Preferred Cuisine</label>
+        <div class="pills">
+          <span class="pill on" onclick="sp(this)">Indian</span>
+          <span class="pill" onclick="sp(this)">Continental</span>
+          <span class="pill" onclick="sp(this)">Mexican</span>
+          <span class="pill" onclick="sp(this)">Surprise Me!</span>
+        </div>
+      </div>
+      <button class="sub-btn" id="bmtSubmit">Confirm Booking</button>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section class="blog" id="blog">
+  <div class="blog-head">
+    <div class="fade-up">
+      <div class="lbl">Food Blog</div>
+      <h2 class="sh2">Tasty Stories</h2>
+      <p class="sp">Recipes, tips, behind-the-scenes drama from our glorious kitchen adventures!</p>
+    </div>
+    <a href="./404page.html" class="btn-outline fade-up">View All Posts</a>
+  </div>
+  <div class="blog-grid">
+    <div class="bc fade-up" style="transition-delay:0s"><img class="bc-img" src="./assets/Recepies.webp" alt="Blog 1"><div class="bc-body"><div class="bc-cat">Recipes</div><div class="bc-meta">12 May 2025 · Chef Arjun</div><div class="bc-title">THE SECRET SPICE THAT CHANGED EVERYTHING</div><a href="./404page.html" class="bc-read">Read Story →</a></div></div>
+    <div class="bc fade-up" style="transition-delay:.08s"><img class="bc-img" src="./assets/tips.webp" alt="Blog 2"><div class="bc-body"><div class="bc-cat">Tips</div><div class="bc-meta">28 Apr 2025 · Chef Priya</div><div class="bc-title">5 BAKING TIPS THAT'LL MAKE YOU A LEGEND</div><a href="./404page.html" class="bc-read">Read Story →</a></div></div>
+    <div class="bc fade-up" style="transition-delay:.16s"><img class="bc-img" src="./assets/behind the scene.webp" alt="Blog 3"><div class="bc-body"><div class="bc-cat">Behind Scenes</div><div class="bc-meta">10 Apr 2025 · Chef Ravi</div><div class="bc-title">A TYPICAL FRIDAY NIGHT AT STACKLY (IT'S CHAOS!)</div><a href="./404page.html" class="bc-read">Read Story →</a></div></div>
+    <div class="bc fade-up" style="transition-delay:.24s"><img class="bc-img" src="assets/best.webp" alt="Blog 4"><div class="bc-body"><div class="bc-cat">News</div><div class="bc-meta">2 Mar 2025 · Team Stackly</div><div class="bc-title">WE WON BEST RESTAURANT IN SALEM (AGAIN!)</div><a href="./404page.html" class="bc-read">Read Story →</a></div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-inner">
+    <h2 class="fade-up">HUNGRY YET?<span>COME FEED THE BEAST!</span></h2>
+    <p class="fade-up">Walk in, sit down, and let us absolutely wreck your calorie counter. You deserve it!</p>
+    <div class="cta-btns fade-up">
+      <a href="./404page.html" class="btn-primary">Book A Table</a>
+      <a href="./404page.html" class="btn-outline">Explore Menu</a>
+    </div>
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="nl">
+  <h3 class="fade-up">Stay In The Loop!</h3>
+  <p class="fade-up">Exclusive deals, new dishes, and kitchen gossip. No spam, only tasty updates!</p>
+  <div class="nl-form fade-up">
+    <input type="email" class="nl-in" id="nli" placeholder="Enter your email address">
+    <button class="nl-btn" id="nlb">Subscribe</button>
+  </div>
+  <div id="nl-err" style="display:none;color:var(--red);font-size:12px;margin-top:8px;">Please enter a valid email address.</div>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="fg-grid">
+    <div>
+<div class="fl-logo">
+  <img src="./assets/stackly logo.webp" alt="Stackly" class="fl-logo-img">
+  <span style="display:flex;"><span class="fl-stack">STACK</span><span class="fl-ly">LY</span></span>
+</div>
+      <p class="fl-desc">Salem's most fun restaurant since 2012. We don't just serve food — we serve memories, laughter, and seriously good vibes.</p>
+      <div class="fl-socs">
+        <a href="./404page.html" class="fl-soc">f</a><a href="./404page.html" class="fl-soc">in</a>
+        <a href="./404page.html" class="fl-soc">𝕏</a><a href="./404page.html" class="fl-soc">▶</a><a href="./404page.html" class="fl-soc">💬</a>
+      </div>
+    </div>
+    <div class="fc">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="./index.html">→ Home</a></li><li><a href="./about.html">→ About Us</a></li>
+        <li><a href="./menu.html">→ Our Menu</a></li><li><a href="./reservation.html">→ Reservations</a></li>
+        <li><a href="./blog.html">→ Blog</a></li><li><a href="./contact.html">→ Contact</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>New Menu</h4>
+      <ul>
+        <li><a href="./404page.html">→ Stackly BBQ Platter</a></li><li><a href="./404page.html">→ Spicy Chaos Burger</a></li>
+        <li><a href="./404page.html">→ Mango Lassi Supreme</a></li><li><a href="./404page.html">→ Triple Choco Lava</a></li>
+        <li><a href="./404page.html">→ Power Grain Bowl</a></li><li><a href="./404page.html">→ Chef's Secret Biriyani</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>Find Us</h4>
+      <div class="fc-inf"><strong>Address</strong>MMR Complex, Chinna Thirupathi, near Chinna Muniyappan Kovil, Salem, Tamil Nadu 636008</div>
+      <div class="fc-inf"><strong>Call Us</strong>+91 98765 43210</div>
+      <div class="fc-inf"><strong>Email</strong>hello@stackly.in</div>
+      <div class="fc-hrs">
+        <div class="fc-hr"><span>Mon – Thu</span><span>11AM – 10PM</span></div>
+        <div class="fc-hr"><span>Fri – Sat</span><span>11AM – 11PM</span></div>
+        <div class="fc-hr"><span>Sunday</span><span>12PM – 9PM</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr-btm">
+    <div class="ftr-copy">© 2026 Stackly Restaurant. Made with ♥ in Salem, Tamil Nadu.</div>
+    <div class="ftr-links"><a href="./404page.html">Privacy Policy</a><a href="./404page.html">Terms</a><a href="./404page.html">Sitemap</a></div>
+  </div>
+</footer>
+
+<script>
+// Preloader
+window.addEventListener('load',function(){
+  var pre=document.getElementById('pre');
+  if(pre)setTimeout(function(){pre.classList.add('gone');},2200);
+});
+
+// Scroll progress + header shrink
+window.addEventListener('scroll',function(){
+  var t=document.documentElement.scrollHeight-window.innerHeight;
+  var sb=document.getElementById('sb');
+  if(sb)sb.style.width=(window.scrollY/t*100)+'%';
+  var hdr=document.getElementById('hdr');
+  if(hdr)hdr.classList.toggle('sc',window.scrollY>60);
+});
+
+// Fade animations
+var obs=new IntersectionObserver(function(e){
+  e.forEach(function(x){if(x.isIntersecting){x.target.classList.add('vis');obs.unobserve(x.target);}});
+},{threshold:.1,rootMargin:'0px 0px -36px 0px'});
+document.querySelectorAll('.fade-up,.fade-in').forEach(function(el){obs.observe(el);});
+
+// Counter animation
+var cobs=new IntersectionObserver(function(e){
+  e.forEach(function(x){
+    if(!x.isIntersecting)return;
+    var el=x.target,t=parseInt(el.dataset.t),isK=t>=1000;
+    var d=isK?Math.round(t/100)/10:t,cur=0,step=d/60;
+    var timer=setInterval(function(){
+      cur+=step;
+      if(cur>=d){cur=d;clearInterval(timer);}
+      el.textContent=isK?(Math.floor(cur*10)/10)+'K+':Math.floor(cur);
+    },20);
+    cobs.unobserve(el);
+  });
+},{threshold:.5});
+document.querySelectorAll('.stat-n[data-t]').forEach(function(el){cobs.observe(el);});
+
+// Hamburger — single handler, no conflicts
+var hamBtn=document.getElementById('ham');
+var mobMenu=document.getElementById('mm');
+var mobClose=document.getElementById('mm-close');
+if(hamBtn&&mobMenu){
+  hamBtn.addEventListener('click',function(){
+    mobMenu.classList.toggle('open');
+    hamBtn.classList.toggle('open');
+  });
+}
+if(mobClose&&mobMenu){
+  mobClose.addEventListener('click',function(){
+    mobMenu.classList.remove('open');
+    if(hamBtn)hamBtn.classList.remove('open');
+  });
+}
+function cm(){
+  if(mobMenu)mobMenu.classList.remove('open');
+  if(hamBtn)hamBtn.classList.remove('open');
+}
+
+// Tab switcher
+function st(n,b){
+  document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('on');});
+  document.querySelectorAll('.tab-pane').forEach(function(x){x.classList.remove('on');});
+  b.classList.add('on');
+  var pane=document.getElementById('tp-'+n);
+  if(pane)pane.classList.add('on');
+}
+
+// Pill selector
+function sp(el){
+  var parent=el.closest('.pills')||el.parentElement;
+  if(parent)parent.querySelectorAll('.pill').forEach(function(p){p.classList.remove('on');});
+  el.classList.add('on');
+}
+
+// Newsletter
+var nlb=document.getElementById('nlb');
+var nli=document.getElementById('nli');
+var nlErr=document.getElementById('nl-err');
+var emailReg=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+if(nlb&&nli){
+  nlb.addEventListener('click',function(){
+    var v=nli.value.trim();
+    if(!v||!emailReg.test(v)){
+      nli.classList.add('fv-invalid');
+      if(nlErr)nlErr.style.display='block';
+      return;
+    }
+    nli.classList.remove('fv-invalid');
+    nli.classList.add('fv-ok');
+    if(nlErr)nlErr.style.display='none';
+    window.location.href='./404page.html';
+  });
+  nli.addEventListener('input',function(){
+    var ok=emailReg.test(this.value.trim());
+    this.classList.toggle('fv-invalid',!ok&&this.value.trim().length>0);
+    this.classList.toggle('fv-ok',ok);
+    if(nlErr&&ok)nlErr.style.display='none';
+  });
+}
+
+// Active nav link
+(function(){
+  var path=window.location.pathname.split('/').pop()||'index.html';
+  document.querySelectorAll('nav a').forEach(function(a){
+    a.classList.remove('active');
+    var href=(a.getAttribute('href')||'').split('/').pop();
+    if(href===path)a.classList.add('active');
+  });
+})();
+// Booking form validation
+var bmtSubmit = document.getElementById('bmtSubmit');
+if(bmtSubmit){
+  bmtSubmit.addEventListener('click', function(){
+    var name = document.getElementById('bmtName');
+    var phone = document.getElementById('bmtPhone');
+    var nameErr = document.getElementById('bmtNameErr');
+    var phoneErr = document.getElementById('bmtPhoneErr');
+
+    // Date, Time, Guests selects (grab by position inside .res-card)
+    var resCard = document.querySelector('.res-card');
+    var inputs = resCard ? resCard.querySelectorAll('input[type="date"], input[type="time"]') : [];
+    var selects = resCard ? resCard.querySelectorAll('select') : [];
+
+    var valid = true;
+
+    // Name check
+    if(!name.value.trim() || !/^[A-Za-z\s'\-]+$/.test(name.value.trim())){
+      name.classList.add('fv-invalid'); name.classList.remove('fv-ok');
+      nameErr.classList.add('show'); valid = false;
+    } else {
+      name.classList.remove('fv-invalid'); name.classList.add('fv-ok');
+      nameErr.classList.remove('show');
+    }
+
+    // Phone check — min 7 digits
+    var digits = phone.value.replace(/\D/g,'');
+    if(!phone.value.trim() || digits.length < 7){
+      phone.classList.add('fv-invalid'); phone.classList.remove('fv-ok');
+      phoneErr.textContent = digits.length > 0 && digits.length < 7
+        ? 'Phone number is too short.' : 'Phone must be digits only — no letters allowed.';
+      phoneErr.classList.add('show'); valid = false;
+    } else {
+      phone.classList.remove('fv-invalid'); phone.classList.add('fv-ok');
+      phoneErr.classList.remove('show');
+    }
+
+    // Date check
+    if(inputs[0] && !inputs[0].value){
+      inputs[0].classList.add('fv-invalid'); valid = false;
+    } else if(inputs[0]){
+      inputs[0].classList.remove('fv-invalid'); inputs[0].classList.add('fv-ok');
+    }
+
+    // Time check
+    if(inputs[1] && !inputs[1].value){
+      inputs[1].classList.add('fv-invalid'); valid = false;
+    } else if(inputs[1]){
+      inputs[1].classList.remove('fv-invalid'); inputs[1].classList.add('fv-ok');
+    }
+
+    // Guests select check
+    if(selects[0] && !selects[0].value){
+      selects[0].classList.add('fv-invalid'); valid = false;
+    } else if(selects[0]){
+      selects[0].classList.remove('fv-invalid'); selects[0].classList.add('fv-ok');
+    }
+
+    if(valid) window.location.href = './404page.html';
+  });
+}
+</script>
+</body>
+</html>

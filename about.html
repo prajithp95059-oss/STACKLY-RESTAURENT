@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackly — About Us</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./common.css">
+<style>
+img{max-width:100%;display:block;}
+
+/* SCROLL BAR */
+
+/* HEADER */
+header{position:fixed;top:0;left:0;right:0;z-index:990;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;transition:all .35s;}
+header.sc{background:rgba(8,8,8,.95);backdrop-filter:blur(14px);padding:14px 60px;border-bottom:1px solid var(--border2);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-stack{color:var(--white);}
+.logo-ly{color:var(--red);}
+
+nav{display:flex;gap:32px;}
+nav a{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:1px;text-transform:uppercase;transition:color .25s;}
+nav a:hover,nav a.act{color:var(--white);}
+.nav-btns{display:flex;gap:10px;align-items:center;}
+.btn-ghost:hover{border-color:var(--red);color:var(--red);}
+.btn-red:hover{background:var(--red-lt);transform:translateY(-1px);}
+
+/* MOBILE MENU */
+.mob.open{display:flex;}
+.mob a:hover{color:var(--red);}
+.mob-btns{display:flex;gap:12px;margin-top:12px;}
+
+/* PAGE HERO */
+.page-hero{position:relative;min-height:55vh;display:flex;align-items:flex-end;padding:0 60px 80px;overflow:hidden;background:linear-gradient(135deg,var(--black) 0%,#1a0a0a 50%,#0a0a1a 100%);}
+.ph-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,77,77,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,77,77,.04) 1px,transparent 1px);background-size:60px 60px;}
+.ph-circle{position:absolute;width:500px;height:500px;border-radius:50%;border:1px solid rgba(255,77,77,.08);top:-100px;right:-100px;animation:rot 30s linear infinite;}
+.ph-circle2{position:absolute;width:300px;height:300px;border-radius:50%;border:1px solid rgba(255,77,77,.06);bottom:-50px;left:10%;animation:rot 20s linear infinite reverse;}
+@keyframes rot{to{transform:rotate(360deg);}}
+.ph-content{position:relative;z-index:1;}
+.ph-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,77,77,.12);border:1px solid rgba(255,77,77,.3);color:var(--red);font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:6px 16px;margin-bottom:20px;}
+.ph-h1{font-family:var(--serif);font-size:clamp(60px,9vw,120px);line-height:.9;letter-spacing:2px;color:var(--white);}
+.ph-h1 span{color:var(--red);}
+.ph-breadcrumb{margin-top:18px;font-size:12px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
+.ph-breadcrumb a{color:var(--red);}
+.ph-breadcrumb a:hover{text-decoration:underline;}
+
+/* SHARED SECTION */
+.lbl{display:inline-flex;align-items:center;gap:10px;font-size:10px;font-weight:700;color:var(--red);letter-spacing:4px;text-transform:uppercase;margin-bottom:14px;}
+.lbl::before{content:'';width:28px;height:2px;background:var(--red);}
+.sh2{font-family:var(--serif);font-size:clamp(40px,5vw,68px);color:var(--white);line-height:1;margin-bottom:16px;letter-spacing:1px;}
+.sp{font-size:15px;color:var(--muted);line-height:1.8;font-weight:300;}
+.btn-primary{display:inline-block;padding:14px 38px;background:var(--red);font-size:13px;font-weight:700;color:var(--white);letter-spacing:1.5px;text-transform:uppercase;transition:all .2s;border-radius:3px;box-shadow:0 6px 30px rgba(255,77,77,.35);}
+.btn-primary:hover{background:var(--red-lt);transform:translateY(-2px);box-shadow:0 12px 40px rgba(255,77,77,.5);}
+.btn-outline{display:inline-block;padding:14px 38px;border:1.5px solid rgba(250,250,250,.3);font-size:13px;font-weight:600;color:var(--white);letter-spacing:1.5px;text-transform:uppercase;transition:all .2s;border-radius:3px;}
+.btn-outline:hover{border-color:var(--red);color:var(--red);transform:translateY(-2px);}
+.fade-in.vis{opacity:1;}
+
+/* STORY SECTION */
+.story{background:var(--black);display:grid;grid-template-columns:1fr 1fr;gap:90px;align-items:center;}
+.story-img-wrap{position:relative;}
+.story-main{width:100%;height:560px;object-fit:cover;background:var(--card);display:flex;align-items:center;justify-content:center;}
+.story-placeholder{width:100%;height:560px;background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px;font-family:var(--serif);font-size:72px;color:rgba(255,77,77,.2);letter-spacing:4px;position:relative;overflow:hidden;}
+.story-placeholder::after{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Ccircle cx='30' cy='30' r='1' fill='%23ff4d4d' fill-opacity='0.06'/%3E%3C/g%3E%3C/svg%3E") repeat;}
+.story-float{position:absolute;bottom:-28px;right:-28px;width:200px;height:200px;background:var(--card2);border:4px solid var(--dark);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;}
+.story-float-n{font-family:var(--serif);font-size:52px;color:var(--red);line-height:1;}
+.story-float-l{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;text-align:center;}
+.story-badge{position:absolute;top:0;left:0;background:var(--red);color:var(--white);padding:14px 18px;font-family:var(--serif);font-size:18px;letter-spacing:1px;line-height:1.25;text-align:center;z-index:1;}
+.story-body{font-size:15px;color:var(--muted);line-height:1.9;margin:20px 0 32px;font-weight:300;}
+.story-highlights{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:36px;}
+.sh{border-left:3px solid var(--red);padding:14px 18px;background:var(--card);transition:background .25s;}
+.sh:hover{background:var(--card2);}
+.sh-t{font-size:13px;font-weight:700;color:var(--white);margin-bottom:3px;}
+.sh-s{font-size:11px;color:var(--muted);}
+.story-btns{display:flex;gap:14px;flex-wrap:wrap;}
+
+/* TIMELINE */
+.timeline-sec{background:var(--dark);}
+.tl-head{text-align:center;margin-bottom:60px;}
+.tl-head .sp{max-width:500px;margin:0 auto;}
+/* HORIZONTAL TIMELINE */
+.timeline{position:relative;overflow-x:auto;padding-bottom:20px;scrollbar-width:thin;scrollbar-color:var(--red) var(--card);}
+.timeline::-webkit-scrollbar{height:4px;}
+.timeline::-webkit-scrollbar-track{background:var(--card);}
+.timeline::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px;}
+.tl-track{display:flex;gap:0;position:relative;min-width:max-content;padding:60px 40px 20px;}
+.tl-track::before{content:'';position:absolute;top:30px;left:40px;right:40px;height:2px;background:linear-gradient(to right,transparent,var(--red) 5%,var(--red) 95%,transparent);}
+.tl-item{display:flex;flex-direction:column;align-items:center;width:220px;flex-shrink:0;position:relative;}
+.tl-dot{width:16px;height:16px;border-radius:50%;background:var(--red);box-shadow:0 0 0 5px rgba(255,77,77,.2);flex-shrink:0;position:relative;z-index:2;margin-bottom:24px;}
+.tl-content{background:var(--card);border:1px solid var(--border2);padding:20px;border-radius:4px;text-align:center;width:200px;}
+.tl-year{font-family:var(--serif);font-size:38px;color:var(--red);line-height:1;margin-bottom:8px;letter-spacing:1px;}
+.tl-title{font-size:13px;font-weight:700;color:var(--white);margin-bottom:6px;}
+.tl-desc{font-size:11px;color:var(--muted);line-height:1.7;font-weight:300;}
+/* hide old left/right/center layout */
+.tl-left,.tl-right,.tl-center,.tl-empty{display:none;}
+
+/* VALUES */
+.values{background:var(--black);}
+.val-head{text-align:center;margin-bottom:60px;}
+.val-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.val-card{background:var(--card);border:1px solid var(--border2);padding:36px 28px;position:relative;overflow:hidden;transition:transform .3s,box-shadow .3s,border-color .3s;}
+.val-card:hover{transform:translateY(-8px);box-shadow:0 28px 60px rgba(255,77,77,.12);border-color:rgba(255,77,77,.25);}
+.val-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--red);transform:scaleX(0);transition:transform .35s;transform-origin:left;}
+.val-card:hover::before{transform:scaleX(1);}
+.val-num{font-family:var(--serif);font-size:80px;color:rgba(255,77,77,.07);position:absolute;top:-10px;right:16px;line-height:1;letter-spacing:2px;}
+.val-icon{font-size:34px;margin-bottom:18px;}
+.val-title{font-size:15px;font-weight:700;color:var(--white);margin-bottom:10px;letter-spacing:.3px;}
+.val-desc{font-size:13px;color:var(--muted);line-height:1.8;font-weight:300;}
+
+/* STATS */
+.stats-sec{background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:80px 60px;}
+.stats-inner{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;gap:0;}
+.stat{padding:24px;border-right:1px solid var(--border2);}
+.stat:last-child{border-right:none;}
+.stat-n{font-family:var(--serif);font-size:clamp(52px,6vw,80px);color:var(--red);line-height:1;display:block;letter-spacing:1px;}
+.stat-l{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:8px;}
+
+/* TEAM */
+.team{background:var(--dark);}
+.team-head{text-align:center;margin-bottom:60px;}
+.team-head .sp{max-width:500px;margin:0 auto;}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.tm{background:var(--card);border:1px solid var(--border2);overflow:hidden;transition:transform .3s,box-shadow .3s;}
+.tm:hover{transform:translateY(-8px);box-shadow:0 28px 60px rgba(255,77,77,.15);}
+.tm-img-wrap{position:relative;overflow:hidden;}
+.tm-img{width:100%;height:260px;object-fit:cover;transition:transform .4s;background:var(--card2);}
+.tm:hover .tm-img{transform:scale(1.05);}
+.tm-placeholder{width:100%;height:260px;background:linear-gradient(160deg,var(--card2) 0%,#1a1a1a 100%);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:56px;color:rgba(255,77,77,.25);letter-spacing:2px;}
+.tm-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(8,8,8,.96));padding:40px 16px 16px;transform:translateY(100%);transition:.32s;}
+.tm:hover .tm-overlay{transform:translateY(0);}
+.tm-socs{display:flex;gap:8px;}
+.tm-soc{width:34px;height:34px;border:1.5px solid rgba(250,250,250,.2);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--white);transition:all .2s;}
+.tm-soc:hover{background:var(--red);border-color:var(--red);}
+.tm-body{padding:20px;}
+.tm-name{font-family:var(--serif);font-size:20px;letter-spacing:1px;color:var(--white);margin-bottom:4px;}
+.tm-role{font-size:10px;font-weight:700;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.tm-bio{font-size:12px;color:var(--muted);line-height:1.75;font-weight:300;}
+
+/* AWARDS */
+.awards{background:var(--black);}
+.aw-head{text-align:center;margin-bottom:60px;}
+.aw-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.aw{background:var(--card);border:1px solid var(--border2);padding:30px 24px;text-align:center;transition:transform .3s,border-color .3s;}
+.aw:hover{transform:translateY(-6px);border-color:rgba(255,77,77,.3);}
+.aw-icon{font-size:38px;margin-bottom:14px;}
+.aw-year{font-family:var(--serif);font-size:28px;color:var(--red);margin-bottom:6px;letter-spacing:1px;}
+.aw-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:6px;}
+.aw-by{font-size:11px;color:var(--muted);}
+
+/* TESTIMONIALS */
+.testi{background:var(--card);}
+.testi-head{text-align:center;margin-bottom:60px;}
+.testi-head .sp{max-width:500px;margin:0 auto;}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.tc{background:var(--dark);border:1px solid var(--border2);padding:32px 28px;transition:transform .3s,box-shadow .3s;}
+.tc:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(255,77,77,.1);}
+.tc-stars{color:var(--red);font-size:16px;margin-bottom:16px;letter-spacing:2px;}
+.tc-quote{font-size:28px;color:rgba(255,77,77,.2);font-family:Georgia,serif;line-height:1;margin-bottom:10px;}
+.tc-text{font-size:14px;color:var(--muted);line-height:1.85;font-weight:300;font-style:italic;margin-bottom:24px;}
+.tc-author{display:flex;align-items:center;gap:14px;}
+.tc-av{width:44px;height:44px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:16px;color:var(--white);flex-shrink:0;}
+.tc-name{font-size:14px;font-weight:700;color:var(--white);margin-bottom:2px;}
+.tc-sub{font-size:11px;color:var(--muted);}
+
+/* CTA BANNER */
+.cta-bar{background:var(--red);padding:60px;display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap;}
+.cta-bar-text h3{font-family:var(--serif);font-size:clamp(28px,3.5vw,46px);color:var(--white);letter-spacing:1px;line-height:1.1;}
+.cta-bar-text p{font-size:14px;color:rgba(255,255,255,.7);margin-top:6px;font-weight:300;}
+.cta-bar-btns{display:flex;gap:12px;flex-shrink:0;}
+.btn-white{display:inline-block;padding:14px 36px;background:var(--white);color:var(--red);font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;transition:all .2s;border-radius:3px;}
+.btn-white:hover{background:var(--black);color:var(--white);transform:translateY(-2px);}
+.btn-red-out{display:inline-block;padding:14px 36px;border:2px solid rgba(255,255,255,.5);color:var(--white);font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:all .2s;border-radius:3px;}
+.btn-red-out:hover{border-color:var(--white);background:rgba(255,255,255,.1);transform:translateY(-2px);}
+
+/* ============================================================
+   RESPONSIVE — ABOUT PAGE (ALL BREAKPOINTS)
+   ============================================================ */
+
+/* 1536px — Large desktops / 4K scaled */
+@media (max-width: 1536px) {
+  header { padding: 20px 50px; }
+  header.sc { padding: 13px 50px; }
+  section { padding: 100px 50px; }
+  .page-hero { padding: 0 50px 76px; }
+  .stats-sec { padding: 76px 50px; }
+  
+}
+
+/* 1280px — Standard desktop */
+@media (max-width: 1280px) {
+  header { padding: 18px 44px; }
+  header.sc { padding: 12px 44px; }
+  nav { gap: 24px; }
+  section { padding: 96px 44px; }
+  .page-hero { padding: 0 44px 72px; }
+  .stats-sec { padding: 72px 44px; }
+  
+}
+
+/* 1024px — Small desktop / large tablet landscape */
+@media (max-width: 1024px) {
+  header { padding: 18px 40px; }
+  header.sc { padding: 12px 40px; }
+  section { padding: 90px 40px; }
+  .page-hero { padding: 0 40px 70px; }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .aw-grid { grid-template-columns: repeat(2, 1fr); }
+  
+  
+  .stats-sec { padding: 70px 40px; }
+}
+
+/* 900px — Tablet portrait wide (nav collapses) */
+@media (max-width: 900px) {
+  header { padding: 18px 32px; }
+  header.sc { padding: 12px 32px; }
+  nav, .nav-btns { display: none !important; }
+  .ham { display: flex !important; }
+  section { padding: 80px 32px; }
+  .page-hero { padding: 0 32px 60px; min-height: 48vh; }
+  .story { grid-template-columns: 1fr; gap: 40px; }
+  .story-main, .story-placeholder { height: 400px; }
+  .story-float { display: none; }
+  .val-grid { grid-template-columns: repeat(2, 1fr); }
+  .stats-sec { padding: 60px 32px; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(2) { border-right: none; }
+  .stat:nth-child(3) { border-top: 1px solid var(--border2); border-right: 1px solid var(--border2); }
+  .stat:nth-child(4) { border-right: none; border-top: 1px solid var(--border2); }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .aw-grid { grid-template-columns: repeat(2, 1fr); }
+  .testi-grid { grid-template-columns: repeat(2, 1fr); }
+  .cta-bar { flex-direction: column; text-align: center; padding: 40px 32px; }
+  .cta-bar-btns { justify-content: center; }
+  
+  
+}
+
+/* 768px — Tablet portrait / large phone landscape */
+@media (max-width: 768px) {
+  header { padding: 14px 20px; background: rgba(8,8,8,.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  header.sc { padding: 14px 20px; }
+  section { padding: 72px 28px; }
+  .page-hero { padding: 0 20px 52px; min-height: 44vh; }
+  .ph-h1 { font-size: clamp(48px, 10vw, 80px); }
+  .story-highlights { grid-template-columns: 1fr 1fr; }
+  .story-btns { flex-direction: column; align-items: flex-start; }
+  .val-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .tm-img, .tm-placeholder { height: 220px; }
+  .aw-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .testi-grid { grid-template-columns: 1fr; }
+  .cta-bar { padding: 36px 20px; }
+  
+  
+  
+}
+/* ── TIMELINE — VERTICAL LAYOUT ON MOBILE ── */
+@media (max-width: 768px) {
+
+  /* stop sideways scrolling */
+  .timeline {
+    overflow-x: visible;
+    padding-bottom: 0;
+  }
+
+  /* stack items vertically */
+  .tl-track {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    min-width: 0;                 /* cancels desktop's max-content width */
+    padding: 10px 0 10px 8px;
+    position: relative;
+  }
+
+  /* the line: now vertical, down the left side */
+  .tl-track::before {
+    top: 20px;
+    bottom: 20px;
+    left: 15px;                   /* runs through the dot centers */
+    right: auto;
+    width: 2px;
+    height: auto;
+    background: linear-gradient(to bottom, var(--red), var(--red) 90%, transparent);
+  }
+
+  /* each item: dot on the left, card on the right */
+  .tl-item {
+    flex-direction: row;
+    align-items: flex-start;
+    width: 100%;
+    gap: 18px;
+  }
+
+  .tl-dot {
+    margin-bottom: 0;
+    margin-top: 14px;             /* aligns dot with the year text */
+    flex-shrink: 0;
+  }
+
+  /* card fills remaining width */
+  .tl-content {
+    width: auto;
+    flex: 1;
+    text-align: left;
+    padding: 18px 16px;
+  }
+
+  .tl-year  { font-size: 30px; }
+  .tl-title { font-size: 13px; }
+  .tl-desc  { font-size: 12px; line-height: 1.7; }
+}
+
+@media (max-width: 375px) {
+  .tl-track { gap: 22px; }
+  .tl-year  { font-size: 26px; }
+  .tl-content { padding: 15px 13px; }
+}
+
+/* 640px — Large phone portrait */
+@media (max-width: 640px) {
+  section { padding: 64px 24px; }
+  .page-hero { padding: 0 20px 48px; min-height: 42vh; }
+  .story-main, .story-placeholder { height: 320px; }
+  .stats-sec { padding: 52px 20px; }
+  .tm-img, .tm-placeholder { height: 240px; }
+  
+  
+}
+
+/* 480px — Standard phone portrait */
+@media (max-width: 480px) {
+  section { padding: 56px 20px; }
+  .page-hero { min-height: 40vh; padding: 0 20px 44px; }
+  .ph-h1 { font-size: clamp(40px, 11vw, 60px); }
+  .ph-tag { font-size: 9px; padding: 5px 12px; letter-spacing: 2px; }
+  .story-main, .story-placeholder { height: 280px; }
+  .story-highlights { grid-template-columns: 1fr; }
+  .story-body { font-size: 14px; }
+  .stats-inner { grid-template-columns: 1fr 1fr; }
+  .stats-sec { padding: 48px 20px; }
+  .team-grid { grid-template-columns: 1fr; }
+  .tm-img, .tm-placeholder { height: 260px; }
+  .aw-grid { grid-template-columns: repeat(2, 1fr); }
+  .tc { padding: 24px 20px; }
+}
+
+/* 425px — Large phone portrait */
+@media (max-width: 425px) {
+  section { padding: 52px 18px; }
+  .page-hero { padding: 0 18px 42px; }
+  .story-main, .story-placeholder { height: 260px; }
+  .tm-img, .tm-placeholder { height: 250px; }
+  .stats-sec { padding: 44px 18px; }
+}
+
+/* 375px — iPhone SE / small phones */
+@media (max-width: 375px) {
+  .blog-hero { padding: 86px 14px 36px; }
+  .blog-main { padding: 28px 14px 44px; }
+  .blog-hero h1 { font-size: clamp(2.2rem, 10vw, 3rem); }
+  .feat-card img { height: 170px; }
+  .pc:not(.wide) img { height: 140px; }
+  .feat-title { font-size: 1.4rem; }
+  .pc-title { font-size: 1.05rem; }
+  .sb-box { padding: 14px; }
+  .sb-box h3 { font-size: 1.05rem; }
+  .pop-thumb { width: 46px; height: 46px; }
+  .ig-grid { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+}
+
+/* 320px — Very small phones */
+@media (max-width: 320px) {
+  section { padding: 36px 12px; }
+
+  /* Hero */
+  .hero-inner { padding: 66px 12px 24px; }
+  .hero-h1 { font-size: 28px; letter-spacing: 0; line-height: .94; }
+  .hero-p { font-size: 12px; margin-bottom: 18px; }
+.hero-pill { font-size: 9px; padding: 4px 10px; letter-spacing: 1.5px; }
+
+  .hero-btns .btn-primary,
+  .hero-btns .btn-outline { padding: 12px 14px; font-size: 11px; }
+
+  /* About */
+  .about-main { height: 200px; }
+  .ab-t { font-size: 12px; }
+  .ab-s { font-size: 10px; }
+
+  /* Specials */
+  .dish-img { height: 150px; }
+  .dish-body { padding: 10px; }
+  .dish-name { font-size: 14px; }
+  .dish-desc { font-size: 10px; }
+  .dish-price { font-size: 16px; }
+
+  /* Stats */
+  .stats { grid-template-columns: 1fr; padding: 32px 12px; }
+  .stat { border-right: none !important; border-bottom: 1px solid var(--border2); padding: 14px; }
+  .stat:last-child { border-bottom: none; }
+  .stat:nth-child(2) { border-right: none; }
+  .stat:nth-child(3) { border-right: none; border-top: none; }
+  .stat:nth-child(4) { border-right: none; border-top: none; }
+  .stat-n { font-size: 48px; }
+
+  /* Menu */
+  .tabs { gap: 0; }
+  .tab { padding: 9px 6px; font-size: 9px; letter-spacing: .5px; }
+  .mc-img { height: 120px; }
+
+  /* Chefs */
+  .chef-img { height: 230px; }
+  .chef-name { font-size: 16px; }
+  .chef-bio { font-size: 11px; }
+
+  /* Reservation */
+  .res-card { padding: 16px 12px; }
+  .res-t { font-size: 20px; }
+  .fg label { font-size: 9px; }
+  .fg input, .fg select { padding: 8px 9px; font-size: 10px; }
+  .pills { gap: 4px; }
+  .pill { padding: 6px 8px; font-size: 9px; }
+  .sub-btn { padding: 11px; font-size: 10px; letter-spacing: .5px; }
+
+  /* Blog */
+  .bc-img { height: 130px; }
+  .bc-title { font-size: 13px; }
+  .bc-body { padding: 12px; }
+
+  /* CTA */
+  .cta { padding: 44px 12px; }
+  .cta-btns .btn-primary,
+  .cta-btns .btn-outline { padding: 11px 14px; font-size: 10px; }
+
+  /* Newsletter */
+  .nl { padding: 36px 12px; }
+  .nl h3 { font-size: 22px; }
+  .nl p { font-size: 11px; }
+
+  /* Footer */
+  
+  
+  
+  
+  
+  
+  
+}
+
+@media (max-width: 480px) {
+  .tl-item { width: 165px; }
+  .tl-content { width: 152px; padding: 14px 12px; }
+  .tl-year { font-size: 26px; }
+}
+
+/* Accessibility — respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div id="sb"></div>
+
+<!-- HEADER -->
+<header id="hdr">
+  <a href="./index.html" class="logo"><img src="./assets/stackly logo.webp" alt="Stackly Logo" class="logo-img"><span class="logo-text"><span class="logo-stack">STACK</span><span class="logo-ly">LY</span></span></a>
+  <nav>
+    <a href="./index.html" class="active">Home</a>
+    <a href="./about.html">About</a>
+    <a href="./menu.html">Menu</a>
+    <a href="./reservation.html">Reservation</a>
+    <a href="./blog.html">Blog</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+  <div class="nav-btns">
+    <a href="./login.html" class="btn-ghost">Login</a>
+    <a href="./404page.html" class="btn-red">Book a Table</a>
+  </div>
+  <button class="ham" id="ham"><span></span><span></span><span></span></button>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mob" id="mm">
+  <button class="mob-close" id="mm-close" aria-label="Close menu">✕</button>
+  <a href="./index.html" onclick="cm()">HOME</a>
+  <a href="./about.html" onclick="cm()">ABOUT</a>
+  <a href="./menu.html" onclick="cm()">MENU</a>
+  <a href="./reservation.html" onclick="cm()">RESERVATION</a>
+  <a href="./blog.html" onclick="cm()">BLOG</a>
+  <a href="./contact.html" onclick="cm()">CONTACT</a>
+  <div class="mob-btns">
+    <a href="./login.html" class="btn-ghost" onclick="cm()">Login</a>
+    <a href="./404page.html" class="btn-red" onclick="cm()">Book a Table</a>
+  </div>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="ph-grid"></div>
+  <img class="hero-float-img hfi1" src="./assets/spicy stack.webp" alt="">
+  <img class="hero-float-img hfi2" src="./assets/BBQ.webp" alt="">
+  <img class="hero-float-img hfi3" src="./assets/pancakes.webp" alt="">
+  <img class="hero-float-img hfi4" src="./assets/bowl.webp" alt="">
+
+  <div class="ph-circle"></div>
+  <div class="ph-circle2"></div>
+  <div class="ph-content fade-up" style="padding-top:100px;">
+    <div class="ph-tag">Our Story</div>
+    <h1 class="ph-h1">ABOUT <span>STACKLY</span></h1>
+    <p class="ph-breadcrumb"><a href="./index.html">Home</a> / About Us</p>
+  </div>
+</div>
+
+<!-- STORY SECTION -->
+<section class="story">
+  <div class="story-img-wrap fade-in">
+<img class="story-main" src="./assets/interior.webp" alt="Stackly Interior">
+    <div class="story-float">
+      <div class="story-float-n">12+</div>
+      <div class="story-float-l">Years of<br>Happiness</div>
+    </div>
+    <div class="story-badge">EST.<br>2012</div>
+  </div>
+  <div class="fade-up">
+    <div class="lbl">Our Story</div>
+    <h2 class="sh2">ONE HUNGRY NIGHT CHANGED EVERYTHING</h2>
+    <p class="story-body">Back in 2012, our founder Arjun Krishnan was wandering Salem's streets after midnight, desperately hungry, and thought: <em style="color:var(--white);font-style:normal;">"Why can't great food be FUN?"</em><br><br>That one grumbling stomach changed everything. He rented a tiny kitchen, hired two friends, and opened Stackly with just 8 tables and an absolutely unhinged menu. Queues formed on day one.<br><br>Today, Stackly is Salem's happiest restaurant — where bold flavours meet even bolder laughs. From crispy starters to decadent desserts, we stack greatness on every single plate!</p>
+    <div class="story-highlights">
+      <div class="sh"><div class="sh-t">Farm Fresh Daily</div><div class="sh-s">Local suppliers, zero compromise</div></div>
+      <div class="sh"><div class="sh-t">12+ Expert Chefs</div><div class="sh-s">Trained & wildly passionate</div></div>
+      <div class="sh"><div class="sh-t">Party-Ready Ambience</div><div class="sh-s">For every mood and occasion</div></div>
+      <div class="sh"><div class="sh-t">No Long Waits</div><div class="sh-s">Book ahead and skip the queue</div></div>
+    </div>
+    <div class="story-btns">
+      <a href="./404page.html" class="btn-primary">Book A Table</a>
+      <a href="./404page.html" class="btn-outline">See Our Menu</a>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="timeline-sec">
+  <div class="tl-head fade-up">
+    <div class="lbl">Our Journey</div>
+    <h2 class="sh2">HOW WE GOT HERE</h2>
+    <p class="sp">From a midnight craving to Salem's most beloved restaurant — here's every juicy chapter.</p>
+  </div>
+  <div class="timeline">
+    <div class="tl-track">
+      <div class="tl-item fade-up">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-year">2012</div>
+          <div class="tl-title">The Crazy Beginning</div>
+          <div class="tl-desc">Opened with 8 tables, 2 chefs, and an absolutely unhinged menu. Salem had never seen anything like it.</div>
+        </div>
+      </div>
+      <div class="tl-item fade-up" style="transition-delay:.1s">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-year">2014</div>
+          <div class="tl-title">First Big Award</div>
+          <div class="tl-desc">Won "Best New Restaurant in Tamil Nadu" at the Regional Food Excellence Awards. We cried. A lot.</div>
+        </div>
+      </div>
+      <div class="tl-item fade-up" style="transition-delay:.2s">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-year">2016</div>
+          <div class="tl-title">Big Expansion</div>
+          <div class="tl-desc">Moved to our current location, tripled seating, added the open kitchen and live music stage.</div>
+        </div>
+      </div>
+      <div class="tl-item fade-up" style="transition-delay:.3s">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-year">2019</div>
+          <div class="tl-title">Chef Priya Joins</div>
+          <div class="tl-desc">Pastry legend Chef Priya joined the team and immediately broke Salem's collective sweet tooth.</div>
+        </div>
+      </div>
+      <div class="tl-item fade-up" style="transition-delay:.4s">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-year">2021</div>
+          <div class="tl-title">Survived &amp; Thrived</div>
+          <div class="tl-desc">Launched delivery, home kits, and cooking classes during tough times. Our community carried us through.</div>
+        </div>
+      </div>
+      <div class="tl-item fade-up" style="transition-delay:.5s">
+        <div class="tl-dot"></div>
+        <div class="tl-content">
+          <div class="tl-year">2025</div>
+          <div class="tl-title">Still Going Wild</div>
+          <div class="tl-desc">12,000+ happy customers, 24 awards, and still the craziest kitchen in Salem. Not stopping anytime soon.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VALUES -->
+<section class="values">
+  <div class="val-head fade-up">
+    <div class="lbl">What We Stand For</div>
+    <h2 class="sh2">OUR CORE VALUES</h2>
+  </div>
+  <div class="val-grid">
+    <div class="val-card fade-up" style="transition-delay:0s">
+      <div class="val-num">01</div>
+      <div class="val-icon">🌾</div>
+      <div class="val-title">Fresh Over Everything</div>
+      <div class="val-desc">We source fresh ingredients daily from local farms. If it isn't fresh, it doesn't go on your plate. Period.</div>
+    </div>
+    <div class="val-card fade-up" style="transition-delay:.08s">
+      <div class="val-num">02</div>
+      <div class="val-icon">🔥</div>
+      <div class="val-title">Passion on Every Plate</div>
+      <div class="val-desc">Every dish is made with genuine care and creativity. Our chefs don't cook to a formula — they cook with their hearts.</div>
+    </div>
+    <div class="val-card fade-up" style="transition-delay:.16s">
+      <div class="val-num">03</div>
+      <div class="val-icon">😂</div>
+      <div class="val-title">Fun is Mandatory</div>
+      <div class="val-desc">Life's too serious. We make sure every visit to Stackly leaves you smiling harder than when you arrived.</div>
+    </div>
+    <div class="val-card fade-up" style="transition-delay:.0s">
+      <div class="val-num">04</div>
+      <div class="val-icon">🤝</div>
+      <div class="val-title">Community First</div>
+      <div class="val-desc">We're a Salem institution. We hire local, source local, and give back to the community that made us who we are.</div>
+    </div>
+    <div class="val-card fade-up" style="transition-delay:.08s">
+      <div class="val-num">05</div>
+      <div class="val-icon">♻️</div>
+      <div class="val-title">Zero Waste Kitchen</div>
+      <div class="val-desc">Our kitchen runs on a strict zero-waste policy. Smart portioning, compostable packaging, and responsible sourcing.</div>
+    </div>
+    <div class="val-card fade-up" style="transition-delay:.16s">
+      <div class="val-num">06</div>
+      <div class="val-icon">⭐</div>
+      <div class="val-title">Excellence Always</div>
+      <div class="val-desc">24 awards aren't an excuse to relax — they're the bar we clear every single service. Standards only go up.</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-sec">
+  <div class="stats-inner">
+    <div class="stat fade-up"><span class="stat-n" data-t="12400">0</span><div class="stat-l">Smiling Customers</div></div>
+    <div class="stat fade-up" style="transition-delay:.1s"><span class="stat-n" data-t="86">0</span><div class="stat-l">Menu Dishes</div></div>
+    <div class="stat fade-up" style="transition-delay:.2s"><span class="stat-n" data-t="18">0</span><div class="stat-l">Pro Chefs</div></div>
+    <div class="stat fade-up" style="transition-delay:.3s"><span class="stat-n" data-t="24">0</span><div class="stat-l">Awards Won</div></div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<section class="team">
+  <div class="team-head fade-up">
+    <div class="lbl">Our Crew</div>
+    <h2 class="sh2">MEET THE LEGENDS</h2>
+    <p class="sp">The dream team behind every legendary plate. They cook with love, a dash of madness, and zero chill!</p>
+  </div>
+  <div class="team-grid">
+    <div class="tm fade-up" style="transition-delay:0s">
+      <div class="tm-img-wrap">
+<img class="tm-img" src="./assets/arjun.webp" alt="Chef Arjun">
+        <div class="tm-overlay">
+          <div class="tm-socs">
+            <a href="./404page.html" class="tm-soc">f</a>
+            <a href="./404page.html" class="tm-soc">in</a>
+            <a href="./404page.html" class="tm-soc">𝕏</a>
+          </div>
+        </div>
+      </div>
+      <div class="tm-body">
+        <div class="tm-name">CHEF ARJUN</div>
+        <div class="tm-role">Head Chef & Founder</div>
+        <div class="tm-bio">15 years of turning ordinary ingredients into extraordinary masterpieces. His BBQ sauce recipe is a state secret.</div>
+      </div>
+    </div>
+    <div class="tm fade-up" style="transition-delay:.1s">
+      <div class="tm-img-wrap">
+<img class="tm-img" src="./assets/priya.webp" alt="Chef Priya">
+        <div class="tm-overlay">
+          <div class="tm-socs">
+            <a href="./404page.html" class="tm-soc">f</a>
+            <a href="./404page.html" class="tm-soc">in</a>
+            <a href="./404page.html" class="tm-soc">𝕏</a>
+          </div>
+        </div>
+      </div>
+      <div class="tm-body">
+        <div class="tm-name">CHEF PRIYA</div>
+        <div class="tm-role">Pastry Artist & Dessert Queen</div>
+        <div class="tm-bio">She speaks fluent chocolate and her desserts have made grown men cry. The very good kind of crying.</div>
+      </div>
+    </div>
+    <div class="tm fade-up" style="transition-delay:.2s">
+      <div class="tm-img-wrap">
+<img class="tm-img" src="./assets/ravi.webp" alt="Chef Ravi">
+        <div class="tm-overlay">
+          <div class="tm-socs">
+            <a href="./404page.html" class="tm-soc">f</a>
+            <a href="./404page.html" class="tm-soc">in</a>
+            <a href="./404page.html" class="tm-soc">𝕏</a>
+          </div>
+        </div>
+      </div>
+      <div class="tm-body">
+        <div class="tm-name">CHEF RAVI</div>
+        <div class="tm-role">Grill Master & Spice Sorcerer</div>
+        <div class="tm-bio">Born with a spatula in hand! Ravi's marinades are so legendary that customers have tried to bribe him for the recipes.</div>
+      </div>
+    </div>
+    <div class="tm fade-up" style="transition-delay:.3s">
+      <div class="tm-img-wrap">
+<img class="tm-img" src="./assets/meena.webp" alt="Meena">
+        <div class="tm-overlay">
+          <div class="tm-socs">
+            <a href="./404page.html" class="tm-soc">f</a>
+            <a href="./404page.html" class="tm-soc">in</a>
+            <a href="./404page.html" class="tm-soc">𝕏</a>
+          </div>
+        </div>
+      </div>
+      <div class="tm-body">
+        <div class="tm-name">MEENA</div>
+        <div class="tm-role">Front of House Manager</div>
+        <div class="tm-bio">Keeps the whole operation running smoothly with a smile that's possibly illegal. Everyone loves Meena.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AWARDS -->
+<section class="awards">
+  <div class="aw-head fade-up">
+    <div class="lbl">Recognition</div>
+    <h2 class="sh2">AWARDS & HONOURS</h2>
+  </div>
+  <div class="aw-grid">
+    <div class="aw fade-up" style="transition-delay:0s">
+      <div class="aw-icon">🏆</div>
+      <div class="aw-year">2024</div>
+      <div class="aw-title">Best Restaurant in Salem</div>
+      <div class="aw-by">Tamil Nadu Food Awards</div>
+    </div>
+    <div class="aw fade-up" style="transition-delay:.08s">
+      <div class="aw-icon">⭐</div>
+      <div class="aw-year">2023</div>
+      <div class="aw-title">Outstanding Guest Experience</div>
+      <div class="aw-by">National Dining Excellence</div>
+    </div>
+    <div class="aw fade-up" style="transition-delay:.16s">
+      <div class="aw-icon">🍽️</div>
+      <div class="aw-year">2022</div>
+      <div class="aw-title">Best Menu Innovation</div>
+      <div class="aw-by">South India Culinary Guild</div>
+    </div>
+    <div class="aw fade-up" style="transition-delay:.24s">
+      <div class="aw-icon">🌿</div>
+      <div class="aw-year">2021</div>
+      <div class="aw-title">Sustainable Kitchen Award</div>
+      <div class="aw-by">Green Restaurant Initiative</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi">
+  <div class="testi-head fade-up">
+    <div class="lbl">Happy Customers</div>
+    <h2 class="sh2">WHAT PEOPLE SAY</h2>
+    <p class="sp">12,000+ smiles and counting. Here's what a few of our regulars have to say.</p>
+  </div>
+  <div class="testi-grid">
+    <div class="tc fade-up" style="transition-delay:0s">
+      <div class="tc-stars">★★★★★</div>
+      <div class="tc-quote">"</div>
+      <div class="tc-text">Stackly isn't just a restaurant — it's a whole vibe. The food is insanely good, the staff are like family, and the energy is unmatched. We celebrate every milestone here!</div>
+      <div class="tc-author">
+        <div class="tc-av">KS</div>
+        <div>
+          <div class="tc-name">Kavitha Suresh</div>
+          <div class="tc-sub">Regular since 2014 · Salem</div>
+        </div>
+      </div>
+    </div>
+    <div class="tc fade-up" style="transition-delay:.12s">
+      <div class="tc-stars">★★★★★</div>
+      <div class="tc-quote">"</div>
+      <div class="tc-text">I travel from Chennai specifically to eat at Stackly. That Spicy Stack burger has ruined every other burger for me forever. Zero regrets.</div>
+      <div class="tc-author">
+        <div class="tc-av">RM</div>
+        <div>
+          <div class="tc-name">Rohit Mehta</div>
+          <div class="tc-sub">Loyal Fan · Chennai</div>
+        </div>
+      </div>
+    </div>
+    <div class="tc fade-up" style="transition-delay:.24s">
+      <div class="tc-stars">★★★★★</div>
+      <div class="tc-quote">"</div>
+      <div class="tc-text">Had my daughter's birthday party here and they made it absolutely magical. Personal touches everywhere, amazing food, and the cake from Chef Priya was out of this world.</div>
+      <div class="tc-author">
+        <div class="tc-av">LV</div>
+        <div>
+          <div class="tc-name">Lakshmi Vijay</div>
+          <div class="tc-sub">Event Customer · Salem</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-bar fade-up">
+  <div class="cta-bar-text">
+    <h3>READY TO EXPERIENCE IT YOURSELF?</h3>
+    <p>Tables fill up fast — grab yours before it's gone!</p>
+  </div>
+  <div class="cta-bar-btns">
+    <a href="./404page.html" class="btn-white">Book A Table</a>
+    <a href="./404page.html" class="btn-red-out">Explore Menu</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="fg-grid">
+    <div>
+      <div class="fl-logo">
+  <img src="./assets/stackly logo.webp" alt="Stackly" class="fl-logo-img">
+  <span style="display:flex;"><span class="fl-stack">STACK</span><span class="fl-ly">LY</span></span>
+</div>
+      <p class="fl-desc">Salem's most fun restaurant since 2012. We don't just serve food — we serve memories, laughter, and seriously good vibes.</p>
+      <div class="fl-socs">
+        <a href="./404page.html" class="fl-soc">f</a><a href="./404page.html" class="fl-soc">in</a>
+        <a href="./404page.html" class="fl-soc">𝕏</a><a href="./404page.html" class="fl-soc">▶</a><a href="./404page.html" class="fl-soc">💬</a>
+      </div>
+    </div>
+    <div class="fc">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="./index.html">→ Home</a></li><li><a href="./about.html">→ About Us</a></li>
+        <li><a href="./menu.html">→ Our Menu</a></li><li><a href="./reservation.html">→ Reservations</a></li>
+        <li><a href="./blog.html">→ Blog</a></li><li><a href="./contact.html">→ Contact</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>New Menu</h4>
+      <ul>
+        <li><a href="./404page.html">→ Stackly BBQ Platter</a></li><li><a href="./404page.html">→ Spicy Chaos Burger</a></li>
+        <li><a href="./404page.html">→ Mango Lassi Supreme</a></li><li><a href="./404page.html">→ Triple Choco Lava</a></li>
+        <li><a href="./404page.html">→ Power Grain Bowl</a></li><li><a href="./404page.html">→ Chef's Secret Biriyani</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>Find Us</h4>
+      <div class="fc-inf"><strong>Address</strong>MMR Complex, Chinna Thirupathi, near Chinna Muniyappan Kovil, Salem, Tamil Nadu 636008</div>
+      <div class="fc-inf"><strong>Call Us</strong>+91 98765 43210</div>
+      <div class="fc-inf"><strong>Email</strong>hello@stackly.in</div>
+      <div class="fc-hrs">
+        <div class="fc-hr"><span>Mon – Thu</span><span>11AM – 10PM</span></div>
+        <div class="fc-hr"><span>Fri – Sat</span><span>11AM – 11PM</span></div>
+        <div class="fc-hr"><span>Sunday</span><span>12PM – 9PM</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr-btm">
+    <div class="ftr-copy">© 2026 Stackly Restaurant. Made with ♥ in Salem, Tamil Nadu.</div>
+    <div class="ftr-links"><a href="./404page.html">Privacy Policy</a><a href="./404page.html">Terms</a><a href="./404page.html">Sitemap</a></div>
+  </div>
+</footer>
+
+<script>
+// Scroll progress bar
+window.addEventListener('scroll', function () {
+  var t = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('sb').style.width = (window.scrollY / t * 100) + '%';
+  document.getElementById('hdr').classList.toggle('sc', window.scrollY > 60);
+});
+
+// Scroll reveal
+var obs = new IntersectionObserver(function (entries) {
+  entries.forEach(function (x) {
+    if (x.isIntersecting) { x.target.classList.add('vis'); obs.unobserve(x.target); }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -36px 0px' });
+document.querySelectorAll('.fade-up, .fade-in').forEach(function (el) { obs.observe(el); });
+
+// Trigger hero immediately
+document.querySelectorAll('.page-hero .fade-up').forEach(function (el) {
+  setTimeout(function () { el.classList.add('vis'); }, 200);
+});
+
+// Count-up
+var cobs = new IntersectionObserver(function (entries) {
+  entries.forEach(function (x) {
+    if (!x.isIntersecting) return;
+    var el = x.target, t = parseInt(el.dataset.t);
+    var isK = t >= 1000, d = isK ? Math.round(t / 100) / 10 : t;
+    var cur = 0, step = d / 60;
+    var timer = setInterval(function () {
+      cur += step;
+      if (cur >= d) { cur = d; clearInterval(timer); }
+      el.textContent = isK ? (Math.floor(cur * 10) / 10) + 'K+' : Math.floor(cur);
+    }, 20);
+    cobs.unobserve(el);
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.stat-n[data-t]').forEach(function (el) { cobs.observe(el); });
+</script>
+<script src="./common.js"></script>
+</body>
+</html>

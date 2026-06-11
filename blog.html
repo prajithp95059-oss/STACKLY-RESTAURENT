@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Blog — Stackly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="./common.css"/>
+<style>
+
+header{position:fixed;top:0;left:0;right:0;z-index:990;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;transition:all .35s;}
+header.sc{background:rgba(8,8,8,.95);backdrop-filter:blur(14px);padding:14px 60px;border-bottom:1px solid var(--border2);}
+.logo{display:flex;align-items:center;gap:1px;text-decoration:none;}
+.logo-stack{color:var(--white);}
+.logo-ly{color:var(--red);}
+
+nav{display:flex;gap:32px;}
+nav a{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:1px;text-transform:uppercase;transition:color .25s;}
+nav a:hover,nav a.act{color:var(--white);}
+.nav-btns{display:flex;gap:10px;align-items:center;}
+.btn-ghost:hover{border-color:var(--red);color:var(--red);}
+.btn-red:hover{background:var(--red-lt);transform:translateY(-1px);}
+
+/* ══ HERO ══ */
+.blog-hero{
+  background:var(--black);
+  padding:140px 60px 64px;
+  position:relative;overflow:hidden;
+}
+.blog-hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 70% at 15% 50%,rgba(255,77,77,.08) 0%,transparent 60%);
+}
+.blog-hero::after{
+  content:'';position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,77,77,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,77,77,.03) 1px,transparent 1px);
+  background-size:64px 64px;
+}
+.blog-hero-inner{
+  max-width:1100px;margin:0 auto;
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:56px;align-items:center;
+}
+.bh-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.7rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--red);margin-bottom:16px;
+}
+.bh-eyebrow::before{content:'';width:32px;height:1px;background:var(--red);}
+.blog-hero h1{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.6rem,7vw,6.5rem);
+  line-height:.9;color:#fff;margin-bottom:18px;letter-spacing:1px;
+}
+.blog-hero h1 em{color:var(--red);font-style:normal;display:block;}
+.blog-hero-desc{font-size:.95rem;color:var(--muted);max-width:380px;line-height:1.75;}
+
+/* featured card */
+.feat-card{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:18px;overflow:hidden;
+  text-decoration:none;display:block;
+  transition:transform .3s,box-shadow .3s;
+}
+.feat-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(255,77,77,.14);}
+.feat-img-wrap{position:relative;overflow:hidden;}
+.feat-card img{width:100%;height:220px;object-fit:cover;display:block;transition:transform .5s;}
+.feat-card:hover img{transform:scale(1.05);}
+.feat-ribbon{
+  position:absolute;top:14px;left:14px;
+  background:var(--red);color:#fff;
+  font-size:.62rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+  padding:4px 12px;border-radius:50px;
+}
+.feat-body{padding:20px 22px;}
+.feat-cat{
+  font-size:.64rem;font-weight:700;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--red);margin-bottom:8px;
+}
+.feat-title{
+  font-family:'Bebas Neue',sans-serif;font-size:1.65rem;
+  color:#fff;line-height:1.05;margin-bottom:14px;
+}
+.feat-foot{
+  display:flex;align-items:center;gap:18px;
+  padding-top:12px;border-top:1px solid var(--border2);
+  font-size:.73rem;color:var(--muted);
+}
+.feat-foot span{display:flex;align-items:center;gap:5px;}
+
+/* ══ MAIN ══ */
+.blog-main{
+  background:var(--black);
+  padding:60px 60px 96px;
+}
+.blog-main-inner{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 288px;
+  gap:44px;align-items:start;
+}
+
+/* section heading */
+.sec-heading{
+  font-family:'Bebas Neue',sans-serif;font-size:1.4rem;
+  color:#fff;letter-spacing:.5px;margin-bottom:24px;
+  display:flex;align-items:center;gap:14px;
+}
+.sec-heading::after{content:'';flex:1;height:1px;background:var(--border2);}
+
+/* ══ POST CARDS ══ */
+.posts-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
+}
+
+/* wide card — spans both columns */
+.pc.wide{
+  grid-column:1 / -1;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  border-radius:16px;
+  overflow:hidden;
+  background:var(--card);
+  border:1px solid var(--border2);
+  text-decoration:none;
+  transition:transform .3s,box-shadow .3s,border-color .3s;
+}
+.pc.wide:hover{
+  transform:translateY(-4px);
+  box-shadow:0 18px 44px rgba(0,0,0,.55);
+  border-color:rgba(255,77,77,.3);
+}
+.pc.wide .pc-img-wrap{overflow:hidden;}
+.pc.wide img{width:100%;height:100%;min-height:220px;object-fit:cover;display:block;transition:transform .45s;}
+.pc.wide:hover img{transform:scale(1.05);}
+.pc.wide .pc-body{
+  padding:28px 28px;
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.pc.wide .pc-title{font-size:1.5rem;}
+
+/* normal card */
+.pc{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:16px;overflow:hidden;
+  text-decoration:none;display:flex;flex-direction:column;
+  transition:transform .3s,box-shadow .3s,border-color .3s;
+}
+.pc:not(.wide):hover{
+  transform:translateY(-4px);
+  box-shadow:0 16px 40px rgba(0,0,0,.5);
+  border-color:rgba(255,77,77,.28);
+}
+.pc:not(.wide) .pc-img-wrap{overflow:hidden;}
+.pc:not(.wide) img{
+  width:100%;height:170px;min-height:170px;
+  object-fit:cover;display:block;
+  transition:transform .45s;
+}
+.pc:not(.wide):hover img{transform:scale(1.05);}
+.pc:not(.wide) .pc-body{
+  padding:16px 18px;
+  display:flex;flex-direction:column;
+  flex:1;
+}
+
+/* shared body parts */
+.pc-tag{
+  display:inline-block;font-size:.6rem;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;
+  padding:3px 10px;border-radius:50px;margin-bottom:9px;
+  width:fit-content;
+}
+.pc-tag.food  {background:rgba(255,77,77,.14);color:var(--red);}
+.pc-tag.story {background:rgba(96,180,240,.12);color:#60b4f0;}
+.pc-tag.tips  {background:rgba(100,220,100,.12);color:#64dc64;}
+.pc-tag.chef  {background:rgba(240,192,96,.12); color:#f0c060;}
+.pc-tag.culture{background:rgba(200,100,240,.12);color:#c864f0;}
+
+.pc-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.2rem;color:#fff;line-height:1.1;margin-bottom:8px;
+}
+.pc-excerpt{
+  font-size:.78rem;color:var(--muted);line-height:1.7;
+  margin-bottom:0;flex:1;min-height:0;
+  display:-webkit-box;
+  -webkit-line-clamp:3;
+  -webkit-box-orient:vertical;overflow:hidden;
+}
+
+/* author row */
+.pc-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:12px;padding-top:12px;
+  border-top:1px solid var(--border2);
+  flex-shrink:0;
+  gap:8px;
+}
+.pc-author{
+  display:flex;align-items:center;gap:8px;
+  min-width:0;overflow:hidden;
+}
+.pc-av{
+  width:24px;height:24px;
+  border-radius:50%;object-fit:cover;
+  flex-shrink:0;display:block;
+}
+.pc-author-name{
+  font-size:.75rem;color:var(--muted);
+  font-family:'Outfit',sans-serif;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.pc-read{
+  font-size:.7rem;color:var(--red);
+  font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;white-space:nowrap;
+  flex-shrink:0;
+}
+
+/* pagination */
+.pagination{
+  display:flex;align-items:center;gap:8px;
+  margin-top:40px;justify-content:center;
+}
+.pg-btn{
+  width:36px;height:36px;border-radius:8px;
+  border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;color:var(--muted);cursor:pointer;
+  font-family:'Outfit',sans-serif;background:transparent;
+  transition:all .2s;
+}
+.pg-btn.on,.pg-btn:hover{
+  border-color:var(--red);color:#fff;
+  background:rgba(255,77,77,.1);
+}
+
+/* ══ SIDEBAR ══ */
+.blog-sidebar{display:flex;flex-direction:column;gap:18px;}
+
+.sb-box{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:14px;padding:20px;
+}
+.sb-box h3{
+  font-family:'Bebas Neue',sans-serif;font-size:1.2rem;
+  color:#fff;letter-spacing:.5px;
+  margin-bottom:14px;padding-bottom:10px;
+  border-bottom:1px solid var(--border2);
+}
+
+/* popular */
+.pop-item{
+  display:flex;gap:11px;align-items:flex-start;
+  margin-bottom:13px;text-decoration:none;
+  padding-bottom:13px;border-bottom:1px solid var(--border2);
+}
+.pop-item:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+.pop-thumb{
+  width:54px;height:54px;border-radius:8px;
+  object-fit:cover;flex-shrink:0;display:block;
+}
+.pop-cat{font-size:.6rem;color:var(--red);font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;}
+.pop-title{font-size:.78rem;color:#fff;line-height:1.4;font-weight:500;}
+.pop-date{font-size:.68rem;color:var(--muted);margin-top:3px;}
+
+/* newsletter */
+.sb-nl{
+  background:linear-gradient(135deg,rgba(255,77,77,.09),rgba(255,77,77,.02));
+  border:1px solid rgba(255,77,77,.22);
+  border-radius:14px;padding:20px;
+}
+.sb-nl h3{
+  font-family:'Bebas Neue',sans-serif;font-size:1.2rem;
+  color:#fff;margin-bottom:6px;
+}
+.sb-nl p{font-size:.76rem;color:var(--muted);line-height:1.6;margin-bottom:12px;}
+.sb-nl input{
+  width:100%;box-sizing:border-box;
+  background:var(--dark);border:1px solid var(--border2);
+  border-radius:8px;padding:10px 13px;
+  color:#fff;font-family:'Outfit',sans-serif;font-size:.8rem;
+  outline:none;margin-bottom:8px;transition:border .2s;
+}
+.sb-nl input:focus{border-color:var(--red);}
+.sb-nl button{
+  width:100%;padding:10px;border-radius:8px;
+  background:var(--red);border:none;
+  color:#fff;font-family:'Outfit',sans-serif;
+  font-size:.8rem;font-weight:700;cursor:pointer;transition:all .2s;
+}
+.sb-nl button:hover{background:#ff3333;}
+
+/* tags */
+.tags{display:flex;flex-wrap:wrap;gap:7px;}
+.tag{
+  padding:5px 12px;border-radius:50px;
+  border:1px solid var(--border2);
+  font-size:.7rem;color:var(--muted);
+  cursor:pointer;transition:all .2s;
+}
+.tag:hover{border-color:var(--red);color:#fff;}
+
+/* instagram */
+.ig-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;}
+.ig-img{
+  aspect-ratio:1;border-radius:7px;
+  object-fit:cover;width:100%;
+  transition:opacity .2s;display:block;
+}
+.ig-img:hover{opacity:.65;}
+
+/* ============================================================
+   RESPONSIVE — BLOG PAGE (ALL BREAKPOINTS)
+   ============================================================ */
+
+/* 1536px — Large desktops / 4K scaled */
+@media (max-width: 1536px) {
+  header { padding: 20px 50px; }
+  header.sc { padding: 13px 50px; }
+  .blog-hero { padding: 136px 50px 60px; }
+  .blog-main { padding: 56px 50px 86px; }
+}
+
+/* 1280px — Standard desktop */
+@media (max-width: 1280px) {
+  header { padding: 18px 44px; }
+  header.sc { padding: 12px 44px; }
+  nav { gap: 24px; }
+  .blog-hero { padding: 132px 44px 58px; }
+  .blog-main { padding: 54px 44px 82px; }
+}
+
+/* 1024px — Small desktop / large tablet landscape */
+@media (max-width: 1024px) {
+  header { padding: 18px 40px; }
+  header.sc { padding: 12px 40px; }
+  .blog-hero { padding: 130px 40px 56px; }
+  .blog-main { padding: 52px 40px 80px; }
+}
+
+/* 900px — Tablet portrait wide (nav collapses) */
+@media (max-width: 900px) {
+  header { padding: 18px 32px; }
+  header.sc { padding: 12px 32px; }
+  nav, .nav-btns { display: none !important; }
+  .ham { display: flex !important; }
+  .blog-hero { padding: 120px 32px 52px; }
+  .blog-main { padding: 48px 32px 72px; }
+  .blog-hero-inner { grid-template-columns: 1fr; gap: 32px; }
+  .feat-card { max-width: 520px; }
+  .blog-main-inner { grid-template-columns: 1fr; gap: 36px; }
+}
+
+/* 768px — Tablet portrait / large phone landscape */
+@media (max-width: 768px) {
+  header { padding: 14px 20px; background: rgba(8,8,8,.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  header.sc { padding: 14px 20px; }
+  .blog-hero { padding: 108px 20px 48px; }
+  .blog-main { padding: 40px 20px 64px; }
+  .blog-hero-inner { grid-template-columns: 1fr; }
+  .feat-card { max-width: 100%; }
+  .blog-main-inner { grid-template-columns: 1fr; }
+  .posts-grid { gap: 16px; }
+  .blog-sidebar { margin-top: 8px; }
+}
+
+/* 640px — Large phone portrait */
+@media (max-width: 640px) {
+  .blog-hero { padding: 96px 20px 44px; }
+  .blog-main { padding: 36px 20px 56px; }
+  .posts-grid { grid-template-columns: 1fr; }
+  .pc.wide { grid-template-columns: 1fr; }
+  .pc.wide img { min-height: 200px; }
+  .pc.wide .pc-body { padding: 20px 18px; }
+  .posts-grid { gap: 14px; }
+}
+
+/* 480px — Standard phone portrait */
+@media (max-width: 480px) {
+  .blog-hero { padding: 90px 16px 40px; }
+  .blog-main { padding: 32px 16px 48px; }
+  .blog-hero h1 { font-size: clamp(2.6rem, 10vw, 3.6rem); }
+  .blog-hero-desc { font-size: .88rem; }
+  .feat-card img { height: 190px; }
+  .pc:not(.wide) img { height: 150px; }
+  .sb-box { padding: 16px; }
+}
+
+/* 425px — Large phone portrait */
+@media (max-width: 425px) {
+  .blog-hero { padding: 88px 15px 38px; }
+  .blog-main { padding: 30px 15px 46px; }
+  .feat-card img { height: 180px; }
+  .pc:not(.wide) img { height: 145px; }
+}
+
+/* 375px — iPhone SE / small phones */
+@media (max-width: 375px) {
+  .blog-hero { padding: 86px 14px 36px; }
+  .blog-main { padding: 28px 14px 44px; }
+  .blog-hero h1 { font-size: clamp(2.2rem, 10vw, 3rem); }
+  .feat-card img { height: 170px; }
+  .pc:not(.wide) img { height: 140px; }
+  .feat-title { font-size: 1.4rem; }
+  .pc-title { font-size: 1.05rem; }
+  .sb-box { padding: 14px; }
+  .sb-box h3 { font-size: 1.05rem; }
+  .pop-thumb { width: 46px; height: 46px; }
+  .ig-grid { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+}
+
+/* 320px — Very small phones */
+@media (max-width: 320px) {
+  .blog-hero { padding: 82px 12px 32px; }
+  .blog-main { padding: 24px 12px 40px; }
+  .blog-hero h1 { font-size: 2rem; letter-spacing: .5px; }
+  .feat-card img { height: 150px; }
+  .pc:not(.wide) img { height: 130px; }
+  .feat-body { padding: 14px 16px; }
+  .pc:not(.wide) .pc-body { padding: 12px 14px; }
+  .pc-title { font-size: .95rem; }
+  .pg-btn { width: 30px; height: 30px; font-size: .7rem; }
+  .sb-box { padding: 12px; }
+}
+
+/* Accessibility — respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+
+
+<header id="hdr">
+  <a href="./index.html" class="logo"><img src="./assets/stackly logo.webp" alt="Stackly Logo" class="logo-img"><span class="logo-text"><span class="logo-stack">STACK</span><span class="logo-ly">LY</span></span></a>
+  <nav>
+    <a href="./index.html" class="active">Home</a>
+    <a href="./about.html">About</a>
+    <a href="./menu.html">Menu</a>
+    <a href="./reservation.html">Reservation</a>
+    <a href="./blog.html">Blog</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+  <div class="nav-btns">
+    <a href="./login.html" class="btn-ghost">Login</a>
+    <a href="./404page.html" class="btn-red">Book a Table</a>
+  </div>
+  <button class="ham" id="ham"><span></span><span></span><span></span></button>
+</header>
+
+<div class="mob" id="mm">
+  <button class="mob-close" id="mm-close" aria-label="Close menu">✕</button>
+  <a href="./index.html" onclick="cm()">HOME</a>
+  <a href="./about.html" onclick="cm()">ABOUT</a>
+  <a href="./menu.html" onclick="cm()">MENU</a>
+  <a href="./reservation.html" onclick="cm()">RESERVATION</a>
+  <a href="./blog.html" onclick="cm()">BLOG</a>
+  <a href="./contact.html" onclick="cm()">CONTACT</a>
+  <div class="mob-btns">
+    <a href="./login.html" class="btn-ghost" onclick="cm()">Login</a>
+    <a href="./404page.html" class="btn-red" onclick="cm()">Book a Table</a>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="blog-hero">
+  <img class="hero-float-img hfi1" src="./assets/spicy stack.webp" alt="">
+  <img class="hero-float-img hfi2" src="./assets/BBQ.webp" alt="">
+  <img class="hero-float-img hfi3" src="./assets/pancakes.webp" alt="">
+  <img class="hero-float-img hfi4" src="./assets/bowl.webp" alt="">
+  <div class="blog-hero-inner">
+    <div>
+      <div class="bh-eyebrow">From Our Kitchen</div>
+      <h1>Stories &amp;<em>Flavours</em></h1>
+      <p class="blog-hero-desc">Behind every dish is a story. Recipes, chef diaries, food culture, and everything that makes Stackly tick.</p>
+    </div>
+    <a href="#" class="feat-card fade-up">
+      <div class="feat-img-wrap">
+        <img src="./assets/Recepies.webp" alt="Featured Post"/>
+        <span class="feat-ribbon">Featured</span>
+      </div>
+      <div class="feat-body">
+        <div class="feat-cat">Chef's Story</div>
+        <div class="feat-title">The Secret Behind Our 12-Hour Biriyani</div>
+        <div class="feat-foot">
+          <span>👨‍🍳 Chef Ramesh Kumar</span>
+          <span>📅 June 3, 2025</span>
+          <span>⏱ 8 min</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="blog-main">
+  <div class="blog-main-inner">
+
+    <!-- POSTS -->
+    <div>
+      <div class="sec-heading">Latest Posts</div>
+      <div class="posts-grid">
+
+        <!-- Wide card -->
+        <a href="./404page.html" class="pc wide fade-up">
+          <div class="pc-img-wrap">
+            <img src="./assets/spicy stack.webp" alt=""/>
+          </div>
+          <div class="pc-body">
+            <div>
+              <span class="pc-tag food">Food &amp; Recipes</span>
+              <div class="pc-title">5 Ways to Eat Biriyani Like a Local in Salem</div>
+              <div class="pc-excerpt" >Forget the tourist approach. Here's how Salem locals actually enjoy their biriyani — from the first scoop to the very last raita drop.</div>
+            </div>
+            <div class="pc-foot">
+              <div class="pc-author">
+                <img class="pc-av" src="./assets/arjun.webp" alt=""/>
+                <span class="pc-author-name">Arjun Menon</span>
+              </div>
+              <span class="pc-read">5 min →</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 2 -->
+        <a href="./404page.html" class="pc fade-up">
+          <div class="pc-img-wrap"><img src="./assets/interior.webp" alt=""/></div>
+          <div class="pc-body">
+            <span class="pc-tag chef">Chef Story</span>
+            <div class="pc-title">Chef Priya's Grandmother's Rasam Recipe</div>
+            <div class="pc-excerpt">A recipe that survived three generations and now anchors our most popular weekday lunch.</div>
+            <div class="pc-foot">
+              <div class="pc-author">
+                <img class="pc-av" src="./assets/priya.webp" alt=""/>
+                <span class="pc-author-name">Priya Nair</span>
+              </div>
+              <span class="pc-read">4 min →</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 3 -->
+        <a href="./404page.html" class="pc fade-up">
+          <div class="pc-img-wrap"><img src="./assets/tips.webp" alt=""/></div>
+          <div class="pc-body">
+            <span class="pc-tag tips">Dining Tips</span>
+            <div class="pc-title">The Art of Ordering: What to Pick First</div>
+            <div class="pc-excerpt">Your first order sets the tone. We break down how to read our menu and build the perfect meal sequence.</div>
+            <div class="pc-foot">
+              <div class="pc-author">
+                <img class="pc-av" src="./assets/ravi.webp" alt=""/>
+                <span class="pc-author-name">Vikram Das</span>
+                
+              </div>
+              <span class="pc-read">3 min →</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 4 -->
+        <a href="./404page.html" class="pc fade-up">
+          <div class="pc-img-wrap"><img src="./assets/behind the scene.webp" alt=""/></div>
+          <div class="pc-body">
+            <span class="pc-tag culture">Culture</span>
+            <div class="pc-title">Salem's Street Food Roots &amp; How They Shaped Us</div>
+            <div class="pc-excerpt">Long before fine dining arrived, Salem's streets fed the city. A love letter to the roadside kitchens that inspired Stackly.</div>
+            <div class="pc-foot">
+              <div class="pc-author">
+                <img class="pc-av" src="./assets/arjun.webp" alt=""/>
+                <span class="pc-author-name">Arjun Menon</span>
+              </div>
+              <span class="pc-read">6 min →</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 5 -->
+        <a href="./404page.html" class="pc fade-up">
+          <div class="pc-img-wrap"><img src="./assets/bowl.webp" alt=""/></div>
+          <div class="pc-body">
+            <span class="pc-tag food">Food &amp; Recipes</span>
+            <div class="pc-title">Our Tamarind Chutney: The Recipe We Almost Kept Secret</div>
+            <div class="pc-excerpt">It took 14 iterations. We finally got it right — and now we're sharing it with you.</div>
+            <div class="pc-foot">
+              <div class="pc-author">
+                <img class="pc-av" src="./assets/priya.webp" alt=""/>
+                <span class="pc-author-name">Priya Nair</span>
+              </div>
+              <span class="pc-read">7 min →</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 6 -->
+        <a href="./404page.html" class="pc fade-up">
+          <div class="pc-img-wrap"><img src="./assets/BBQ.webp" alt=""/></div>
+          <div class="pc-body">
+            <span class="pc-tag story">Our Story</span>
+            <div class="pc-title">From One Table to Two Floors: Stackly's Decade</div>
+            <div class="pc-excerpt">We started with 6 tables and a dream. Here's how 10 years of Salem's support built something extraordinary.</div>
+            <div class="pc-foot">
+              <div class="pc-author">
+                <img class="pc-av" src="./assets/ravi.webp" alt=""/>
+                <span class="pc-author-name">Vikram Das</span>
+              </div>
+              <span class="pc-read">9 min →</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 7 -->
+        <a href="./404page.html" class="pc fade-up">
+          <div class="pc-img-wrap"><img src="./assets/pancakes.webp" alt=""/></div>
+          <div class="pc-body">
+            <span class="pc-tag tips">Dining Tips</span>
+            <div class="pc-title">How to Pair Drinks with South Indian Food</div>
+            <div class="pc-excerpt">Nannari soda with Biriyani? Our bar team explains the logic behind the perfect pairing.</div>
+            <div class="pc-foot">
+              <div class="pc-author">
+                <img class="pc-av" src="./assets/arjun.webp" alt=""/>
+                <span class="pc-author-name">Arjun Menon</span>
+              </div>
+              <span class="pc-read">4 min →</span>
+            </div>
+          </div>
+        </a>
+
+        <!-- Card 8 -->
+        <a href="./404page.html" class="pc fade-up">
+          <div class="pc-img-wrap"><img src="./assets/ingredients.webp" alt=""/></div>
+          <div class="pc-body">
+            <span class="pc-tag chef">Chef Story</span>
+            <div class="pc-title">Chef Ramesh: 20 Years, One Philosophy</div>
+            <div class="pc-excerpt">Head Chef Ramesh Kumar on tradition vs. innovation — why he hasn't changed his dal recipe since 2004.</div>
+            <div class="pc-foot">
+              <div class="pc-author">
+                <img class="pc-av" src="./assets/arjun.webp" alt=""/>
+                <span class="pc-author-name">Ramesh Kumar</span>
+              </div>
+              <span class="pc-read">5 min →</span>
+            </div>
+          </div>
+        </a>
+
+      </div><!-- /posts-grid -->
+
+      <div class="pagination">
+        <a href="./404page.html"> <button class="pg-btn">←</button></a>
+        <a href="./404page.html"></a><button class="pg-btn on">1</button></a>
+        <a href="./404page.html"><button class="pg-btn">2</button></a>
+        <a href="./404page.html"><button class="pg-btn">3</button></a>
+         <span style="color:var(--muted);padding:0 4px;">…</span>
+        <a href="./404page.html"><button class="pg-btn">8</button></a>
+        <a href="./404page.html"><button class="pg-btn">→</button></a>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="blog-sidebar">
+
+      <div class="sb-box fade-up">
+        <h3>Popular Posts</h3>
+        <a href="./404page.html" class="pop-item">
+          <img class="pop-thumb" src="./assets/Recepies.webp" alt=""/>
+          <div>
+            <div class="pop-cat">Chef's Story</div>
+            <div class="pop-title">The Secret Behind Our 12-Hour Biriyani</div>
+            <div class="pop-date">June 3, 2025</div>
+          </div>
+        </a>
+        <a href="./" class="pop-item">
+          <img class="pop-thumb" src="./assets/spicy stack.webp" alt=""/>
+          <div>
+            <div class="pop-cat">Food &amp; Recipes</div>
+            <div class="pop-title">5 Ways to Eat Biriyani Like a Local</div>
+            <div class="pop-date">May 22, 2025</div>
+          </div>
+        </a>
+        <a href="./404page.html" class="pop-item">
+          <img class="pop-thumb" src="./assets/BBQ.webp" alt=""/>
+          <div>
+            <div class="pop-cat">Our Story</div>
+            <div class="pop-title">From One Table to Two Floors</div>
+            <div class="pop-date">April 10, 2025</div>
+          </div>
+        </a>
+        <a href="./404page.html" class="pop-item">
+          <img class="pop-thumb" src="./assets/behind the scene.webp" alt=""/>
+          <div>
+            <div class="pop-cat">Culture</div>
+            <div class="pop-title">Salem's Street Food Roots</div>
+            <div class="pop-date">March 5, 2025</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="sb-nl fade-up">
+        <h3>Weekly Bites</h3>
+        <p>Recipes, stories &amp; exclusive offers — every Friday in your inbox.</p>
+        <input type="email" id="wbEmail" placeholder="your@email.com"/>
+        <div id="wbErr" style="display:none;color:var(--red);font-size:.72rem;margin-bottom:8px;">Please enter a valid email address.</div>
+        <button onclick="wbSubscribe()">Subscribe Free</button>
+      </div>
+
+      <div class="sb-box fade-up">
+        <h3>Topics</h3>
+        <div class="tags">
+          <span class="tag" onclick="location.href='./404page.html'">Biriyani</span>
+          <span class="tag" onclick="location.href='./404page.html'">South Indian</span>
+          <span class="tag" onclick="location.href='./404page.html'">Recipes</span>
+          <span class="tag" onclick="location.href='./404page.html'">Chef Stories</span>
+          <span class="tag" onclick="location.href='./404page.html'">Salem Food</span>
+          <span class="tag" onclick="location.href='./404page.html'">Chettinad</span>
+          <span class="tag" onclick="location.href='./404page.html'">Street Food</span>
+          <span class="tag" onclick="location.href='./404page.html'">Vegetarian</span>
+          <span class="tag" onclick="location.href='./404page.html'">Desserts</span>
+          <span class="tag" onclick="location.href='./404page.html'">Dining Tips</span>
+          <span class="tag" onclick="location.href='./404page.html'">Heritage</span>
+          <span class="tag" onclick="location.href='./404page.html'">Spices</span>
+        </div>
+      </div>
+
+      <div class="sb-box fade-up">
+        <h3>@StacklySalem</h3>
+        <div class="ig-grid">
+          <img class="ig-img" src="./assets/bowl.webp" alt=""/>
+          <img class="ig-img" src="./assets/Spicy Stack Burger.webp" alt=""/>
+          <img class="ig-img" src="./assets/BBQ.webp" alt=""/>
+          <img class="ig-img" src="./assets/pancakes.webp" alt=""/>
+          <img class="ig-img" src="./assets/interior.webp" alt=""/>
+          <img class="ig-img" src="./assets/tips.webp" alt=""/>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-inner">
+    <h2 class="fade-up">HUNGRY AFTER READING?<span>COME TASTE IT!</span></h2>
+    <p class="fade-up">Turn inspiration into a meal. Book your table and taste what you just read about.</p>
+    <div class="cta-btns fade-up">
+      <a href="./404page.html" class="btn-primary">Reserve a Table</a>
+      <a href="./404page.html" class="btn-outline">View Full Menu</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="fg-grid">
+    <div>
+<div class="fl-logo">
+  <img src="./assets/stackly logo.webp" alt="Stackly" class="fl-logo-img">
+  <span style="display:flex;"><span class="fl-stack">STACK</span><span class="fl-ly">LY</span></span>
+</div>
+      <p class="fl-desc">Salem's most fun restaurant since 2012. We don't just serve food — we serve memories, laughter, and seriously good vibes.</p>
+      <div class="fl-socs">
+        <a href="./404page.html" class="fl-soc">f</a><a href="./404page.html" class="fl-soc">in</a>
+        <a href="./404page.html" class="fl-soc">𝕏</a><a href="./404page.html" class="fl-soc">▶</a><a href="./404page.html" class="fl-soc">💬</a>
+      </div>
+    </div>
+    <div class="fc">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="./index.html">→ Home</a></li><li><a href="./about.html">→ About Us</a></li>
+        <li><a href="./menu.html">→ Our Menu</a></li><li><a href="./reservation.html">→ Reservations</a></li>
+        <li><a href="./blog.html">→ Blog</a></li><li><a href="./contact.html">→ Contact</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>New Menu</h4>
+      <ul>
+        <li><a href="./404page.html">→ Stackly BBQ Platter</a></li><li><a href="./404page.html">→ Spicy Chaos Burger</a></li>
+        <li><a href="./404page.html">→ Mango Lassi Supreme</a></li><li><a href="./404page.html">→ Triple Choco Lava</a></li>
+        <li><a href="./404page.html">→ Power Grain Bowl</a></li><li><a href="./404page.html">→ Chef's Secret Biriyani</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>Find Us</h4>
+      <div class="fc-inf"><strong>Address</strong>MMR Complex, Chinna Thirupathi, near Chinna Muniyappan Kovil, Salem, Tamil Nadu 636008</div>
+      <div class="fc-inf"><strong>Call Us</strong>+91 98765 43210</div>
+      <div class="fc-inf"><strong>Email</strong>hello@stackly.in</div>
+      <div class="fc-hrs">
+        <div class="fc-hr"><span>Mon – Thu</span><span>11AM – 10PM</span></div>
+        <div class="fc-hr"><span>Fri – Sat</span><span>11AM – 11PM</span></div>
+        <div class="fc-hr"><span>Sunday</span><span>12PM – 9PM</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr-btm">
+    <div class="ftr-copy">© 2026 Stackly Restaurant. Made with ♥ in Salem, Tamil Nadu.</div>
+    <div class="ftr-links"><a href="./404page.html">Privacy Policy</a><a href="./404page.html">Terms</a><a href="./404page.html">Sitemap</a></div>
+  </div>
+</footer>
+
+<script>
+function wbSubscribe(){
+  var input = document.getElementById('wbEmail');
+  var errEl = document.getElementById('wbErr');
+  var emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if(!input.value.trim() || !emailReg.test(input.value.trim())){
+    errEl.style.display='block';
+    input.style.borderColor='var(--red)';
+    return;
+  }
+  errEl.style.display='none';
+  input.style.borderColor='';
+  window.location.href='./404page.html';
+}
+</script>
+<script src="./common.js"></script>
+</body>
+</html>

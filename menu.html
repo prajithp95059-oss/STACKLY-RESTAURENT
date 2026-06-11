@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stackly — Our Menu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./common.css">
+<style>
+img{max-width:100%;display:block;}
+
+/* SCROLL BAR */
+
+/* HEADER */
+
+   header{position:fixed;top:0;left:0;right:0;z-index:990;padding:22px 60px;display:flex;align-items:center;justify-content:space-between;transition:all .35s;}
+header.sc{background:rgba(8,8,8,.95);backdrop-filter:blur(14px);padding:14px 60px;border-bottom:1px solid var(--border2);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-stack{color:var(--white);}
+.logo-ly{color:var(--red);}
+
+nav{display:flex;gap:32px;}
+nav a{font-size:13px;font-weight:500;color:var(--muted);letter-spacing:1px;text-transform:uppercase;transition:color .25s;}
+nav a:hover,nav a.act{color:var(--white);}
+.nav-btns{display:flex;gap:10px;align-items:center;}
+.btn-ghost:hover{border-color:var(--red);color:var(--red);}
+.btn-red:hover{background:var(--red-lt);transform:translateY(-1px);}
+
+/* PAGE HERO */
+.page-hero{position:relative;min-height:60vh;display:flex;align-items:flex-end;padding:0 60px 80px;overflow:hidden;background:linear-gradient(135deg,#100a0a 0%,#1a0808 50%,var(--black) 100%);}
+.ph-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,77,77,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,77,77,.04) 1px,transparent 1px);background-size:60px 60px;}
+.ph-blob{position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(255,77,77,.08) 0%,transparent 70%);top:-100px;right:-50px;animation:pulse 6s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.1);}}
+.ph-content{position:relative;z-index:1;padding-top:100px;}
+.ph-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,77,77,.12);border:1px solid rgba(255,77,77,.3);color:var(--red);font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:6px 16px;margin-bottom:20px;}
+.ph-h1{font-family:var(--serif);font-size:clamp(60px,9vw,130px);line-height:.9;letter-spacing:2px;color:var(--white);}
+.ph-h1 span{color:var(--red);}
+.ph-sub{font-size:15px;color:var(--muted);margin-top:18px;max-width:500px;font-weight:300;line-height:1.7;}
+.ph-breadcrumb{margin-top:14px;font-size:12px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;}
+.ph-breadcrumb a{color:var(--red);}
+
+/* SHARED */
+.lbl{display:inline-flex;align-items:center;gap:10px;font-size:10px;font-weight:700;color:var(--red);letter-spacing:4px;text-transform:uppercase;margin-bottom:14px;}
+.lbl::before{content:'';width:28px;height:2px;background:var(--red);}
+.sh2{font-family:var(--serif);font-size:clamp(38px,5vw,65px);color:var(--white);line-height:1;margin-bottom:16px;letter-spacing:1px;}
+.sp{font-size:15px;color:var(--muted);line-height:1.8;font-weight:300;}
+.btn-primary{display:inline-block;padding:14px 38px;background:var(--red);font-size:13px;font-weight:700;color:var(--white);letter-spacing:1.5px;text-transform:uppercase;transition:all .2s;border-radius:3px;box-shadow:0 6px 30px rgba(255,77,77,.35);}
+.btn-primary:hover{background:var(--red-lt);transform:translateY(-2px);}
+.btn-outline{display:inline-block;padding:14px 38px;border:1.5px solid rgba(250,250,250,.3);font-size:13px;font-weight:600;color:var(--white);letter-spacing:1.5px;text-transform:uppercase;transition:all .2s;border-radius:3px;}
+.btn-outline:hover{border-color:var(--red);color:var(--red);}
+
+/* MENU TICKER */
+.ticker{background:var(--red);overflow:hidden;padding:12px 0;}
+.ticker-track{display:flex;width:max-content;animation:tick 30s linear infinite;}
+.ticker-track:hover{animation-play-state:paused;}
+.ticker-item{display:flex;align-items:center;gap:18px;padding:0 20px;white-space:nowrap;font-size:12px;font-weight:700;color:var(--white);letter-spacing:2px;text-transform:uppercase;}
+.ticker-item::after{content:'✦';opacity:.5;}
+@keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* FILTER BAR */
+.filter-bar{position:sticky;top:62px;z-index:100;background:rgba(15,15,15,.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--border2);padding:0 60px;}
+.filter-inner{display:flex;align-items:center;gap:0;overflow-x:auto;-ms-overflow-style:none;scrollbar-width:none;}
+.filter-inner::-webkit-scrollbar{display:none;}
+.filter-btn{padding:18px 28px;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:2px;text-transform:uppercase;background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:all .25s;white-space:nowrap;font-family:var(--sans);}
+.filter-btn:hover{color:var(--white);}
+.filter-btn.on{color:var(--red);border-bottom-color:var(--red);}
+.filter-right{margin-left:auto;display:flex;align-items:center;gap:12px;padding:12px 0;flex-shrink:0;}
+.diet-tag{padding:6px 14px;font-size:10px;font-weight:700;border:1.5px solid var(--border2);color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;border-radius:2px;background:none;font-family:var(--sans);}
+.diet-tag.on,.diet-tag:hover{border-color:var(--red);color:var(--red);}
+
+/* MENU SECTIONS */
+.menu-wrap{padding:70px 60px;}
+.menu-section{display:none;animation:fadeIn .4s ease;}
+.menu-section.on{display:block;}
+
+.msec-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;flex-wrap:wrap;gap:16px;}
+.msec-header h2{font-family:var(--serif);font-size:clamp(36px,4vw,56px);letter-spacing:1px;}
+.msec-header p{font-size:14px;color:var(--muted);max-width:400px;font-weight:300;line-height:1.7;}
+.item-count{font-size:12px;color:var(--muted);letter-spacing:1px;}
+
+/* LIST-STYLE MENU (Featured / All) */
+.menu-list{display:grid;grid-template-columns:1fr;gap:2px;}
+.mi{background:var(--card);border:1px solid var(--border2);display:grid;grid-template-columns:140px 1fr auto;grid-template-rows:auto;gap:0;overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s;}
+.mi:hover{transform:translateX(4px);box-shadow:0 8px 32px rgba(0,0,0,.5);border-color:rgba(255,77,77,.2);}
+.mi-img{width:140px;height:100px;object-fit:cover;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;transition:transform .4s;}
+.mi:hover .mi-img{transform:scale(1.05);}
+.mi-body{padding:18px 22px;display:flex;flex-direction:column;justify-content:center;}
+.mi-top{display:flex;align-items:center;gap:10px;margin-bottom:5px;}
+.mi-cat{font-size:9px;font-weight:700;color:var(--red);letter-spacing:2px;text-transform:uppercase;}
+.mi-badge{padding:2px 8px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-radius:2px;}
+.mi-badge.hot{background:rgba(255,77,77,.15);color:var(--red);border:1px solid rgba(255,77,77,.3);}
+.mi-badge.fave{background:rgba(250,200,50,.1);color:#ffc832;border:1px solid rgba(255,200,50,.2);}
+.mi-badge.veg{background:rgba(50,205,50,.08);color:#4ade80;border:1px solid rgba(74,222,128,.2);}
+.mi-badge.new{background:rgba(100,150,255,.1);color:#6496ff;border:1px solid rgba(100,150,255,.2);}
+.mi-name{font-family:var(--serif);font-size:20px;letter-spacing:.5px;color:var(--white);margin-bottom:4px;}
+.mi-desc{font-size:12px;color:var(--muted);line-height:1.6;font-weight:300;}
+.mi-right{padding:18px 22px;display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:12px;flex-shrink:0;}
+.mi-price{font-family:var(--serif);font-size:22px;color:var(--red);white-space:nowrap;}
+.mi-add{padding:8px 18px;background:var(--red);font-size:10px;font-weight:700;color:var(--white);letter-spacing:1.5px;text-transform:uppercase;transition:all .2s;border-radius:2px;border:none;cursor:pointer;font-family:var(--sans);}
+.mi-add:hover{background:var(--red-lt);}
+
+/* CARD-STYLE MENU (Specials / Drinks) */
+.menu-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.mc{background:var(--card);border:1px solid var(--border2);overflow:hidden;transition:transform .3s,box-shadow .3s,border-color .3s;position:relative;}
+.mc:hover{transform:translateY(-8px);box-shadow:0 30px 60px rgba(0,0,0,.6);border-color:rgba(255,77,77,.2);}
+.mc-badge{position:absolute;top:0;left:0;z-index:2;padding:5px 12px;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+.mc-badge.hot{background:var(--red);color:var(--white);}
+.mc-badge.fave{background:var(--white);color:var(--red);}
+.mc-badge.new{background:#6496ff;color:var(--white);}
+.mc-badge.veg{background:#4ade80;color:#052e16;}
+.mc-img{width:100%;height:180px;object-fit:cover;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:48px;transition:transform .4s;}
+.mc:hover .mc-img{transform:scale(1.07);}
+.mc-body{padding:18px;}
+.mc-cat{font-size:9px;font-weight:700;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.mc-name{font-family:var(--serif);font-size:19px;letter-spacing:.5px;color:var(--white);margin-bottom:8px;}
+.mc-desc{font-size:11px;color:var(--muted);line-height:1.65;margin-bottom:14px;font-weight:300;}
+.mc-foot{display:flex;align-items:center;justify-content:space-between;}
+.mc-price{font-family:var(--serif);font-size:20px;color:var(--red);}
+.mc-btn{padding:7px 16px;background:var(--red);font-size:10px;font-weight:700;color:var(--white);letter-spacing:1px;text-transform:uppercase;transition:all .2s;border-radius:2px;border:none;cursor:pointer;font-family:var(--sans);}
+.mc-btn:hover{background:var(--red-lt);}
+
+/* COMBO SECTION */
+.combo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:20px;}
+.combo{background:var(--card);border:1px solid var(--border2);padding:28px;position:relative;overflow:hidden;transition:transform .3s,border-color .3s;}
+.combo:hover{transform:translateY(-6px);border-color:rgba(255,77,77,.3);}
+.combo-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+.combo-name{font-family:var(--serif);font-size:24px;letter-spacing:1px;color:var(--white);}
+.combo-save{background:rgba(255,77,77,.15);border:1px solid rgba(255,77,77,.3);color:var(--red);font-size:10px;font-weight:700;padding:4px 10px;letter-spacing:1px;text-transform:uppercase;}
+.combo-items li{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);font-weight:300;}
+.combo-items li::before{content:'';width:5px;height:5px;background:var(--red);border-radius:50%;flex-shrink:0;}
+.combo-foot{display:flex;align-items:center;justify-content:space-between;}
+.combo-price{display:flex;align-items:baseline;gap:8px;}
+.combo-now{font-family:var(--serif);font-size:28px;color:var(--red);}
+.combo-was{font-size:14px;color:var(--muted);text-decoration:line-through;}
+
+/* CHEF'S TABLE */
+.chefs-picks{background:var(--black);padding:80px 60px;margin:0;}
+.cp-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:52px;flex-wrap:wrap;gap:20px;}
+.cp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.cp{background:var(--card);border:1px solid var(--border2);overflow:hidden;transition:transform .3s,box-shadow .3s;}
+.cp:hover{transform:translateY(-8px);box-shadow:0 28px 60px rgba(255,77,77,.15);}
+.cp-img{width:100%;height:220px;object-fit:cover;background:var(--card2);display:flex;align-items:center;justify-content:center;font-size:56px;position:relative;}
+.cp-ribbon{position:absolute;top:14px;right:0;background:var(--red);color:var(--white);padding:6px 16px 6px 12px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+.cp-body{padding:22px;}
+.cp-chef{font-size:10px;font-weight:700;color:var(--red);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}
+.cp-name{font-family:var(--serif);font-size:22px;letter-spacing:.5px;color:var(--white);margin-bottom:8px;}
+.cp-desc{font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:16px;font-weight:300;}
+.cp-foot{display:flex;align-items:center;justify-content:space-between;}
+.cp-price{font-family:var(--serif);font-size:24px;color:var(--red);}
+.cp-img{overflow:hidden;}
+
+/* ALLERGEN / INFO BAR */
+.info-bar{background:var(--card);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);padding:28px 60px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;}
+.info-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);font-weight:300;}
+.info-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.dot-veg{background:#4ade80;}
+.dot-hot{background:var(--red);}
+.dot-fave{background:#ffc832;}
+.dot-new{background:#6496ff;}
+
+/* CTA BOTTOM */
+.menu-cta{background:linear-gradient(135deg,var(--black) 0%,#1a0808 100%);padding:80px 60px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;border-top:1px solid var(--border);}
+.mcta-text h2{font-family:var(--serif);font-size:clamp(36px,4.5vw,60px);color:var(--white);letter-spacing:1px;line-height:1;}
+.mcta-text h2 span{color:var(--red);}
+.mcta-text p{font-size:15px;color:var(--muted);margin-top:14px;font-weight:300;line-height:1.75;}
+.mcta-btns{display:flex;gap:14px;flex-wrap:wrap;margin-top:28px;}
+.mcta-right{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.mcta-fact{background:var(--card);border:1px solid var(--border2);padding:24px 20px;text-align:center;transition:border-color .25s;}
+.mcta-fact:hover{border-color:rgba(255,77,77,.3);}
+.mcta-fact-n{font-family:var(--serif);font-size:42px;color:var(--red);display:block;line-height:1;}
+.mcta-fact-l{font-size:11px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:6px;}
+
+/* ============================================================
+   RESPONSIVE — MENU PAGE (ALL BREAKPOINTS)
+   ============================================================ */
+
+/* 1536px — Large desktops / 4K scaled */
+@media (max-width: 1536px) {
+  header { padding: 20px 50px; }
+  header.sc { padding: 13px 50px; }
+  .page-hero { padding: 0 50px 76px; }
+  .filter-bar { padding: 0 50px; }
+  .menu-wrap { padding: 66px 50px; }
+  .chefs-picks { padding: 76px 50px; }
+  .info-bar { padding: 26px 50px; }
+  .menu-cta { padding: 76px 50px; }
+  
+}
+
+/* 1280px — Standard desktop */
+@media (max-width: 1280px) {
+  header { padding: 18px 44px; }
+  header.sc { padding: 12px 44px; }
+  nav { gap: 24px; }
+  .page-hero { padding: 0 44px 72px; }
+  .filter-bar { padding: 0 44px; }
+  .menu-wrap { padding: 62px 44px; }
+  .chefs-picks { padding: 72px 44px; }
+  .info-bar { padding: 25px 44px; }
+  .menu-cta { padding: 72px 44px; gap: 48px; }
+  
+}
+
+/* 1024px — Small desktop / large tablet landscape */
+@media (max-width: 1024px) {
+  header { padding: 18px 40px; }
+  header.sc { padding: 12px 40px; }
+  .page-hero { padding: 0 40px 70px; }
+  .filter-bar { padding: 0 40px; }
+  .menu-wrap { padding: 60px 40px; }
+  .chefs-picks { padding: 70px 40px; }
+  .info-bar { padding: 24px 40px; }
+  .menu-cta { padding: 70px 40px; }
+  .menu-cards { grid-template-columns: repeat(3, 1fr); }
+  .combo-grid { grid-template-columns: repeat(2, 1fr); }
+  .cp-grid { grid-template-columns: repeat(2, 1fr); }
+  
+  
+}
+
+/* 900px — Tablet portrait wide (nav collapses) */
+@media (max-width: 900px) {
+  header { padding: 18px 32px; }
+  header.sc { padding: 12px 32px; }
+  nav, .nav-btns { display: none !important; }
+  .ham { display: flex !important; }
+  .page-hero { padding: 0 32px 60px; }
+  .filter-bar { padding: 0 32px; top: 56px; }
+  .menu-wrap { padding: 50px 32px; }
+  .chefs-picks { padding: 60px 32px; }
+  .info-bar { padding: 22px 32px; }
+  .menu-cta { grid-template-columns: 1fr; padding: 60px 32px; gap: 36px; }
+  .mcta-right { grid-template-columns: repeat(4, 1fr); }
+  .menu-cards { grid-template-columns: repeat(2, 1fr); }
+  .mi { grid-template-columns: 110px 1fr auto; }
+  
+  
+}
+
+/* 768px — Tablet portrait / large phone landscape */
+@media (max-width: 768px) {
+  header { padding: 14px 20px; background: rgba(8,8,8,.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+  header.sc { padding: 14px 20px; }
+  .page-hero { padding: 0 20px 52px; min-height: 50vh; }
+  .ph-h1 { font-size: clamp(48px, 10vw, 86px); }
+  .filter-bar { padding: 0 20px; top: 56px; }
+  .filter-btn { padding: 15px 18px; font-size: 11px; }
+  .filter-right { display: none; }
+  .menu-wrap { padding: 44px 20px; }
+  .chefs-picks { padding: 56px 20px; }
+  .info-bar { padding: 18px 20px; gap: 14px; flex-wrap: wrap; }
+  .menu-cta { padding: 56px 20px; }
+  .mcta-right { grid-template-columns: repeat(2, 1fr); }
+  .menu-cards { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .combo-grid { grid-template-columns: 1fr; }
+  .cp-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .mi { grid-template-columns: 90px 1fr; }
+  .mi-right { display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 0 14px 14px; grid-column: 1 / -1; border-top: none; }
+  .mi-price { font-size: 17px; }
+  .mi-add { padding: 7px 14px; font-size: 9px; letter-spacing: 1px; }
+  
+  
+  
+  .cp-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .msec-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+}
+
+/* 640px — Large phone portrait */
+@media (max-width: 640px) {
+  .page-hero { padding: 0 20px 48px; min-height: 46vh; }
+  .menu-wrap { padding: 40px 20px; }
+  .chefs-picks { padding: 52px 20px; }
+  .menu-cards { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .mc-img { height: 155px; }
+  .cp-grid { grid-template-columns: 1fr; }
+  .mcta-right { grid-template-columns: 1fr 1fr; }
+}
+
+/* 480px — Standard phone portrait */
+@media (max-width: 480px) {
+  .page-hero { padding: 0 20px 44px; min-height: 44vh; }
+  .ph-h1 { font-size: clamp(40px, 11vw, 60px); }
+  .ph-tag { font-size: 9px; padding: 5px 12px; letter-spacing: 2px; }
+  .menu-wrap { padding: 36px 20px; }
+  .chefs-picks { padding: 48px 20px; }
+  .menu-cards { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .mc-img { height: 150px; }
+  .cp-grid { grid-template-columns: 1fr; }
+  .mi { grid-template-columns: 80px 1fr; }
+  .mi-img { width: 80px; height: 80px; }
+  .mi-name { font-size: 17px; }
+  .mi-desc { display: none; }
+  .mcta-right { grid-template-columns: 1fr 1fr; }
+  
+  
+}
+
+/* 425px — Large phone portrait */
+@media (max-width: 425px) {
+  .menu-wrap { padding: 34px 18px; }
+  .chefs-picks { padding: 44px 18px; }
+  .mc-img { height: 145px; }
+  .filter-btn { padding: 14px 14px; font-size: 10px; }
+}
+
+/* 375px — iPhone SE / small phones */
+@media (max-width: 375px) {
+  .page-hero { padding: 0 16px 40px; }
+  .ph-h1 { font-size: clamp(36px, 11vw, 52px); line-height: .88; }
+  .menu-wrap { padding: 32px 16px; }
+  .chefs-picks { padding: 40px 16px; }
+  .info-bar { padding: 14px 16px; gap: 10px; }
+  .menu-cta { padding: 40px 16px; }
+  .menu-cards { grid-template-columns: 1fr; }
+  .mc-img { height: 160px; }
+  .combo-grid { grid-template-columns: 1fr; }
+  .mcta-right { grid-template-columns: 1fr 1fr; }
+  .mcta-fact-n { font-size: 36px; }
+  
+  
+  
+  
+}
+
+/* 320px — Very small phones */
+@media (max-width: 320px) {
+  section { padding: 40px 14px; }
+  .page-hero { padding: 0 14px 36px; }
+  .ph-h1 { font-size: 34px; letter-spacing: 0; }
+  .ph-tag { display: none; }
+  .story-main, .story-placeholder { height: 200px; }
+  .story-body { font-size: 13px; }
+  .val-card { padding: 24px 18px; }
+  .val-title { font-size: 14px; }
+  .val-desc { font-size: 12px; }
+  .stats-sec { padding: 36px 14px; }
+  .stat-n { font-size: 52px; }
+  .team-grid { grid-template-columns: 1fr; }
+  .tm-img, .tm-placeholder { height: 220px; }
+  .tm-name { font-size: 16px; }
+  .aw-grid { grid-template-columns: 1fr; }
+  .aw { padding: 22px 18px; }
+  .tc { padding: 20px 16px; }
+  .tc-text { font-size: 12px; }
+  .cta-bar { padding: 28px 14px; }
+  .cta-bar-text h3 { font-size: 24px; }
+  .btn-white, .btn-red-out { width: 100%; text-align: center; padding: 12px 16px; }
+  
+  
+  
+  
+  
+  
+  
+  
+}
+
+/* Accessibility — respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div id="sb"></div>
+
+<!-- HEADER -->
+<header id="hdr">
+  <a href="./index.html" class="logo"><img src="./assets/stackly logo.webp" alt="Stackly Logo" class="logo-img"><span class="logo-text"><span class="logo-stack">STACK</span><span class="logo-ly">LY</span></span></a>
+  <nav>
+    <a href="./index.html">Home</a>
+    <a href="./about.html">About</a>
+    <a href="./menu.html">Menu</a>
+    <a href="./reservation.html">Reservation</a>
+    <a href="./blog.html">Blog</a>
+    <a href="./contact.html">Contact</a>
+  </nav>
+  <div class="nav-btns">
+    <a href="./login.html" class="btn-ghost">Login</a>
+    <a href="./404page.html" class="btn-red">Book Table</a>
+  </div>
+  <button class="ham" id="ham"><span></span><span></span><span></span></button>
+</header>
+
+
+<!-- MOBILE MENU -->
+<div class="mob" id="mm">
+  <button class="mob-close" id="mm-close" aria-label="Close menu">✕</button>
+  <a href="./index.html" onclick="cm()">HOME</a>
+  <a href="./about.html" onclick="cm()">ABOUT</a>
+  <a href="./menu.html" onclick="cm()">MENU</a>
+  <a href="./reservation.html" onclick="cm()">RESERVATION</a>
+  <a href="./blog.html" onclick="cm()">BLOG</a>
+  <a href="./contact.html" onclick="cm()">CONTACT</a>
+  <div class="mob-btns">
+    <a href="./login.html" class="btn-ghost" onclick="cm()">Login</a>
+    <a href="./404page.html" class="btn-red" onclick="cm()">Book a Table</a>
+  </div>
+</div>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <img class="hero-float-img hfi1" src="./assets/spicy stack.webp" alt="">
+  <img class="hero-float-img hfi2" src="./assets/BBQ.webp" alt="">
+  <img class="hero-float-img hfi3" src="./assets/pancakes.webp" alt="">
+  <img class="hero-float-img hfi4" src="./assets/bowl.webp" alt="">
+
+  <div class="ph-grid"></div>
+  <div class="ph-blob"></div>
+  <div class="ph-content fade-up">
+    <div class="ph-tag">86 Dishes & Counting</div>
+    <h1 class="ph-h1">OUR <span>MENU</span></h1>
+    <p class="ph-sub">From crispy starters to soul-warming mains — every craving covered. No boring food allowed here!</p>
+    <p class="ph-breadcrumb"><a href="./index.html">Home</a> / Menu</p>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <div class="ticker-item">Freshly Made Daily</div><div class="ticker-item">Zero Compromise</div>
+    <div class="ticker-item">86 Dishes</div><div class="ticker-item">Starters</div>
+    <div class="ticker-item">Mains</div><div class="ticker-item">Grills</div>
+    <div class="ticker-item">Desserts</div><div class="ticker-item">Drinks</div>
+    <div class="ticker-item">Combos</div><div class="ticker-item">Freshly Made Daily</div>
+    <div class="ticker-item">Zero Compromise</div><div class="ticker-item">86 Dishes</div>
+    <div class="ticker-item">Starters</div><div class="ticker-item">Mains</div>
+    <div class="ticker-item">Grills</div><div class="ticker-item">Desserts</div>
+    <div class="ticker-item">Drinks</div><div class="ticker-item">Combos</div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" id="filterBar">
+  <div class="filter-inner">
+    <button class="filter-btn on" onclick="showMenu('all',this)">All Items</button>
+    <button class="filter-btn" onclick="showMenu('starters',this)">Starters</button>
+    <button class="filter-btn" onclick="showMenu('mains',this)">Mains</button>
+    <button class="filter-btn" onclick="showMenu('grills',this)">Grills & BBQ</button>
+    <button class="filter-btn" onclick="showMenu('pizza',this)">Pizza & Pasta</button>
+    <button class="filter-btn" onclick="showMenu('desserts',this)">Desserts</button>
+    <button class="filter-btn" onclick="showMenu('drinks',this)">Drinks</button>
+    <button class="filter-btn" onclick="showMenu('combos',this)">Combo Deals</button>
+    <div class="filter-right">
+      <button class="diet-tag" onclick="toggleDiet(this,'veg')">🟢 Veg Only</button>
+      <button class="diet-tag" onclick="toggleDiet(this,'spicy')">🔥 Spicy</button>
+    </div>
+  </div>
+</div>
+
+<!-- ALLERGEN INFO BAR -->
+<div class="info-bar">
+  <div class="info-item"><div class="info-dot dot-veg"></div>Green badge = Vegetarian</div>
+  <div class="info-item"><div class="info-dot dot-hot"></div>Red HOT = Contains chillies</div>
+  <div class="info-item"><div class="info-dot dot-fave"></div>Gold FAVE = Bestseller</div>
+  <div class="info-item"><div class="info-dot dot-new"></div>Blue NEW = Just launched</div>
+  <div class="info-item" style="margin-left:auto;font-size:12px;">⚠️ Please inform staff of allergies before ordering</div>
+</div>
+
+<!-- MENU CONTENT -->
+<div class="menu-wrap" id="menuWrap">
+
+  <!-- ALL ITEMS -->
+  <div class="menu-section on" id="ms-all">
+    <div class="msec-header fade-up">
+      <div>
+        <div class="lbl">Full Menu</div>
+        <h2 class="sh2">EVERYTHING WE MAKE</h2>
+      </div>
+      <span class="item-count">86 items across 6 categories</span>
+    </div>
+    <div class="menu-list">
+      <div class="mi fade-up"><div class="mi-img">🍗</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Starters</div><span class="mi-badge hot">HOT</span><span class="mi-badge fave">FAVE</span></div><div class="mi-name">Crispy Wings</div><div class="mi-desc">Tossed in legendary hot sauce with blue cheese dip. Our #1 bestseller every single week.</div></div><div class="mi-right"><div class="mi-price">₹199</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🍔</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Mains</div><span class="mi-badge fave">FAVE</span></div><div class="mi-name">Spicy Stack Burger</div><div class="mi-desc">Double crispy chicken, secret 7-spice sauce, brioche bun. Salem's most talked-about burger.</div></div><div class="mi-right"><div class="mi-price">₹349</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🥩</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Grills & BBQ</div><span class="mi-badge hot">HOT</span></div><div class="mi-name">BBQ Royale Platter</div><div class="mi-desc">Smoky grilled 4-meat platter with legendary BBQ sauce. For the ones who don't do small portions.</div></div><div class="mi-right"><div class="mi-price">₹529</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🍕</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Pizza & Pasta</div><span class="mi-badge fave">FAVE</span></div><div class="mi-name">Pizza Chaos</div><div class="mi-desc">Wood-fired 12-inch base with 6 toppings and the most insane cheese pull you'll ever witness.</div></div><div class="mi-right"><div class="mi-price">₹449</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🥗</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Mains</div><span class="mi-badge veg">VEG</span></div><div class="mi-name">Power Grain Bowl</div><div class="mi-desc">20+ fresh ingredients, roasted vegetables, tahini dressing. Healthy never tasted this wild.</div></div><div class="mi-right"><div class="mi-price">₹299</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🥞</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Desserts</div><span class="mi-badge veg">VEG</span></div><div class="mi-name">Stack Cakes</div><div class="mi-desc">Fluffy pancakes stacked sky-high with maple syrup, fresh berries, and chocolate drizzle.</div></div><div class="mi-right"><div class="mi-price">₹249</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🥭</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Drinks</div><span class="mi-badge veg">VEG</span><span class="mi-badge fave">FAVE</span></div><div class="mi-name">Mango Lassi Supreme</div><div class="mi-desc">Thick Alphonso mango blended with cardamom and rose. The drink Salem can't stop ordering.</div></div><div class="mi-right"><div class="mi-price">₹129</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🫓</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Starters</div><span class="mi-badge veg">VEG</span></div><div class="mi-name">Bruschetta</div><div class="mi-desc">Toasted sourdough with fresh tomatoes, hand-torn basil and aged balsamic reduction.</div></div><div class="mi-right"><div class="mi-price">₹179</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🫔</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Mains</div><span class="mi-badge new">NEW</span></div><div class="mi-name">Chef's Secret Biriyani</div><div class="mi-desc">A closely guarded recipe with hand-ground spices, slow-cooked for 6 hours. Limited daily.</div></div><div class="mi-right"><div class="mi-price">₹389</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🍫</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Desserts</div><span class="mi-badge veg">VEG</span><span class="mi-badge fave">FAVE</span></div><div class="mi-name">Triple Choco Lava</div><div class="mi-desc">Warm triple chocolate lava cake with handmade vanilla bean ice cream. Utter madness.</div></div><div class="mi-right"><div class="mi-price">₹199</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+    </div>
+  </div>
+
+  <!-- STARTERS -->
+  <div class="menu-section" id="ms-starters">
+    <div class="msec-header fade-up">
+      <div><div class="lbl">Small Plates</div><h2 class="sh2">STARTERS</h2><p>The warm-up act that somehow steals the whole show.</p></div>
+    </div>
+    <div class="menu-cards">
+      <div class="mc fade-up"><span class="mc-badge hot">HOT</span><div class="mc-img">🍗</div><div class="mc-body"><div class="mc-cat">Chicken</div><div class="mc-name">Crispy Wings</div><div class="mc-desc">Tossed in legendary hot sauce with blue cheese dip.</div><div class="mc-foot"><span class="mc-price">₹199</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge veg">VEG</span><div class="mc-img">🍟</div><div class="mc-body"><div class="mc-cat">Vegetarian</div><div class="mc-name">Onion Rings</div><div class="mc-desc">Golden beer-battered rings with chipotle mayo dip.</div><div class="mc-foot"><span class="mc-price">₹149</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge veg">VEG</span><div class="mc-img">🫓</div><div class="mc-body"><div class="mc-cat">Vegetarian</div><div class="mc-name">Bruschetta</div><div class="mc-desc">Toasted sourdough, tomatoes, basil and balsamic glaze.</div><div class="mc-foot"><span class="mc-price">₹179</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge fave">FAVE</span><div class="mc-img">🧀</div><div class="mc-body"><div class="mc-cat">Vegetarian</div><div class="mc-name">Loaded Nachos</div><div class="mc-desc">Chips, cheese sauce, jalapeños, and guacamole mountain.</div><div class="mc-foot"><span class="mc-price">₹229</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge hot">HOT</span><div class="mc-img">🥜</div><div class="mc-body"><div class="mc-cat">Chicken</div><div class="mc-name">Seekh Kebabs</div><div class="mc-desc">Juicy minced chicken kebabs with mint chutney.</div><div class="mc-foot"><span class="mc-price">₹229</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge new">NEW</span><div class="mc-img">🥟</div><div class="mc-body"><div class="mc-cat">Chef's New</div><div class="mc-name">Truffle Gyoza</div><div class="mc-desc">Pan-fried dumplings with truffle oil and ponzu sauce.</div><div class="mc-foot"><span class="mc-price">₹269</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><div class="mc-img">🥗</div><div class="mc-body"><div class="mc-cat">Vegetarian</div><div class="mc-name">Caesar Salad</div><div class="mc-desc">Romaine, house dressing, croutons, parmesan shards.</div><div class="mc-foot"><span class="mc-price">₹189</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge hot">HOT</span><div class="mc-img">🍢</div><div class="mc-body"><div class="mc-cat">Chicken</div><div class="mc-name">Chilli Chicken Bites</div><div class="mc-desc">Wok-tossed crispy chicken with peppers and house sauce.</div><div class="mc-foot"><span class="mc-price">₹219</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+    </div>
+  </div>
+
+  <!-- MAINS -->
+  <div class="menu-section" id="ms-mains">
+    <div class="msec-header fade-up">
+      <div><div class="lbl">The Big Plates</div><h2 class="sh2">MAIN COURSE</h2><p>The stars of the show. Order two — no one's judging.</p></div>
+    </div>
+    <div class="menu-list">
+      <div class="mi fade-up"><div class="mi-img">🍔</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Burgers</div><span class="mi-badge fave">FAVE</span><span class="mi-badge hot">HOT</span></div><div class="mi-name">Spicy Stack Burger</div><div class="mi-desc">Double crispy chicken, 7-spice sauce, pickled slaw, brioche bun. Salem's most talked-about burger.</div></div><div class="mi-right"><div class="mi-price">₹349</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🫔</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Indian</div><span class="mi-badge new">NEW</span></div><div class="mi-name">Chef's Secret Biriyani</div><div class="mi-desc">Slow-cooked with hand-ground spices for 6 hours. A closely guarded recipe. Limited daily — first come first served!</div></div><div class="mi-right"><div class="mi-price">₹389</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🥗</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Healthy</div><span class="mi-badge veg">VEG</span></div><div class="mi-name">Power Grain Bowl</div><div class="mi-desc">20+ fresh ingredients, roasted veg, tahini dressing, seed mix. Healthy never tasted this good.</div></div><div class="mi-right"><div class="mi-price">₹299</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🍜</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Asian</div><span class="mi-badge hot">HOT</span></div><div class="mi-name">Wok-Fried Noodles</div><div class="mi-desc">Tossed in chilli garlic sauce with vegetables and your choice of chicken or tofu.</div></div><div class="mi-right"><div class="mi-price">₹269</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🌮</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Mexican</div></div><div class="mi-name">Chicken Tacos (3)</div><div class="mi-desc">Soft flour tacos with spiced chicken, pickled onions, avocado crema and lime.</div></div><div class="mi-right"><div class="mi-price">₹289</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🍛</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Indian</div><span class="mi-badge veg">VEG</span></div><div class="mi-name">Paneer Butter Masala</div><div class="mi-desc">Rich tomato-based curry with cottage cheese, served with garlic naan.</div></div><div class="mi-right"><div class="mi-price">₹279</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+    </div>
+  </div>
+
+  <!-- GRILLS -->
+  <div class="menu-section" id="ms-grills">
+    <div class="msec-header fade-up">
+      <div><div class="lbl">Fire & Smoke</div><h2 class="sh2">GRILLS & BBQ</h2><p>Slow-cooked, flame-kissed perfection. Not for the faint-hearted.</p></div>
+    </div>
+    <div class="menu-list">
+      <div class="mi fade-up"><div class="mi-img">🥩</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Platters</div><span class="mi-badge fave">FAVE</span><span class="mi-badge hot">HOT</span></div><div class="mi-name">BBQ Royale Platter</div><div class="mi-desc">Smoky 4-meat platter — ribs, wings, sausages, thighs — with legendary BBQ sauce and fries.</div></div><div class="mi-right"><div class="mi-price">₹529</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🍖</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">BBQ</div><span class="mi-badge hot">HOT</span></div><div class="mi-name">Smoked Pork Ribs</div><div class="mi-desc">6-hour slow-smoked ribs with house dry rub and bourbon glaze. Fall-off-the-bone guaranteed.</div></div><div class="mi-right"><div class="mi-price">₹479</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🔥</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Grill</div></div><div class="mi-name">Mixed Grill Skewers</div><div class="mi-desc">Chicken, paneer and vegetables skewered and chargrilled with herb butter baste.</div></div><div class="mi-right"><div class="mi-price">₹349</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+      <div class="mi fade-up"><div class="mi-img">🍗</div><div class="mi-body"><div class="mi-top"><div class="mi-cat">Grill</div><span class="mi-badge new">NEW</span></div><div class="mi-name">Cajun Spatchcock Chicken</div><div class="mi-desc">Half chicken butterflied, marinated 24hrs in Cajun spices and grilled over hardwood coals.</div></div><div class="mi-right"><div class="mi-price">₹459</div><a href="./404page.html"><button class="mi-add">+ Add</button></a></div></div>
+    </div>
+  </div>
+
+  <!-- PIZZA -->
+  <div class="menu-section" id="ms-pizza">
+    <div class="msec-header fade-up">
+      <div><div class="lbl">Dough & Sauce</div><h2 class="sh2">PIZZA & PASTA</h2><p>Wood-fired, hand-stretched, absolutely unreasonable cheese levels.</p></div>
+    </div>
+    <div class="menu-cards">
+      <div class="mc fade-up"><span class="mc-badge fave">FAVE</span><div class="mc-img">🍕</div><div class="mc-body"><div class="mc-cat">Pizza</div><div class="mc-name">Pizza Chaos</div><div class="mc-desc">Wood-fired 12-inch, 6 toppings, the most insane cheese pull you'll witness.</div><div class="mc-foot"><span class="mc-price">₹449</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge veg">VEG</span><div class="mc-img">🥦</div><div class="mc-body"><div class="mc-cat">Pizza</div><div class="mc-name">Garden Supreme</div><div class="mc-desc">8 seasonal vegetables on a herb cream base. Vegetarians will finally feel seen.</div><div class="mc-foot"><span class="mc-price">₹389</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge hot">HOT</span><div class="mc-img">🌶️</div><div class="mc-body"><div class="mc-cat">Pizza</div><div class="mc-name">Diavola</div><div class="mc-desc">Spicy salami, fresh chillies, nduja and mozzarella. Not for the mild at heart.</div><div class="mc-foot"><span class="mc-price">₹469</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge new">NEW</span><div class="mc-img">🍝</div><div class="mc-body"><div class="mc-cat">Pasta</div><div class="mc-name">Truffle Tagliatelle</div><div class="mc-desc">Handmade pasta in truffle butter with parmesan and crispy sage. Ridiculous levels of flavour.</div><div class="mc-foot"><span class="mc-price">₹359</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><div class="mc-img">🍝</div><div class="mc-body"><div class="mc-cat">Pasta</div><div class="mc-name">Spaghetti Arrabbiata</div><div class="mc-desc">Spicy tomato sauce, garlic, capers, Kalamata olives and fresh basil.</div><div class="mc-foot"><span class="mc-price">₹289</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge veg">VEG</span><div class="mc-img">🧅</div><div class="mc-body"><div class="mc-cat">Pizza</div><div class="mc-name">Caramelised Onion</div><div class="mc-desc">Caramelised onions, brie, walnuts and honey on a thin crispy base.</div><div class="mc-foot"><span class="mc-price">₹399</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+    </div>
+  </div>
+
+  <!-- DESSERTS -->
+  <div class="menu-section" id="ms-desserts">
+    <div class="msec-header fade-up">
+      <div><div class="lbl">Sweet Ending</div><h2 class="sh2">DESSERTS</h2><p>Chef Priya's masterworks. Your diet ends here. Worth it.</p></div>
+    </div>
+    <div class="menu-cards">
+      <div class="mc fade-up"><span class="mc-badge veg">VEG</span><div class="mc-img">🥞</div><div class="mc-body"><div class="mc-cat">Pancakes</div><div class="mc-name">Stack Cakes</div><div class="mc-desc">Fluffy pancakes sky-high with maple syrup, berries and chocolate drizzle.</div><div class="mc-foot"><span class="mc-price">₹249</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge fave">FAVE</span><div class="mc-img">🍫</div><div class="mc-body"><div class="mc-cat">Warm Desserts</div><div class="mc-name">Triple Choco Lava</div><div class="mc-desc">Warm triple chocolate lava cake with handmade vanilla bean ice cream.</div><div class="mc-foot"><span class="mc-price">₹199</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><div class="mc-img">🍨</div><div class="mc-body"><div class="mc-cat">Ice Cream</div><div class="mc-name">Mega Sundae</div><div class="mc-desc">Four scoops, caramel, hot fudge, salted nuts and cherry on top.</div><div class="mc-foot"><span class="mc-price">₹179</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><div class="mc-img">🍰</div><div class="mc-body"><div class="mc-cat">Cake</div><div class="mc-name">NY Cheesecake</div><div class="mc-desc">Classic baked NY-style cheesecake with fresh strawberry coulis.</div><div class="mc-foot"><span class="mc-price">₹219</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge new">NEW</span><div class="mc-img">🍮</div><div class="mc-body"><div class="mc-cat">New Launch</div><div class="mc-name">Crème Brûlée</div><div class="mc-desc">Silky vanilla custard with a perfectly caramelised sugar crust. Torch on the table!</div><div class="mc-foot"><span class="mc-price">₹239</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><div class="mc-img">🍧</div><div class="mc-body"><div class="mc-cat">Indian</div><div class="mc-name">Gulab Jamun Tart</div><div class="mc-desc">Classic gulab jamun in a crispy tart shell with rose cream. Chef Priya's fusion masterpiece.</div><div class="mc-foot"><span class="mc-price">₹189</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+    </div>
+  </div>
+
+  <!-- DRINKS -->
+  <div class="menu-section" id="ms-drinks">
+    <div class="msec-header fade-up">
+      <div><div class="lbl">Sip & Savour</div><h2 class="sh2">DRINKS</h2><p>Crafted in-house daily. Because great food deserves a great drink.</p></div>
+    </div>
+    <div class="menu-cards">
+      <div class="mc fade-up"><span class="mc-badge fave">FAVE</span><div class="mc-img">🥭</div><div class="mc-body"><div class="mc-cat">Lassi</div><div class="mc-name">Mango Lassi Supreme</div><div class="mc-desc">Thick Alphonso mango with cardamom and rose. Salem can't stop ordering this.</div><div class="mc-foot"><span class="mc-price">₹129</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><div class="mc-img">☕</div><div class="mc-body"><div class="mc-cat">Coffee</div><div class="mc-name">Cold Brew Coffee</div><div class="mc-desc">18-hour cold brew over ice with oat milk and vanilla syrup.</div><div class="mc-foot"><span class="mc-price">₹149</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge veg">VEG</span><div class="mc-img">🍍</div><div class="mc-body"><div class="mc-cat">Mocktail</div><div class="mc-name">Tropical Blast</div><div class="mc-desc">Pineapple, coconut, lime mocktail with fresh mint and a chilli rim.</div><div class="mc-foot"><span class="mc-price">₹139</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge fave">FAVE</span><div class="mc-img">🥤</div><div class="mc-body"><div class="mc-cat">Milkshake</div><div class="mc-name">Monster Shake</div><div class="mc-desc">Oreo peanut butter milkshake topped with a whole brownie. Not responsible for consequences.</div><div class="mc-foot"><span class="mc-price">₹189</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge new">NEW</span><div class="mc-img">🫐</div><div class="mc-body"><div class="mc-cat">Mocktail</div><div class="mc-name">Berry Smash</div><div class="mc-desc">Mixed berries, mint, lime soda and a splash of elderflower. Summer in a glass.</div><div class="mc-foot"><span class="mc-price">₹159</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><div class="mc-img">🍵</div><div class="mc-body"><div class="mc-cat">Hot</div><div class="mc-name">Masala Chai Latte</div><div class="mc-desc">Spiced Indian tea blended with steamed oat milk. The hug in a cup.</div><div class="mc-foot"><span class="mc-price">₹99</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><div class="mc-img">🍊</div><div class="mc-body"><div class="mc-cat">Fresh Juice</div><div class="mc-name">Seasonal Juice Press</div><div class="mc-desc">Cold-pressed daily from seasonal fruits. Ask your server what's fresh today.</div><div class="mc-foot"><span class="mc-price">₹119</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+      <div class="mc fade-up"><span class="mc-badge hot">HOT</span><div class="mc-img">🧃</div><div class="mc-body"><div class="mc-cat">Mocktail</div><div class="mc-name">Spicy Watermelon Cooler</div><div class="mc-desc">Fresh watermelon juice, jalapeño, lime and black salt. Hot-sweet paradise.</div><div class="mc-foot"><span class="mc-price">₹149</span><a href="./404page.html"><button class="mc-btn">Order</button></a></div></div></div>
+    </div>
+  </div>
+
+  <!-- COMBOS -->
+  <div class="menu-section" id="ms-combos">
+    <div class="msec-header fade-up">
+      <div><div class="lbl">Best Value</div><h2 class="sh2">COMBO DEALS</h2><p>More food, less math. Our combos save you money and maximise deliciousness.</p></div>
+    </div>
+    <div class="combo-grid">
+      <div class="combo fade-up">
+        <div class="combo-top">
+          <div class="combo-name">THE SOLO FEAST</div>
+          <div class="combo-save">SAVE ₹80</div>
+        </div>
+        <ul class="combo-items">
+          <li>Any Starter (your choice)</li>
+          <li>Spicy Stack Burger</li>
+          <li>Regular Fries</li>
+          <li>Any Soft Drink</li>
+        </ul>
+        <div class="combo-foot">
+          <div class="combo-price">
+            <div class="combo-now">₹519</div>
+            <div class="combo-was">₹599</div>
+          </div>
+         <a href="./404page.html"> <button class="btn-primary" style="padding:10px 22px;font-size:11px;">Order Combo</button></a>
+        </div>
+      </div>
+      <div class="combo fade-up" style="transition-delay:.1s">
+        <div class="combo-top">
+          <div class="combo-name">COUPLES SPECIAL</div>
+          <div class="combo-save">SAVE ₹150</div>
+        </div>
+        <ul class="combo-items">
+          <li>2x Starters of choice</li>
+          <li>BBQ Royale Platter (shared)</li>
+          <li>2x Mango Lassi Supreme</li>
+          <li>1x Dessert to share</li>
+        </ul>
+        <div class="combo-foot">
+          <div class="combo-price">
+            <div class="combo-now">₹929</div>
+            <div class="combo-was">₹1079</div>
+          </div>
+         <a href="./404page.html"> <button class="btn-primary" style="padding:10px 22px;font-size:11px;">Order Combo</button></a>
+        </div>
+      </div>
+      <div class="combo fade-up" style="transition-delay:.2s">
+        <div class="combo-top">
+          <div class="combo-name">FAMILY STACKOUT</div>
+          <div class="combo-save">SAVE ₹300</div>
+        </div>
+        <ul class="combo-items">
+          <li>4x Starters (mix & match)</li>
+          <li>Pizza Chaos (12-inch)</li>
+          <li>BBQ Royale Platter</li>
+          <li>4x Drinks of choice</li>
+          <li>2x Desserts to share</li>
+        </ul>
+        <div class="combo-foot">
+          <div class="combo-price">
+            <div class="combo-now">₹1699</div>
+            <div class="combo-was">₹1999</div>
+          </div>
+         <a href="./404page.html"> <button class="btn-primary" style="padding:10px 22px;font-size:11px;">Order Combo</button></a>
+        </div>
+      </div>
+      <div class="combo fade-up" style="transition-delay:.0s">
+        <div class="combo-top">
+          <div class="combo-name">STUDENT DEAL</div>
+          <div class="combo-save">SAVE ₹60</div>
+        </div>
+        <ul class="combo-items">
+          <li>Crispy Wings or Nachos</li>
+          <li>Main Course of choice</li>
+          <li>Regular Fries</li>
+          <li>Cold Brew or Juice</li>
+        </ul>
+        <div class="combo-foot">
+          <div class="combo-price">
+            <div class="combo-now">₹399</div>
+            <div class="combo-was">₹459</div>
+          </div>
+         <a href="./404page.html"> <button class="btn-primary" style="padding:10px 22px;font-size:11px;">Order Combo</button></a>
+        </div>
+      </div>
+      <div class="combo fade-up" style="transition-delay:.1s">
+        <div class="combo-top">
+          <div class="combo-name">DESSERT LOVER</div>
+          <div class="combo-save">SAVE ₹90</div>
+        </div>
+        <ul class="combo-items">
+          <li>Stack Cakes</li>
+          <li>Triple Choco Lava</li>
+          <li>NY Cheesecake</li>
+          <li>Monster Shake or Lassi</li>
+        </ul>
+        <div class="combo-foot">
+          <div class="combo-price">
+            <div class="combo-now">₹649</div>
+            <div class="combo-was">₹736</div>
+          </div>
+         <a href="./404page.html"> <button class="btn-primary" style="padding:10px 22px;font-size:11px;">Order Combo</button></a>
+        </div>
+      </div>
+      <div class="combo fade-up" style="transition-delay:.2s">
+        <div class="combo-top">
+          <div class="combo-name">BIRTHDAY BASH</div>
+          <div class="combo-save">SAVE ₹500</div>
+        </div>
+        <ul class="combo-items">
+          <li>6x Starters platter</li>
+          <li>Chef's Secret Biriyani</li>
+          <li>BBQ Royale Platter</li>
+          <li>Pizza Chaos</li>
+          <li>Custom Birthday Cake</li>
+          <li>6x Drinks</li>
+        </ul>
+        <div class="combo-foot">
+          <div class="combo-price">
+            <div class="combo-now">₹2499</div>
+            <div class="combo-was">₹2999</div>
+          </div>
+          <a href="./404page.html"> <button class="btn-primary" style="padding:10px 22px;font-size:11px;">Order Combo</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end menu-wrap -->
+
+<!-- CHEF'S PICKS -->
+<section class="chefs-picks">
+  <div class="cp-head fade-up">
+    <div>
+      <div class="lbl">Must Try</div>
+      <h2 class="sh2">CHEF'S PICKS</h2>
+      <p class="sp">The three dishes our chefs personally vouch for. Order these or you're doing it wrong.</p>
+    </div>
+  </div>
+  <div class="cp-grid">
+    <div class="cp fade-up" style="transition-delay:0s">
+      <div class="cp-img">
+        <img src="./assets/BBQ ROYALE PLATTER -1.webp" alt="" style="width:100%;height:100%;object-fit:cover;">
+        <div class="cp-ribbon">CHEF ARJUN</div>
+      </div>
+      <div class="cp-body">
+        <div class="cp-chef">Head Chef's Choice</div>
+        <div class="cp-name">BBQ ROYALE PLATTER</div>
+        <div class="cp-desc">Every meat on this platter has been marinated overnight and smoked to perfection. This is what I'd eat on my last day on earth.</div>
+        <div class="cp-foot">
+          <span class="cp-price">₹529</span>
+          <a href="./404page.html"><button class="btn-primary" style="padding:10px 22px;font-size:11px;">Order Now</button></a>
+        </div>
+      </div>
+    </div>
+    <div class="cp fade-up" style="transition-delay:.12s">
+      <div class="cp-img">
+        <img src="./assets/TRIPLE CHOCO LAVA -1.webp" alt="" style="width:100%;height:100%;object-fit:cover;">
+        <div class="cp-ribbon">CHEF PRIYA</div>
+      </div>
+      <div class="cp-body">
+        <div class="cp-chef">Pastry Chef's Choice</div>
+        <div class="cp-name">TRIPLE CHOCO LAVA</div>
+        <div class="cp-desc">Three types of chocolate, molten centre, handmade ice cream. I've made this a thousand times and still get excited every single time.</div>
+        <div class="cp-foot">
+          <span class="cp-price">₹199</span>
+          <a href="./404page.html"><button class="btn-primary" style="padding:10px 22px;font-size:11px;">Order Now</button></a>
+        </div>
+      </div>
+    </div>
+    <div class="cp fade-up" style="transition-delay:.24s">
+      <div class="cp-img">
+        <img src="./assets/CHEF'S SECRET BIRIYANI-1.webp" alt="" style="width:100%;height:100%;object-fit:cover;">
+        <div class="cp-ribbon">CHEF RAVI</div>
+      </div>
+      <div class="cp-body">
+        <div class="cp-chef">Grill Master's Choice</div>
+        <div class="cp-name">CHEF'S SECRET BIRIYANI</div>
+        <div class="cp-desc">I spent two years perfecting this recipe. The spice blend is something I'll never write down. Come taste what obsession looks like.</div>
+        <div class="cp-foot">
+          <span class="cp-price">₹389</span>
+          <a href="./404page.html"><button class="btn-primary" style="padding:10px 22px;font-size:11px;">Order Now</button></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<div class="menu-cta">
+  <div class="mcta-text">
+    <div class="lbl">Reserve Your Spot</div>
+    <h2>HUNGRY NOW?<span>DON'T WAIT.</span></h2>
+    <p>Tables fill up fast especially on weekends. Book ahead and skip the queue. Your dream meal is waiting!</p>
+    <div class="mcta-btns">
+      <a href="./404page.html" class="btn-primary">Book A Table</a>
+      <a href="./404page.html" class="btn-outline">Call Us</a>
+    </div>
+  </div>
+  <div class="mcta-right">
+    <div class="mcta-fact fade-up"><span class="mcta-fact-n">86</span><div class="mcta-fact-l">Dishes</div></div>
+    <div class="mcta-fact fade-up"><span class="mcta-fact-n">3</span><div class="mcta-fact-l">Expert Chefs</div></div>
+    <div class="mcta-fact fade-up"><span class="mcta-fact-n">100%</span><div class="mcta-fact-l">Fresh Daily</div></div>
+    <div class="mcta-fact fade-up"><span class="mcta-fact-n">★4.9</span><div class="mcta-fact-l">Rating</div></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="fg-grid">
+    <div>
+<div class="fl-logo">
+  <img src="./assets/stackly logo.webp" alt="Stackly" class="fl-logo-img">
+  <span style="display:flex;"><span class="fl-stack">STACK</span><span class="fl-ly">LY</span></span>
+</div>
+      <p class="fl-desc">Salem's most fun restaurant since 2012. We don't just serve food — we serve memories, laughter, and seriously good vibes.</p>
+      <div class="fl-socs">
+        <a href="./404page.html" class="fl-soc">f</a><a href="./404page.html" class="fl-soc">in</a>
+        <a href="./404page.html" class="fl-soc">𝕏</a><a href="./404page.html" class="fl-soc">▶</a><a href="./404page.html" class="fl-soc">💬</a>
+      </div>
+    </div>
+    <div class="fc">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="./index.html">→ Home</a></li><li><a href="./about.html">→ About Us</a></li>
+        <li><a href="./menu.html">→ Our Menu</a></li><li><a href="./reservation.html">→ Reservations</a></li>
+        <li><a href="./blog.html">→ Blog</a></li><li><a href="./contact.html">→ Contact</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>New Menu</h4>
+      <ul>
+        <li><a href="./404page.html">→ Stackly BBQ Platter</a></li><li><a href="./404page.html">→ Spicy Chaos Burger</a></li>
+        <li><a href="./404page.html">→ Mango Lassi Supreme</a></li><li><a href="./404page.html">→ Triple Choco Lava</a></li>
+        <li><a href="./404page.html">→ Power Grain Bowl</a></li><li><a href="./404page.html">→ Chef's Secret Biriyani</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>Find Us</h4>
+      <div class="fc-inf"><strong>Address</strong>MMR Complex, Chinna Thirupathi, near Chinna Muniyappan Kovil, Salem, Tamil Nadu 636008</div>
+      <div class="fc-inf"><strong>Call Us</strong>+91 98765 43210</div>
+      <div class="fc-inf"><strong>Email</strong>hello@stackly.in</div>
+      <div class="fc-hrs">
+        <div class="fc-hr"><span>Mon – Thu</span><span>11AM – 10PM</span></div>
+        <div class="fc-hr"><span>Fri – Sat</span><span>11AM – 11PM</span></div>
+        <div class="fc-hr"><span>Sunday</span><span>12PM – 9PM</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="ftr-btm">
+    <div class="ftr-copy">© 2026 Stackly Restaurant. Made with ♥ in Salem, Tamil Nadu.</div>
+    <div class="ftr-links"><a href="./404page.html">Privacy Policy</a><a href="./404page.html">Terms</a><a href="./404page.html">Sitemap</a></div>
+  </div>
+</footer>
+<script>
+// Scroll progress
+window.addEventListener('scroll', function () {
+  var t = document.documentElement.scrollHeight - window.innerHeight;
+  document.getElementById('sb').style.width = (window.scrollY / t * 100) + '%';
+  document.getElementById('hdr').classList.toggle('sc', window.scrollY > 60);
+});
+
+// Scroll reveal
+var obs = new IntersectionObserver(function (entries) {
+  entries.forEach(function (x) {
+    if (x.isIntersecting) { x.target.classList.add('vis'); obs.unobserve(x.target); }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.fade-up').forEach(function (el) { obs.observe(el); });
+
+// Trigger hero immediately
+setTimeout(function () {
+  document.querySelectorAll('.page-hero .fade-up').forEach(function (el) {
+    el.classList.add('vis');
+  });
+}, 200);
+
+// Mobile menu — handled by common.js
+
+// Menu filter tabs
+function showMenu(id, btn) {
+  document.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('on'); });
+  btn.classList.add('on');
+  document.querySelectorAll('.menu-section').forEach(function (s) { s.classList.remove('on'); });
+  document.getElementById('ms-' + id).classList.add('on');
+  document.querySelectorAll('#ms-' + id + ' .fade-up').forEach(function (el) {
+    el.classList.remove('vis');
+    setTimeout(function () { el.classList.add('vis'); }, 50);
+  });
+  document.getElementById('menuWrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  applyDietFilters();
+}
+
+var activeDiets = {};
+function toggleDiet(el, type) {
+  activeDiets[type] = !activeDiets[type];
+  el.classList.toggle('on', activeDiets[type]);
+  applyDietFilters();
+}
+
+function applyDietFilters() {
+  var vegOn = activeDiets['veg'];
+  var spicyOn = activeDiets['spicy'];
+  // Apply to mi items (list view)
+  document.querySelectorAll('.mi').forEach(function(item) {
+    var isVeg = item.querySelector('.mi-badge.veg') !== null;
+    var isSpicy = item.querySelector('.mi-badge.hot') !== null || item.innerHTML.toLowerCase().indexOf('spicy') > -1 || item.innerHTML.indexOf('🌶') > -1;
+    var show = true;
+    if(vegOn && !isVeg) show = false;
+    if(spicyOn && !isSpicy) show = false;
+    item.style.display = show ? '' : 'none';
+  });
+  // Apply to mc card items (grid view)
+  document.querySelectorAll('.mc').forEach(function(item) {
+    var isVeg = item.querySelector('.mc-badge.veg') !== null;
+    var isSpicy = item.querySelector('.mc-badge.hot') !== null;
+    var show = true;
+    if(vegOn && !isVeg) show = false;
+    if(spicyOn && !isSpicy) show = false;
+    item.style.display = show ? '' : 'none';
+  });
+}
+
+
+
+
+
+</script>
+<script src="./common.js"></script>
+</body>
+</html>
